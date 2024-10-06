@@ -10,6 +10,7 @@
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>
 #include <openpose/flags.hpp>
+#include <openpose/headers.hpp>
 
 namespace Kinect {
 

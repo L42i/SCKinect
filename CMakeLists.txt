@@ -85,6 +85,14 @@ sc_add_server_plugin(
 
 # End target Kinect
 ####################################################################################################
+# Third-party libraries
+
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(OpenCV REQUIRED opencv4)
+target_include_directories(Kinect_supernova PRIVATE ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${OpenCV_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${OpenCV_LIBRARIES})
 
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION

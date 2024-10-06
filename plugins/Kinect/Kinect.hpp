@@ -5,6 +5,9 @@
 
 #include "SC_PlugIn.hpp"
 
+// Third-party libraries
+#include <opencv2/opencv.hpp>
+
 namespace Kinect {
 
 class Kinect : public SCUnit {

@@ -17,15 +17,21 @@ namespace Kinect {
 class Kinect : public SCUnit {
 public:
     Kinect();
-
-    // Destructor
-    // ~Kinect();
+    ~Kinect();
 
 private:
     // Calc function
     void next(int nSamples);
 
+    // Configure the graphics pipeline to use for the Kinect
+    void configure();
+
     // Member variables
+    libfreenect2::Freenect2 mFreenect2;
+    libfreenect2::FrameMap mFrames;
+    libfreenect2::SyncMultiFrameListener mListener;
+    libfreenect2::Freenect2Device *mDev = 0;
+    libfreenect2::PacketPipeline *mPipeline = 0;
 };
 
 } // namespace Kinect

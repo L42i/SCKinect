@@ -8,9 +8,16 @@ static InterfaceTable* ft;
 
 namespace Kinect {
 
-Kinect::Kinect() {
+Kinect::Kinect() : mListener{libfreenect2::Frame::Color} {
     mCalcFunc = make_calc_function<Kinect, &Kinect::next>();
     next(1);
+    mPipeline = new libfreenect2::CudaKdePacketPipeline(0);
+    mDev = mFreenect2.openDevice(mFreenect2.getDefaultDeviceSerialNumber(), mPipeline);
+    std::cout << "device serial: " << mDev->getSerialNumber() << std::endl;
+    std::cout << "device firmware: " << mDev->getFirmwareVersion() << std::endl;
+}
+
+Kinect::~Kinect() {
 }
 
 void Kinect::next(int nSamples) {

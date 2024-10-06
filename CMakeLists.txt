@@ -93,6 +93,11 @@ target_include_directories(Kinect_supernova PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(Kinect_supernova ${OpenCV_LIBRARIES})
 target_include_directories(Kinect_scsynth PRIVATE ${OpenCV_INCLUDE_DIRS})
 target_link_libraries(Kinect_scsynth ${OpenCV_LIBRARIES})
+pkg_check_modules(Freenect REQUIRED freenect2)
+target_include_directories(Kinect_supernova PRIVATE ${Freenect_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${Freenect_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${Freenect_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${Freenect_LIBRARIES})
 
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION

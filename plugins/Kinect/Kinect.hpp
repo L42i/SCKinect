@@ -7,6 +7,8 @@
 
 // Third-party libraries
 #include <opencv2/opencv.hpp>
+#include <libfreenect2/frame_listener_impl.h>
+#include <libfreenect2/registration.h>
 
 namespace Kinect {
 

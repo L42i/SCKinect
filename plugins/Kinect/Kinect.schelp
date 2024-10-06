@@ -1,0 +1,26 @@
+class:: Kinect
+summary:: Interact with a Kinect sensor
+related:: TODO
+categories:: UGens>TODO
+
+description::
+
+Interact with a Kinect sensor
+
+
+classmethods::
+
+method::ar, kr
+
+argument::TODO
+
+argument::TODO
+
+
+examples::
+
+code::
+
+{ Kinect.ar(/* TODO */) }.play
+
+::

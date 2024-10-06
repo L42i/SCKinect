@@ -98,6 +98,11 @@ target_include_directories(Kinect_supernova PRIVATE ${Freenect_INCLUDE_DIRS})
 target_link_libraries(Kinect_supernova ${Freenect_LIBRARIES})
 target_include_directories(Kinect_scsynth PRIVATE ${Freenect_INCLUDE_DIRS})
 target_link_libraries(Kinect_scsynth ${Freenect_LIBRARIES})
+pkg_check_modules(GFlags REQUIRED gflags)
+target_include_directories(Kinect_supernova PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${GFlags_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${GFlags_LIBRARIES})
 
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION

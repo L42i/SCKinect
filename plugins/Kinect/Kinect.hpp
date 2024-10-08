@@ -1,7 +1,8 @@
 // PluginKinect.hpp
 // Evan Murray (evan@auraaudio.io)
 
-#pragma once
+#ifndef KINECT_H
+#define KINECT_H
 
 #include "SC_PlugIn.hpp"
 
@@ -11,6 +12,9 @@
 #include <libfreenect2/registration.h>
 #include <openpose/flags.hpp>
 #include <openpose/headers.hpp>
+
+// Other classes
+#include "WUserInput.hpp"
 
 namespace Kinect {
 libfreenect2::Freenect2 freenect2;
@@ -42,3 +46,5 @@ private:
 };
 
 } // namespace Kinect
+
+#endif // KINECT_H

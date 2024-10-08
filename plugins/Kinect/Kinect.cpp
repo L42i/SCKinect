@@ -8,20 +8,12 @@ static InterfaceTable* ft;
 
 namespace Kinect {
 
-Kinect::Kinect() : mListener{libfreenect2::Frame::Color} {
+Kinect::Kinect() {
     mCalcFunc = make_calc_function<Kinect, &Kinect::next>();
     next(1);
-    mPipeline = new libfreenect2::CudaKdePacketPipeline(0);
-    mDev = mFreenect2.openDevice(mFreenect2.getDefaultDeviceSerialNumber(), mPipeline);
-    std::cout << "device serial: " << mDev->getSerialNumber() << std::endl;
-    std::cout << "device firmware: " << mDev->getFirmwareVersion() << std::endl;
-}
-
-Kinect::~Kinect() {
 }
 
 void Kinect::next(int nSamples) {
-
     // Audio rate input
     const float* input = in(0);
 
@@ -41,6 +33,10 @@ void Kinect::next(int nSamples) {
 
 PluginLoad(KinectUGens) {
     // Plugin magic
+    Kinect::dev->setColorFrameListener(&Kinect::listener);
+    Kinect::dev->start();
+    std::thread backgroundTask(Kinect::processFrame); // Start processing frames in the background
+    backgroundTask.detach();
     ft = inTable;
     registerUnit<Kinect::Kinect>(ft, "Kinect", false);
 }

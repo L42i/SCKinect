@@ -15,6 +15,7 @@
 
 // Other classes
 #include "WUserInput.hpp"
+#include "WUserOutput.hpp"
 
 namespace Kinect {
 libfreenect2::Freenect2 freenect2;

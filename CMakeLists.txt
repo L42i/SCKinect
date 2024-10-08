@@ -49,7 +49,7 @@ message(STATUS "Install directory set to: ${CMAKE_INSTALL_PREFIX}")
 # options
 option(SUPERNOVA "Build plugins for supernova" ON)
 option(SCSYNTH "Build plugins for scsynth" ON)
-option(NATIVE "Optimize for native architecture" OFF)
+option(NATIVE "Optimize for native architecture" ON)
 option(STRICT "Use strict warning flags" OFF)
 option(NOVA_SIMD "Build plugins with nova-simd support." ON)
 
@@ -65,8 +65,12 @@ endif()
 # Begin target Kinect
 
 set(Kinect_cpp_files
+    plugins/Kinect/WUserInput.cpp
+    #plugins/Kinect/WUserInput.hpp
+    plugins/Kinect/WUserOutput.cpp
+    #plugins/Kinect/WUserOutput.hpp
     plugins/Kinect/Kinect.cpp
-    plugins/Kinect/Kinect.hpp
+    #plugins/Kinect/Kinect.hpp
 )
 set(Kinect_sc_files
     plugins/Kinect/Kinect.sc
@@ -103,6 +107,17 @@ target_include_directories(Kinect_supernova PRIVATE ${GFlags_INCLUDE_DIRS})
 target_link_libraries(Kinect_supernova ${GFlags_LIBRARIES})
 target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
 target_link_libraries(Kinect_scsynth ${GFlags_LIBRARIES})
+pkg_check_modules(GFlags REQUIRED gflags)
+target_include_directories(Kinect_supernova PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${GFlags_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${GFlags_LIBRARIES})
+
+# Link OpenPose (should be in /usr/local/lib which is already in paths)
+target_link_libraries(Kinect_scsynth "openpose")
+target_link_libraries(Kinect_supernova "openpose")
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 ####################################################################################################
 # END PLUGIN TARGET DEFINITION

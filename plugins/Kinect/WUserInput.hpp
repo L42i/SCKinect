@@ -1,8 +1,10 @@
+// WUserInput.hpp
+// Evan Murray (evan@auraaudio.io)
+#pragma once
 #ifndef WUSERINPUT_H
 #define WUSERINPUT_H
 
-// Import OpenCV, OpenPose, and Libfreenect2
-#include <opencv2/opencv.hpp>
+// Import OpenPose and Libfreenect2
 #include <openpose/headers.hpp>
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>

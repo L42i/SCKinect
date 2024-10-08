@@ -1,5 +1,11 @@
+// WUserOutput.cpp
+// Evan Murray (evan@auraaudio.io)
 #include "WUserOutput.hpp"
 
+WUserOutput::WUserOutput() {}
+WUserOutput::~WUserOutput() {}
+
+void WUserOutput::initializationOnThread() {}
 void WUserOutput::workConsumer(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& datumsPtr)
 {
     try

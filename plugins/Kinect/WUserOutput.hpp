@@ -1,3 +1,6 @@
+// WUserOutput.hpp
+// Evan Murray (evan@auraaudio.io)
+#pragma once
 #ifndef WUSEROUTPUT_HPP
 #define WUSEROUTPUT_HPP
 
@@ -8,6 +11,10 @@
 class WUserOutput : public op::WorkerConsumer<std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>>
 {
 public:
+    WUserOutput();
+    ~WUserOutput();
+
+    void initializationOnThread(); // Runs to initialize the thread
     void workConsumer(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& datumsPtr); // Process an output frame
 };
 

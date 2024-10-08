@@ -1,4 +1,10 @@
+// WUserInput.cpp
+// Evan Murray (evan@auraaudio.io)
 #include "WUserInput.hpp"
+
+// Import cout and OpenCV
+#include <iostream>
+#include <opencv2/opencv.hpp>
 
 WUserInput::WUserInput() : mListener{libfreenect2::Frame::Color}
 {

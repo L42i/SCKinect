@@ -16,6 +16,7 @@ WUserInput::~WUserInput()
 
 void WUserInput::initializationOnThread()
 {
+    // Initialize the input device for this thread
     mDev->start();
     mDev->setColorFrameListener(&mListener);
     std::cout << "device serial: " << mDev->getSerialNumber() << std::endl;

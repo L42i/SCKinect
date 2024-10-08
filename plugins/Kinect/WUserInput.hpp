@@ -3,7 +3,6 @@
 
 // Import OpenCV, OpenPose, and Libfreenect2
 #include <opencv2/opencv.hpp>
-#include <openpose/flags.hpp>
 #include <openpose/headers.hpp>
 #include <libfreenect2/frame_listener_impl.h>
 #include <libfreenect2/registration.h>
@@ -16,7 +15,6 @@ public:
     ~WUserInput();
 
     void initializationOnThread(); // Runs to initialize the thread
-
     std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>> workProducer(); // Process an input frame
 private:
     libfreenect2::Freenect2 mFreenect2;

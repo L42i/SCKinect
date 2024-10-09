@@ -10,6 +10,11 @@ static InterfaceTable* ft;
 namespace Kinect {
 // OpenPose Wrapper
 op::WrapperT<op::Datum> opWrapperT;
+// Initializing the user custom classes
+// Frames producer (e.g., video, webcam, ...)
+auto wUserInput = std::make_shared<WUserInput>();
+// GUI (Display)
+auto wUserOutput = std::make_shared<WUserOutput>();
 
 void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 {
@@ -23,12 +28,6 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
                        "Wrong logging_level value.",
                        __LINE__, __FUNCTION__, __FILE__);
          op::ConfigureLog::setPriorityThreshold((op::Priority)defaultLoggingLevel);
-
-         // Initializing the user custom classes
-         // Frames producer (e.g., video, webcam, ...)
-         auto wUserInput = std::make_shared<WUserInput>();
-         // GUI (Display)
-         auto wUserOutput = std::make_shared<WUserOutput>();
 
          // Add custom input
          const auto workerInputOnNewThread = false;
@@ -106,19 +105,11 @@ Kinect::Kinect() {
 }
 
 void Kinect::next(int nSamples) {
-    // Audio rate input
-    const float* input = in(0);
-
-    // Control rate parameter: gain.
-    const float gain = in0(1);
-
     // Output buffer
     float* outbuf = out(0);
-
-    // simple gain function
-    for (int i = 0; i < nSamples; ++i) {
-        outbuf[i] = input[i] * gain;
-    }
+    float minval = in0(0);
+    float maxval = in0(1);
+    *outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
 }
 
 } // namespace Kinect
@@ -126,7 +117,7 @@ void Kinect::next(int nSamples) {
 PluginLoad(KinectUGens) {
     // Kinect and OpenPose setup
     Kinect::configureWrapper(Kinect::opWrapperT);
-    Kinect::opWrapperT.start(); // Start processing OpenPose
+    Kinect::opWrapperT.start(); // Start processing OpenPose in the background
 
     // Plugin magic
     ft = inTable;

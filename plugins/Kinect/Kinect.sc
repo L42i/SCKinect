@@ -1,7 +1,6 @@
 Kinect : UGen {
-	*ar { |input, gain|
-		/* TODO */
-		^this.multiNew('audio', input, gain);
+	*kr { |minval=0, maxval=1|
+		^this.multiNew('control', minval, maxval)
 	}
 	checkInputs {
 		/* TODO */

@@ -16,6 +16,8 @@ public:
 
     void initializationOnThread(); // Runs to initialize the thread
     void workConsumer(const std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>>& datumsPtr); // Process an output frame
+
+    float controlValue;
 };
 
 #endif // WUSEROUTPUT_HPP

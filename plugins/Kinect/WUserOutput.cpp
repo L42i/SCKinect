@@ -22,9 +22,9 @@ void WUserOutput::workConsumer(const std::shared_ptr<std::vector<std::shared_ptr
                 const auto x = poseKeypoints[baseIndex];
                 const auto y = poseKeypoints[baseIndex + 1];
                 const auto score = poseKeypoints[baseIndex + 2];
-                op::opLog("X: " + std::to_string(x));
-                op::opLog("Y: " + std::to_string(y));
-                op::opLog("Score: " + std::to_string(score));
+                if (score > 0.4) {
+                    controlValue = x;
+                }
             }
         }
     }

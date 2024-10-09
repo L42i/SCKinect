@@ -1,6 +1,5 @@
 // PluginKinect.cpp
 // Evan Murray (evan@auraaudio.io)
-// Third-party libraries
 #include "Kinect.hpp"
 
 // Import OpenPose
@@ -9,6 +8,8 @@
 static InterfaceTable* ft;
 
 namespace Kinect {
+// OpenPose Wrapper
+op::WrapperT<op::Datum> opWrapperT;
 
 void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 {
@@ -123,15 +124,9 @@ void Kinect::next(int nSamples) {
 } // namespace Kinect
 
 PluginLoad(KinectUGens) {
-    auto backgroundTask = []() {
-        // Kinect and OpenPose setup
-        op::WrapperT<op::Datum> opWrapperT;
-        Kinect::configureWrapper(opWrapperT);
-        opWrapperT.exec(); // Start processing OpenPose
-    };
-
-    std::thread bgThread(backgroundTask); // Create and start the thread
-    bgThread.detach(); // Run in background
+    // Kinect and OpenPose setup
+    Kinect::configureWrapper(Kinect::opWrapperT);
+    Kinect::opWrapperT.start(); // Start processing OpenPose
 
     // Plugin magic
     ft = inTable;

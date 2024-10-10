@@ -5,17 +5,12 @@ s.options.numInputBusChannels = 48;
 
 s.waitForBoot({
 	// Define a SynthDef for a wind sound and send it to the server
-	SynthDef(\wind_sound,
-		{
-			// define arguments of the SynthDef
-			|out = 0, amplitude = 1|
+	SynthDef(\wind_sound, {
+		|out = 0, amplitude = 1|
 
-			// calculate a sine wave with frequency and amplitude
-			var x = BrownNoise.ar(amplitude);
+		var x = BrownNoise.ar(amplitude);
 
-			// send the signal to the output bus '0'
-			Out.ar(out, x);
-
+		Out.ar(out, x);
 	}).send(s);
 
 	// Define a bus for the Kinect

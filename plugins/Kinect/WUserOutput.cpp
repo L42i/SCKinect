@@ -22,9 +22,7 @@ void WUserOutput::workConsumer(const std::shared_ptr<std::vector<std::shared_ptr
                 const auto x = poseKeypoints[baseIndex];
                 const auto y = poseKeypoints[baseIndex + 1];
                 const auto score = poseKeypoints[baseIndex + 2];
-                if (score > 0.4) {
-                    controlValue = x;
-                }
+                controlValue = x;
             }
         }
     }

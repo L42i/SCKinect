@@ -38,7 +38,7 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 
          // Hardcoded stuff (no flags)
          const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
-         const int numPeopleMax = 1;
+         const int numPeopleMax = -1;
          const auto flagsFolder = op::String("/home/lab/openpose/models");
          const int numGpu = -1; // All GPU's used
          const int gpuStartIndex = 0;

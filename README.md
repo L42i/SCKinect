@@ -13,8 +13,8 @@ Interact with a Kinect sensor
 
 Clone the project:
 
-    git clone https://github.com/emurray2/kinect
-    cd kinect
+    git clone https://github.com/L42i/SCKinect.git
+    cd SCKinect
     mkdir build
     cd build
 

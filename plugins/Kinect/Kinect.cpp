@@ -115,10 +115,10 @@ Kinect::Kinect() {
 
 void Kinect::next(int nSamples) {
     // Output buffer
-    float* outbuf = out(0);
-    float minval = in0(0);
-    float maxval = in0(1);
-    *outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
+    //float* outbuf = out(0);
+    //float minval = in0(0);
+    //float maxval = in0(1);
+    //*outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
 }
 
 } // namespace Kinect

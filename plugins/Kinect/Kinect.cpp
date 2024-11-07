@@ -31,10 +31,10 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 
          // Add custom input
          const auto workerInputOnNewThread = false;
-         opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
+         //opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
          // Add custom output
          const auto workerOutputOnNewThread = true;
-         opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
+         //opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
 
          // Hardcoded stuff (no flags)
          const auto keypointScaleMode = op::ScaleMode::ZeroToOne;

@@ -39,7 +39,7 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
          // Hardcoded stuff (no flags)
          const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
          const int numPeopleMax = -1;
-         const auto flagsFolder = op::String("/home/lab/openpose/models");
+         const auto flagsFolder = op::String("/home/emurray49/openpose/models");
          const int numGpu = -1; // All GPU's used
          const int gpuStartIndex = 0;
          const int numAverages = 1;
@@ -99,6 +99,15 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
      }
 }
 
+void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    opWrapperT.start(); // Start processing OpenPose in the background
+}
+void cmdStopTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    opWrapperT.stop(); // Stop processing OpenPose in the background
+}
+
 Kinect::Kinect() {
     mCalcFunc = make_calc_function<Kinect, &Kinect::next>();
     next(1);
@@ -117,9 +126,11 @@ void Kinect::next(int nSamples) {
 PluginLoad(KinectUGens) {
     // Kinect and OpenPose setup
     Kinect::configureWrapper(Kinect::opWrapperT);
-    Kinect::opWrapperT.start(); // Start processing OpenPose in the background
 
     // Plugin magic
     ft = inTable;
     registerUnit<Kinect::Kinect>(ft, "Kinect", false);
+
+    DefinePlugInCmd("cmdStartTracking", Kinect::cmdStartTracking, (void*)nullptr);
+    DefinePlugInCmd("cmdStopTracking", Kinect::cmdStopTracking, (void*)nullptr);
 }

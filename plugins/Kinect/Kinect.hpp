@@ -1,8 +1,8 @@
 // PluginKinect.hpp
 // Evan Murray (evan@auraaudio.io)
 #pragma once
-#ifndef KINECT_H
-#define KINECT_H
+#ifndef KINECT_HPP
+#define KINECT_HPP
 #include "WUserInput.hpp"
 #include "WUserOutput.hpp"
 

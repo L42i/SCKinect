@@ -1,8 +1,8 @@
 // WUserInput.hpp
 // Evan Murray (evan@auraaudio.io)
 #pragma once
-#ifndef WUSERINPUT_H
-#define WUSERINPUT_H
+#ifndef WUSERINPUT_HPP
+#define WUSERINPUT_HPP
 
 // Import OpenPose and Libfreenect2
 #include <openpose/headers.hpp>
@@ -26,4 +26,4 @@ private:
     libfreenect2::FrameMap mFrames;
 };
 
-#endif // WUSERINPUT_H
+#endif // WUSERINPUT_HPP

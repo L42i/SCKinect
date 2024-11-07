@@ -12,9 +12,9 @@ namespace Kinect {
 op::WrapperT<op::Datum> opWrapperT;
 // Initializing the user custom classes
 // Frames producer (e.g., video, webcam, ...)
-auto wUserInput = std::make_shared<WUserInput>();
+//auto wUserInput = std::make_shared<WUserInput>();
 // GUI (Display)
-auto wUserOutput = std::make_shared<WUserOutput>();
+//auto wUserOutput = std::make_shared<WUserOutput>();
 
 void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 {
@@ -101,11 +101,11 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 
 void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
-    opWrapperT.start(); // Start processing OpenPose in the background
+    //opWrapperT.start(); // Start processing OpenPose in the background
 }
 void cmdStopTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
-    opWrapperT.stop(); // Stop processing OpenPose in the background
+    //opWrapperT.stop(); // Stop processing OpenPose in the background
 }
 
 Kinect::Kinect() {
@@ -125,7 +125,7 @@ void Kinect::next(int nSamples) {
 
 PluginLoad(KinectUGens) {
     // Kinect and OpenPose setup
-    Kinect::configureWrapper(Kinect::opWrapperT);
+    //Kinect::configureWrapper(Kinect::opWrapperT);
 
     // Plugin magic
     ft = inTable;

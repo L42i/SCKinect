@@ -157,6 +157,14 @@ void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter*
                           (AsyncStageFn)KinectCmd_setPipeline3, (AsyncStageFn)KinectCmd_setPipeline4, KinectCmd_setPipelineCleanup, msgSize, msgData);
 }
 
+
+
+void KinectCmd_findAvailable(World* inworld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->mFreenect2.enumerateDevices();
+}
+
 void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     //opWrapperT.start(); // Start processing OpenPose in the background
@@ -192,4 +200,5 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("cmdStartTracking", Kinect::cmdStartTracking, (void*)nullptr);
     DefinePlugInCmd("cmdStopTracking", Kinect::cmdStopTracking, (void*)nullptr);
     DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
 }

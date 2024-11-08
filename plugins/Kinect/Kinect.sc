@@ -11,6 +11,9 @@ Kinect : UGen {
 	*setPipeline { |pipeline = 1|
 		Server.default.sendMsg(\cmd, \setPipeline, pipeline);
 	}
+	*findAvailable {
+		Server.default.sendMsg(\cmd, \findAvailable);
+	}
 	checkInputs {
 		/* TODO */
 		^this.checkValidInputs;

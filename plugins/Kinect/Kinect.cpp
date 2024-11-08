@@ -10,6 +10,7 @@ static InterfaceTable* ft;
 namespace Kinect {
 
 struct KinectData {
+    libfreenect2::Freenect2 mFreenect2;
     libfreenect2::PacketPipeline mPipeline;
     int selectedPipeline = 1;
 };
@@ -143,7 +144,7 @@ void KinectCmd_setPipelineCleanup(World* world, void* inUserData) {}
 
 void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
-    KinectData* kinectData = (KinectData*)RTAlloc(inWorld, sizeof(KinectData));
+    KinectData* kinectData = (KinectData*)inUserData;
     kinectData->selectedPipeline = args->geti(0);
 
     int msgSize = args->getbsize();

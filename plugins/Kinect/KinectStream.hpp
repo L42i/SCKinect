@@ -14,21 +14,14 @@
 namespace KinectStream {
 
 struct KinectData {
-    libfreenect2::Freenect2 mFreenect2;
-    libfreenect2::Freenect2Device* mDev;
-    libfreenect2::PacketPipeline* mPipeline;
-    libfreenect2::SyncMultiFrameListener mListener;
-    libfreenect2::FrameMap mFrames;
+    libfreenect2::Freenect2 freenect2;
+    libfreenect2::Freenect2Device* device;
+    libfreenect2::PacketPipeline* pipeline;
+    libfreenect2::SyncMultiFrameListener listener{libfreenect2::Frame::Color};
+    libfreenect2::FrameMap frames;
 };
 
 KinectData gKinectData;
-
-class KinectStream
-{
-public:
-    KinectStream();
-    ~KinectStream()
-};
 
 } // namespace KinectStream
 

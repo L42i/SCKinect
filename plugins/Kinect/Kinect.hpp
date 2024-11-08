@@ -5,11 +5,13 @@
 #define KINECT_HPP
 #include "WUserInput.hpp"
 #include "WUserOutput.hpp"
-#include "KinectStream.hpp"
 
 // SuperCollider plug-in API
 #include "SC_PlugIn.hpp"
 
+// Third party API's
+#include <libfreenect2/frame_listener_impl.h>
+#include <libfreenect2/registration.h>
 
 namespace Kinect {
 

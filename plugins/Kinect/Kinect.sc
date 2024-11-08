@@ -8,6 +8,9 @@ Kinect : UGen {
 	*stopTracking {
 		Server.default.sendMsg(\cmd, \cmdStopTracking);
 	}
+	*setPipeline { |pipeline = 1|
+		Server.default.sendMsg(\cmd, \setPipeline, pipeline);
+	}
 	checkInputs {
 		/* TODO */
 		^this.checkValidInputs;

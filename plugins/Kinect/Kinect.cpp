@@ -8,6 +8,14 @@
 static InterfaceTable* ft;
 
 namespace Kinect {
+
+struct KinectData {
+    libfreenect2::PacketPipeline mPipeline;
+    int selectedPipeline = 1;
+};
+
+KinectData gKinectData;
+
 // OpenPose Wrapper
 op::WrapperT<op::Datum> opWrapperT;
 // Initializing the user custom classes
@@ -99,6 +107,61 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
      }
 }
 
+bool KinectCmd_setPipeline2(World* world, void* inUserData)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    switch(kinectData->selectedPipeline) {
+        case 0:
+            kinectData->mPipeline = libfreenect2::DumpPacketPipeline();
+            break;
+        case 1:
+            kinectData->mPipeline = libfreenect2::CpuPacketPipeline();
+            break;
+        case 2:
+            kinectData->mPipeline = libfreenect2::OpenGLPacketPipeline();
+            break;
+        case 3:
+            kinectData->mPipeline = libfreenect2::OpenCLKdePacketPipeline();
+            break;
+        case 4:
+            kinectData->mPipeline = libfreenect2::CudaPacketPipeline();
+            break;
+        case 5:
+            kinectData->mPipeline = libfreenect2::CudaKdePacketPipeline();
+            break;
+        default:
+            break;
+    }
+    return true;
+}
+
+bool KinectCmd_setPipeline3(World* world, void* inUserData)
+{
+    return true;
+}
+
+bool KinectCmd_setPipeline4(World* world, void* inUserData)
+{
+    return true;
+}
+
+void KinectCmd_setPipelineCleanup(World* world, void* inUserData) {}
+
+void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)RTAlloc(inWorld, sizeof(KinectData));
+    kinectData->selectedPipeline = args->geti(0);
+
+    int msgSize = args->getbsize();
+    char* msgData = 0;
+    if (msgSize) {
+        msgData = (char*)RTAlloc(inWorld, msgSize);
+        args->getb(msgData, msgSize);
+    }
+    DoAsynchronousCommand(inWorld, replyAddr, "KinectCmd_setPipeline", (void*)&gKinectData, (AsyncStageFn)KinectCmd_setPipeline2,
+                          (AsyncStageFn)KinectCmd_setPipeline3, (AsyncStageFn)KinectCmd_setPipeline4, KinectCmd_setPipelineCleanup, msgSize, msgData);
+}
+
 void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     //opWrapperT.start(); // Start processing OpenPose in the background
@@ -133,4 +196,5 @@ PluginLoad(KinectUGens) {
 
     DefinePlugInCmd("cmdStartTracking", Kinect::cmdStartTracking, (void*)nullptr);
     DefinePlugInCmd("cmdStopTracking", Kinect::cmdStopTracking, (void*)nullptr);
+    DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
 }

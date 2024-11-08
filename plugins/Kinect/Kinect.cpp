@@ -12,6 +12,8 @@ namespace Kinect {
 struct KinectData {
     libfreenect2::Freenect2 mFreenect2;
     libfreenect2::PacketPipeline mPipeline;
+    libfreenect2::Freenect2Device* mDevice;
+    std::string selectedSerial;
     int selectedPipeline = 1;
 };
 
@@ -76,7 +78,6 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
          const auto prototxtPath = op::String(""); // Use default path
          const auto caffeModelPath = op::String(""); // Use default path
          const float upSamplingRatio = 0.0; // Use default upsampling ratio for the output
-
 
          // Pose configuration (use WrapperStructPose{} for default and recommended configuration)
          const op::WrapperStructPose wrapperStructPose{
@@ -157,12 +158,39 @@ void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter*
                           (AsyncStageFn)KinectCmd_setPipeline3, (AsyncStageFn)KinectCmd_setPipeline4, KinectCmd_setPipelineCleanup, msgSize, msgData);
 }
 
-
-
-void KinectCmd_findAvailable(World* inworld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+void KinectCmd_findAvailable(World* world, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
     kinectData->mFreenect2.enumerateDevices();
+}
+
+bool KinectCmd_openDevice2(World* world, void* inUserData)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, &kinectData->mPipeline);
+    return true;
+}
+
+bool KinectCmd_openDevice3(World* world, void* inUserData) { return true; }
+
+bool KinectCmd_openDevice4(World* world, void* inUserData) { return true; }
+
+void KinectCmd_openDeviceCleanup(World* world, void* inUserData) {}
+
+void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->selectedSerial = args->gets();
+
+    int msgSize = args->getbsize();
+    char* msgData = 0;
+    if (msgSize) {
+        msgData = (char*)RTAlloc(inWorld, msgSize);
+        args->getb(msgData, msgSize);
+    }
+    DoAsynchronousCommand(inWorld, replyAddr, "KinectCmd_openDevice", (void*)&gKinectData, (AsyncStageFn)KinectCmd_openDevice2,
+                          (AsyncStageFn)KinectCmd_openDevice3, (AsyncStageFn)KinectCmd_openDevice4, KinectCmd_openDeviceCleanup, msgSize, msgData);
+
 }
 
 void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
@@ -201,4 +229,5 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("cmdStopTracking", Kinect::cmdStopTracking, (void*)nullptr);
     DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
 }

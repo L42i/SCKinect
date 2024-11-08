@@ -7,7 +7,9 @@ Interact with a Kinect sensor
 ### Requirements
 
 - CMake >= 3.5
-- SuperCollider source code
+- [SuperCollider source code](https://github.com/supercollider/supercollider)
+- [libfreenect2](https://github.com/OpenKinect/libfreenect2)
+- [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose)
 
 ### Building
 

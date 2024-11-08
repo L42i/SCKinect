@@ -135,15 +135,9 @@ bool KinectCmd_setPipeline2(World* world, void* inUserData)
     return true;
 }
 
-bool KinectCmd_setPipeline3(World* world, void* inUserData)
-{
-    return true;
-}
+bool KinectCmd_setPipeline3(World* world, void* inUserData) { return true; }
 
-bool KinectCmd_setPipeline4(World* world, void* inUserData)
-{
-    return true;
-}
+bool KinectCmd_setPipeline4(World* world, void* inUserData) { return true; }
 
 void KinectCmd_setPipelineCleanup(World* world, void* inUserData) {}
 

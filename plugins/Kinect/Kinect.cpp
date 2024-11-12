@@ -8,6 +8,8 @@ namespace Kinect {
 
 struct KinectData {
     op::WrapperT<op::Datum> opWrapperT; // OpenPose wrapper
+    std::shared_ptr<WUserInput> wUserInput;
+    std::shared_ptr<WUserOutput> wUserOutput;
     libfreenect2::Freenect2 mFreenect2;
     libfreenect2::PacketPipeline* mPipeline;
     libfreenect2::Freenect2Device* mDevice;
@@ -16,12 +18,6 @@ struct KinectData {
 };
 
 KinectData gKinectData;
-
-// Initializing the user custom classes
-// Frames producer (e.g., video, webcam, ...)
-auto wUserInput = std::make_shared<WUserInput>();
-// GUI (Display)
-auto wUserOutput = std::make_shared<WUserOutput>();
 
 bool KinectCmd_setPipeline2(World* world, void* inUserData)
 {
@@ -82,7 +78,6 @@ bool KinectCmd_openDevice2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
     kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, kinectData->mPipeline);
-    wUserInput->setDevice(kinectData->mDevice);
     return true;
 }
 
@@ -117,6 +112,10 @@ void KinectCmd_start(World* inWorld, void* inUserData, struct sc_msg_iter* args,
 void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
+    // Initializing the user custom classes
+    // Frames producer (e.g., video, webcam, ...)
+    kinectData->wUserInput = std::make_shared<WUserInput>();
+    kinectData->wUserOutput = std::make_shared<WUserOutput>();
     try
     {
         // Configuring OpenPose
@@ -130,10 +129,10 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
 
         // Add custom input
         const auto workerInputOnNewThread = false;
-        kinectData->opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
+        kinectData->opWrapperT.setWorker(op::WorkerType::Input, kinectData->wUserInput, workerInputOnNewThread);
         // Add custom output
         const auto workerOutputOnNewThread = true;
-        kinectData->opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
+        kinectData->opWrapperT.setWorker(op::WorkerType::Output, kinectData->wUserOutput, workerOutputOnNewThread);
 
         // Hardcoded stuff (no flags)
         const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
@@ -199,7 +198,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
 void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    wUserInput->setDevice(kinectData->mDevice);
+    kinectData->wUserInput->setDevice(kinectData->mDevice);
     kinectData->opWrapperT.start(); // Start processing OpenPose in the background
 }
 
@@ -219,7 +218,7 @@ void Kinect::next(int nSamples) {
     float* outbuf = out(0);
     float minval = in0(0);
     float maxval = in0(1);
-    *outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
+    *outbuf = zapgremlins((maxval - minval) * gKinectData.wUserOutput->controlValue + minval);
 }
 
 } // namespace Kinect

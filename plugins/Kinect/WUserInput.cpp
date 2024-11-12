@@ -2,31 +2,17 @@
 // Evan Murray (evan@auraaudio.io)
 #include "WUserInput.hpp"
 
-// Import cout and OpenCV
-#include <iostream>
-#include <opencv2/opencv.hpp>
+WUserInput::WUserInput() : mListener{libfreenect2::Frame::Color} {}
 
-WUserInput::WUserInput() : mListener{libfreenect2::Frame::Color}
-{
-    mPipeline = new libfreenect2::CudaKdePacketPipeline(0); // Run on the GPU
-    mDev = mFreenect2.openDefaultDevice(mPipeline); // Initialize first Kinect
-}
+WUserInput::~WUserInput() {}
 
-WUserInput::~WUserInput()
-{
-    mDev->stop();
-    mDev->close();
-    delete mDev;
-    delete mPipeline;
-}
+void WUserInput::setDevice(libfreenect2::Freenect2Device* device) { mDev = device; }
 
 void WUserInput::initializationOnThread()
 {
     // Initialize the input device for this thread
     mDev->start();
     mDev->setColorFrameListener(&mListener);
-    std::cout << "device serial: " << mDev->getSerialNumber() << std::endl;
-    std::cout << "device firmware: " << mDev->getFirmwareVersion() << std::endl;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<op::Datum>>> WUserInput::workProducer()

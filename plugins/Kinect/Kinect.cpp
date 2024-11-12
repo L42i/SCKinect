@@ -2,9 +2,6 @@
 // Evan Murray (evan@auraaudio.io)
 #include "Kinect.hpp"
 
-// Import OpenPose
-#include <openpose/headers.hpp>
-
 static InterfaceTable* ft;
 
 namespace Kinect {
@@ -23,9 +20,9 @@ KinectData gKinectData;
 op::WrapperT<op::Datum> opWrapperT;
 // Initializing the user custom classes
 // Frames producer (e.g., video, webcam, ...)
-//auto wUserInput = std::make_shared<WUserInput>();
+auto wUserInput = std::make_shared<WUserInput>();
 // GUI (Display)
-//auto wUserOutput = std::make_shared<WUserOutput>();
+auto wUserOutput = std::make_shared<WUserOutput>();
 
 void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 {
@@ -42,10 +39,10 @@ void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
 
          // Add custom input
          const auto workerInputOnNewThread = false;
-         //opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
+         opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
          // Add custom output
          const auto workerOutputOnNewThread = true;
-         //opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
+         opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
 
          // Hardcoded stuff (no flags)
          const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
@@ -168,6 +165,7 @@ bool KinectCmd_openDevice2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
     kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, &kinectData->mPipeline);
+    wUserInput->setDevice(kinectData->mDevice);
     return true;
 }
 
@@ -193,13 +191,9 @@ void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* 
 
 }
 
-void cmdStartTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
-    //opWrapperT.start(); // Start processing OpenPose in the background
-}
-void cmdStopTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
-{
-    //opWrapperT.stop(); // Stop processing OpenPose in the background
+    opWrapperT.start(); // Start processing OpenPose in the background
 }
 
 Kinect::Kinect() {
@@ -209,25 +203,24 @@ Kinect::Kinect() {
 
 void Kinect::next(int nSamples) {
     // Output buffer
-    //float* outbuf = out(0);
-    //float minval = in0(0);
-    //float maxval = in0(1);
-    //*outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
+    float* outbuf = out(0);
+    float minval = in0(0);
+    float maxval = in0(1);
+    *outbuf = zapgremlins((maxval - minval) * wUserOutput->controlValue + minval);
 }
 
 } // namespace Kinect
 
 PluginLoad(KinectUGens) {
     // Kinect and OpenPose setup
-    //Kinect::configureWrapper(Kinect::opWrapperT);
+    Kinect::configureWrapper(Kinect::opWrapperT);
 
     // Plugin magic
     ft = inTable;
     registerUnit<Kinect::Kinect>(ft, "Kinect", false);
 
-    DefinePlugInCmd("cmdStartTracking", Kinect::cmdStartTracking, (void*)nullptr);
-    DefinePlugInCmd("cmdStopTracking", Kinect::cmdStopTracking, (void*)nullptr);
     DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("startTracking", Kinect::KinectCmd_startTracking, (void*)&Kinect::gKinectData);
 }

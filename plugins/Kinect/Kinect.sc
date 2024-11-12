@@ -21,6 +21,9 @@ Kinect : UGen {
 			Server.default.sendMsg(\cmd, \openDevice, serial);
 		}
 	}
+	*closeDevice {
+		Server.default.sendMsg(\cmd, \closeDevice);
+	}
 	*start {
 		Server.default.sendMsg(\cmd, \start);
 	}

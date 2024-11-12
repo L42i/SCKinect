@@ -103,6 +103,12 @@ void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* 
 
 }
 
+void KinectCmd_closeDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->mDevice->close();
+}
+
 void KinectCmd_start(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
@@ -237,6 +243,7 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("closeDevice", Kinect::KinectCmd_closeDevice, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("start", Kinect::KinectCmd_start, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("stop", Kinect::KinectCmd_stop, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("configureTracking", Kinect::KinectCmd_configureTracking, (void*)&Kinect::gKinectData);

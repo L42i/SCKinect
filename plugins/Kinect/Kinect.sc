@@ -24,6 +24,9 @@ Kinect : UGen {
 	*start {
 		Server.default.sendMsg(\cmd, \start);
 	}
+	*stop {
+		Server.default.sendMsg(\cmd, \stop);
+	}
 	*configureTracking {|loggingLevel=3,
 	maxPeople= -1,
 	modelFolder="",

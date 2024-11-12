@@ -8,7 +8,7 @@ namespace Kinect {
 
 struct KinectData {
     libfreenect2::Freenect2 mFreenect2;
-    libfreenect2::PacketPipeline mPipeline;
+    libfreenect2::PacketPipeline* mPipeline;
     libfreenect2::Freenect2Device* mDevice;
     std::string selectedSerial;
     int selectedPipeline = 1;
@@ -111,22 +111,22 @@ bool KinectCmd_setPipeline2(World* world, void* inUserData)
     KinectData* kinectData = (KinectData*)inUserData;
     switch(kinectData->selectedPipeline) {
         case 0:
-            kinectData->mPipeline = libfreenect2::DumpPacketPipeline();
+            kinectData->mPipeline = new libfreenect2::DumpPacketPipeline();
             break;
         case 1:
-            kinectData->mPipeline = libfreenect2::CpuPacketPipeline();
+            kinectData->mPipeline = new libfreenect2::CpuPacketPipeline();
             break;
         case 2:
-            kinectData->mPipeline = libfreenect2::OpenGLPacketPipeline();
+            kinectData->mPipeline = new libfreenect2::OpenGLPacketPipeline();
             break;
         case 3:
-            kinectData->mPipeline = libfreenect2::OpenCLKdePacketPipeline();
+            kinectData->mPipeline = new libfreenect2::OpenCLKdePacketPipeline();
             break;
         case 4:
-            kinectData->mPipeline = libfreenect2::CudaPacketPipeline();
+            kinectData->mPipeline = new libfreenect2::CudaPacketPipeline();
             break;
         case 5:
-            kinectData->mPipeline = libfreenect2::CudaKdePacketPipeline();
+            kinectData->mPipeline = new libfreenect2::CudaKdePacketPipeline();
             break;
         default:
             break;
@@ -164,7 +164,7 @@ void KinectCmd_findAvailable(World* world, void* inUserData, struct sc_msg_iter*
 bool KinectCmd_openDevice2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, &kinectData->mPipeline);
+    kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, kinectData->mPipeline);
     wUserInput->setDevice(kinectData->mDevice);
     return true;
 }

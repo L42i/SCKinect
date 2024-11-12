@@ -38,3 +38,22 @@ Use the command in `regenerate` to update CMakeLists.txt when you add or remove 
 project. You don't need to run it if you only change the contents of existing files. You may need to
 edit the command if you add, remove, or rename plugins, to match the new plugin paths. Run the
 script with `--help` to see all available options.
+
+### SuperCollider code example
+```
+Kinect.findAvailable;
+Kinect.setPipeline(5);
+Kinect.openDevice("065915234247");
+Kinect.start;
+Kinect.configureTracking(
+	3, 1, "/home/emurray49/openpose/models",
+	1, 0, 1, 0.25,
+	0, "-1x-1", "-1x256",
+	1, "BODY_25", 0.5,
+	0.5, 0, 0.05, -1, 0.0
+);
+Kinect.startTracking;
+Kinect.stopTracking;
+Kinect.stop;
+Kinect.closeDevice;
+```

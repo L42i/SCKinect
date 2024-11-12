@@ -24,6 +24,37 @@ Kinect : UGen {
 	*start {
 		Server.default.sendMsg(\cmd, \start);
 	}
+	*configureTracking {|loggingLevel=3,
+	maxPeople= -1,
+	modelFolder="",
+	numGpu= -1,
+	gpuStartIndex=0,
+	numAverages=1,
+	averageGap=0.25,
+	renderPose=0,
+	outputSize="-1x-1",
+	netInputSize="-1x368",
+	poseMode=1,
+	poseModel="BODY_25",
+	alphaPose=0.5,
+	alphaHeatmap=0.5,
+	partToShow=0,
+	renderThreshold=0.05,
+	fpsMax= -1,
+	upSamplingRatio=0.0|
+		Server.default.sendMsg(
+		\cmd, \configureTracking,
+		loggingLevel, maxPeople,
+		modelFolder, numGpu,
+		gpuStartIndex, numAverages,
+		averageGap, renderPose,
+		outputSize, netInputSize,
+		poseMode, poseModel,
+		alphaPose, alphaHeatmap,
+		partToShow, renderThreshold,
+		fpsMax, upSamplingRatio
+		);
+	}
 	*startTracking {
 		Server.default.sendMsg(\cmd, \startTracking);
 	}

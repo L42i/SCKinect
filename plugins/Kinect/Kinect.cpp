@@ -7,6 +7,7 @@ static InterfaceTable* ft;
 namespace Kinect {
 
 struct KinectData {
+    op::WrapperT<op::Datum> opWrapperT; // OpenPose wrapper
     libfreenect2::Freenect2 mFreenect2;
     libfreenect2::PacketPipeline* mPipeline;
     libfreenect2::Freenect2Device* mDevice;
@@ -16,95 +17,11 @@ struct KinectData {
 
 KinectData gKinectData;
 
-// OpenPose Wrapper
-op::WrapperT<op::Datum> opWrapperT;
 // Initializing the user custom classes
 // Frames producer (e.g., video, webcam, ...)
 auto wUserInput = std::make_shared<WUserInput>();
 // GUI (Display)
 auto wUserOutput = std::make_shared<WUserOutput>();
-
-void configureWrapper(op::WrapperT<op::Datum>& opWrapperT)
-{
-     try
-     {
-         // Configuring OpenPose
-
-         // logging_level
-         const int defaultLoggingLevel = 3; // Varies 0 to 4 for OpenPose (3=fairly important)
-         op::checkBool(0 <= defaultLoggingLevel && defaultLoggingLevel <= 255,
-                       "Wrong logging_level value.",
-                       __LINE__, __FUNCTION__, __FILE__);
-         op::ConfigureLog::setPriorityThreshold((op::Priority)defaultLoggingLevel);
-
-         // Add custom input
-         const auto workerInputOnNewThread = false;
-         opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
-         // Add custom output
-         const auto workerOutputOnNewThread = true;
-         opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
-
-         // Hardcoded stuff (no flags)
-         const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
-         const int numPeopleMax = -1;
-         const auto flagsFolder = op::String("/home/emurray49/openpose/models");
-         const int numGpu = -1; // All GPU's used
-         const int gpuStartIndex = 0;
-         const int numAverages = 1;
-         const float averageGap = 0.25;
-         const int renderPose = 0; // Don't render anything on the display
-         const auto outputSize = op::flagsToPoint(op::String("-1x-1"), "-1x-1");
-         const auto netInputSize = op::flagsToPoint(op::String("-1x368"), "-1x368");
-         const auto poseMode = op::flagsToPoseMode(1);
-         const auto poseModel = op::flagsToPoseModel(op::String("BODY_25"));
-         const auto heatMapTypes = op::flagsToHeatMaps(false,
-                                                       false,
-                                                       false);
-         const auto heatMapScaleMode = op::flagsToHeatMapScaleMode(2);
-         const bool multipleView = false; // >1 camera view?
-         const bool enableGoogleLogging = true;
-         // These don't really matter since we're not displaying an image
-         const bool disableBlending = true; // Don't render the background (only the skeleton)
-         const float alphaPose = 0.0; // Hide the pose (completely transparent)
-         const float alphaHeatMap = 0.0; // Hide the heatmap
-         const int partToShow = 1; // Don't show any parts
-         const bool recordPartCandidates = false; // No, only interested in the final output
-         const float renderThreshold = 1.0; // Don't render anything, no matter how confident
-         const bool maximizePositives = false; // High standards for accepting candidates = higher precision
-         const int fpsMax = -1; // Process frames as quickly as possible
-         const auto prototxtPath = op::String(""); // Use default path
-         const auto caffeModelPath = op::String(""); // Use default path
-         const float upSamplingRatio = 0.0; // Use default upsampling ratio for the output
-
-         // Pose configuration (use WrapperStructPose{} for default and recommended configuration)
-         const op::WrapperStructPose wrapperStructPose{
-             poseMode, netInputSize, outputSize, keypointScaleMode, numGpu, gpuStartIndex,
-             numAverages, averageGap, op::flagsToRenderMode(renderPose, multipleView),
-             poseModel, !disableBlending, alphaPose, alphaHeatMap,
-             partToShow, flagsFolder, heatMapTypes, heatMapScaleMode, recordPartCandidates,
-             renderThreshold, numPeopleMax, maximizePositives, fpsMax,
-             prototxtPath, caffeModelPath, upSamplingRatio, enableGoogleLogging
-         };
-         opWrapperT.configure(wrapperStructPose);
-
-         // Face configuration (use op::WrapperStructFace{} to disable it)
-         const op::WrapperStructFace wrapperStructFace{};
-         opWrapperT.configure(wrapperStructFace);
-         // Hand configuration (use op::WrapperStructHand{} to disable it)
-         const op::WrapperStructHand wrapperStructHand{};
-         opWrapperT.configure(wrapperStructHand);
-         // Extra functionality configuration (use op::WrapperStructExtra{} to disable it)
-         const op::WrapperStructExtra wrapperStructExtra{};
-         opWrapperT.configure(wrapperStructExtra);
-         // Output (comment or use default argument to disable any output)
-         const op::WrapperStructOutput wrapperStructOutput{};
-         opWrapperT.configure(wrapperStructOutput);
-     }
-     catch (const std::exception& e)
-     {
-         op::error(e.what(), __LINE__, __FUNCTION__, __FILE__);
-     }
-}
 
 bool KinectCmd_setPipeline2(World* world, void* inUserData)
 {
@@ -197,16 +114,99 @@ void KinectCmd_start(World* inWorld, void* inUserData, struct sc_msg_iter* args,
     kinectData->mDevice->start();
 }
 
+void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    try
+    {
+        // Configuring OpenPose
+
+        // logging_level
+        const int defaultLoggingLevel = args->geti(3); // Varies 0 to 4 for OpenPose (3=fairly important)
+        op::checkBool(0 <= defaultLoggingLevel && defaultLoggingLevel <= 255,
+                      "Wrong logging_level value.",
+                      __LINE__, __FUNCTION__, __FILE__);
+        op::ConfigureLog::setPriorityThreshold((op::Priority)defaultLoggingLevel);
+
+        // Add custom input
+        const auto workerInputOnNewThread = false;
+        kinectData->opWrapperT.setWorker(op::WorkerType::Input, wUserInput, workerInputOnNewThread);
+        // Add custom output
+        const auto workerOutputOnNewThread = true;
+        kinectData->opWrapperT.setWorker(op::WorkerType::Output, wUserOutput, workerOutputOnNewThread);
+
+        // Hardcoded stuff (no flags)
+        const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
+        const int numPeopleMax = args->geti(-1);
+        const auto flagsFolder = op::String(args->gets());
+        const int numGpu = args->geti(-1);
+        const int gpuStartIndex = args->geti(0);
+        const int numAverages = args->geti(1);
+        const float averageGap = args->getf(0.25);
+        const int renderPose = args->geti(0);
+        const auto outputSize = op::flagsToPoint(op::String(args->gets()), "-1x-1");
+        const auto netInputSize = op::flagsToPoint(op::String(args->gets()), "-1x368");
+        const auto poseMode = op::flagsToPoseMode(args->geti(1));
+        const auto poseModel = op::flagsToPoseModel(op::String(args->gets()));
+        const auto heatMapTypes = op::flagsToHeatMaps(false,
+                                                      false,
+                                                      false);
+        const auto heatMapScaleMode = op::flagsToHeatMapScaleMode(2);
+        const bool multipleView = false; // >1 camera view?
+        const bool enableGoogleLogging = true;
+        const bool disableBlending = false;
+        const float alphaPose = args->getf(0.5);
+        const float alphaHeatMap = args->getf(0.5);
+        const int partToShow = args->geti(0);
+        const bool recordPartCandidates = false;
+        const float renderThreshold = args->getf(0.05);
+        const bool maximizePositives = false;
+        const int fpsMax = args->geti(-1); // Process frames as quickly as possible
+        const auto prototxtPath = op::String(""); // Use default path
+        const auto caffeModelPath = op::String(""); // Use default path
+        const float upSamplingRatio = args->getf(0.0); // Use default upsampling ratio for the output
+
+        // Pose configuration (use WrapperStructPose{} for default and recommended configuration)
+        const op::WrapperStructPose wrapperStructPose{
+            poseMode, netInputSize, outputSize, keypointScaleMode, numGpu, gpuStartIndex,
+            numAverages, averageGap, op::flagsToRenderMode(renderPose, multipleView),
+            poseModel, !disableBlending, alphaPose, alphaHeatMap,
+            partToShow, flagsFolder, heatMapTypes, heatMapScaleMode, recordPartCandidates,
+            renderThreshold, numPeopleMax, maximizePositives, fpsMax,
+            prototxtPath, caffeModelPath, upSamplingRatio, enableGoogleLogging
+        };
+        kinectData->opWrapperT.configure(wrapperStructPose);
+
+        // Face configuration (use op::WrapperStructFace{} to disable it)
+        const op::WrapperStructFace wrapperStructFace{};
+        kinectData->opWrapperT.configure(wrapperStructFace);
+        // Hand configuration (use op::WrapperStructHand{} to disable it)
+        const op::WrapperStructHand wrapperStructHand{};
+        kinectData->opWrapperT.configure(wrapperStructHand);
+        // Extra functionality configuration (use op::WrapperStructExtra{} to disable it)
+        const op::WrapperStructExtra wrapperStructExtra{};
+        kinectData->opWrapperT.configure(wrapperStructExtra);
+        // Output (comment or use default argument to disable any output)
+        const op::WrapperStructOutput wrapperStructOutput{};
+        kinectData->opWrapperT.configure(wrapperStructOutput);
+    }
+    catch (const std::exception& e)
+    {
+        op::error(e.what(), __LINE__, __FUNCTION__, __FILE__);
+    }
+}
+
 void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
     wUserInput->setDevice(kinectData->mDevice);
-    opWrapperT.start(); // Start processing OpenPose in the background
+    kinectData->opWrapperT.start(); // Start processing OpenPose in the background
 }
 
 void KinectCmd_stopTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
-    opWrapperT.stop();
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->opWrapperT.stop();
 }
 
 Kinect::Kinect() {
@@ -225,9 +225,6 @@ void Kinect::next(int nSamples) {
 } // namespace Kinect
 
 PluginLoad(KinectUGens) {
-    // Kinect and OpenPose setup
-    Kinect::configureWrapper(Kinect::opWrapperT);
-
     // Plugin magic
     ft = inTable;
     registerUnit<Kinect::Kinect>(ft, "Kinect", false);
@@ -236,6 +233,7 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("start", Kinect::KinectCmd_start, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("configureTracking", Kinect::KinectCmd_configureTracking, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("startTracking", Kinect::KinectCmd_startTracking, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("stopTracking", Kinect::KinectCmd_stopTracking, (void*)&Kinect::gKinectData);
 }

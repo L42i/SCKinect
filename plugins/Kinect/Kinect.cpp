@@ -191,8 +191,16 @@ void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* 
 
 }
 
+void KinectCmd_start(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->mDevice->start();
+}
+
 void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
+    KinectData* kinectData = (KinectData*)inUserData;
+    wUserInput->setDevice(kinectData->mDevice);
     opWrapperT.start(); // Start processing OpenPose in the background
 }
 
@@ -227,6 +235,7 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("setPipeline", Kinect::KinectCmd_setPipeline, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("start", Kinect::KinectCmd_start, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("startTracking", Kinect::KinectCmd_startTracking, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("stopTracking", Kinect::KinectCmd_stopTracking, (void*)&Kinect::gKinectData);
 }

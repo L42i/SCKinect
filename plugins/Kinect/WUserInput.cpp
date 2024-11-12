@@ -11,7 +11,6 @@ void WUserInput::setDevice(libfreenect2::Freenect2Device* device) { mDev = devic
 void WUserInput::initializationOnThread()
 {
     // Initialize the input device for this thread
-    mDev->start();
     mDev->setColorFrameListener(&mListener);
 }
 

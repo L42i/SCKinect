@@ -21,6 +21,9 @@ Kinect : UGen {
 			Server.default.sendMsg(\cmd, \openDevice, serial);
 		}
 	}
+	*start {
+		Server.default.sendMsg(\cmd, \start);
+	}
 	*startTracking {
 		Server.default.sendMsg(\cmd, \startTracking);
 	}

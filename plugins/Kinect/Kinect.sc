@@ -24,6 +24,9 @@ Kinect : UGen {
 	*startTracking {
 		Server.default.sendMsg(\cmd, \startTracking);
 	}
+	*stopTracking {
+		Server.default.sendMsg(\cmd, \stopTracking);
+	}
 	checkInputs {
 		/* TODO */
 		^this.checkValidInputs;

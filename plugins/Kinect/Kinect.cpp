@@ -196,6 +196,11 @@ void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_ite
     opWrapperT.start(); // Start processing OpenPose in the background
 }
 
+void KinectCmd_stopTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    opWrapperT.stop();
+}
+
 Kinect::Kinect() {
     mCalcFunc = make_calc_function<Kinect, &Kinect::next>();
     next(1);
@@ -223,4 +228,5 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("findAvailable", Kinect::KinectCmd_findAvailable, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("openDevice", Kinect::KinectCmd_openDevice, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("startTracking", Kinect::KinectCmd_startTracking, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("stopTracking", Kinect::KinectCmd_stopTracking, (void*)&Kinect::gKinectData);
 }

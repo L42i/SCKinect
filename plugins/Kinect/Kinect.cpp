@@ -11,7 +11,7 @@ struct KinectData {
     std::shared_ptr<WUserInput> wUserInput;
     std::shared_ptr<WUserOutput> wUserOutput;
     libfreenect2::Freenect2 mFreenect2;
-    libfreenect2::PacketPipeline* mPipeline;
+    libfreenect2::PacketPipeline* mPipeline = new libfreenect2::CpuPacketPipeline();
     libfreenect2::Freenect2Device* mDevice;
     std::string selectedSerial;
     int selectedPipeline = 1;

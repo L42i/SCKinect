@@ -22,6 +22,10 @@ KinectData gKinectData;
 bool KinectCmd_setPipeline2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
+    // Check for existing pipeline and delete when new one is set
+    if (kinectData->mPipeline != nullptr) {
+        delete kinectData->mPipeline;
+    }
     switch(kinectData->selectedPipeline) {
         case 0:
             kinectData->mPipeline = new libfreenect2::DumpPacketPipeline();

@@ -33,12 +33,9 @@ bool KinectCmd_setPipeline2(World* world, void* inUserData)
             kinectData->mPipeline = new libfreenect2::OpenGLPacketPipeline();
             break;
         case 3:
-            kinectData->mPipeline = new libfreenect2::OpenCLKdePacketPipeline();
-            break;
-        case 4:
             kinectData->mPipeline = new libfreenect2::CudaPacketPipeline();
             break;
-        case 5:
+        case 4:
             kinectData->mPipeline = new libfreenect2::CudaKdePacketPipeline();
             break;
         default:

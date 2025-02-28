@@ -1,7 +1,11 @@
 Kinect : UGen {
-	classvar <openDevices, <deviceCount, <jointNames, <jointCoordinates;
+	classvar <openDevices, <deviceCount, <packetPipelines, <jointNames, <jointCoordinates;
 	*initClass {
 		openDevices = Dictionary.new;
+		packetPipelines = Dictionary.newFrom([
+			"Dump", 0, "CPU", 1,
+			"OpenGL", 2, "CUDA", 3, "CUDAKDE", 4
+		]);
 		jointNames = Dictionary.newFrom([
 			"Nose", 0, "Neck", 1, "RShoulder", 2,
 			"RElbow", 3, "RWrist", 4, "LShoulder", 5,
@@ -19,8 +23,8 @@ Kinect : UGen {
 	*kr { |minval=0, maxval=1, joint_name="Nose", joint_coordinate="X"|
 		^this.multiNew('control', minval, maxval, jointNames.at(joint_name), jointCoordinates.at(joint_coordinate));
 	}
-	*setPipeline { |pipeline = 1|
-		Server.default.sendMsg(\cmd, \setPipeline, pipeline);
+	*setPipeline { |pipeline = "CPU"|
+		Server.default.sendMsg(\cmd, \setPipeline, packetPipelines.at(pipeline));
 	}
 	*findAvailable {
 		Server.default.sendMsg(\cmd, \findAvailable);

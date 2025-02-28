@@ -42,7 +42,7 @@ script with `--help` to see all available options.
 ### SuperCollider code example
 ```
 Kinect.findAvailable;
-Kinect.setPipeline(4);
+Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("065915234247");
 Kinect.start;
 Kinect.configureTracking(

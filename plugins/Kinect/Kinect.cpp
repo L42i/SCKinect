@@ -6,6 +6,10 @@ static InterfaceTable* ft;
 
 namespace Kinect {
 
+enum PacketPipeline {
+    Dump, CPU, OpenGL, CUDA, CUDAKDE
+};
+
 struct KinectData {
     op::WrapperT<op::Datum> opWrapperT; // OpenPose wrapper
     std::shared_ptr<WUserInput> wUserInput;
@@ -14,7 +18,7 @@ struct KinectData {
     libfreenect2::PacketPipeline* mPipeline = new libfreenect2::CpuPacketPipeline();
     libfreenect2::Freenect2Device* mDevice;
     std::string selectedSerial;
-    int selectedPipeline = 1;
+    PacketPipeline selectedPipeline = CPU;
 };
 
 KinectData gKinectData;
@@ -39,19 +43,19 @@ bool KinectCmd_setPipeline2(World* world, void* inUserData)
         delete kinectData->mPipeline;
     }
     switch(kinectData->selectedPipeline) {
-        case 0:
+        case Dump:
             kinectData->mPipeline = new libfreenect2::DumpPacketPipeline();
             break;
-        case 1:
+        case CPU:
             kinectData->mPipeline = new libfreenect2::CpuPacketPipeline();
             break;
-        case 2:
+        case OpenGL:
             kinectData->mPipeline = new libfreenect2::OpenGLPacketPipeline();
             break;
-        case 3:
+        case CUDA:
             kinectData->mPipeline = new libfreenect2::CudaPacketPipeline();
             break;
-        case 4:
+        case CUDAKDE:
             kinectData->mPipeline = new libfreenect2::CudaKdePacketPipeline();
             break;
         default:
@@ -69,7 +73,7 @@ void KinectCmd_setPipelineCleanup(World* world, void* inUserData) {}
 void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->selectedPipeline = args->geti(0);
+    kinectData->selectedPipeline = (PacketPipeline)args->geti(0);
 
     int msgSize = args->getbsize();
     char* msgData = 0;

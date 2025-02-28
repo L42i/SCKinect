@@ -2,7 +2,7 @@ s.options.numOutputBusChannels = 6;
 s.waitForBoot({
 	// Setup settings for a Kinect UGen
 	Kinect.findAvailable;
-	Kinect.setPipeline(4);
+	Kinect.setPipeline("CUDAKDE");
 	Kinect.openDevice("065915234247");
 	s.sync;
 	Kinect.start;

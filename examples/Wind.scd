@@ -36,11 +36,11 @@ s.waitForBoot({
 	~kinectAmplitudeBus = Bus.control(s, 1);
 	~kinectFrequencyBus = Bus.control(s, 1);
 
-	// Write the x position of the mid-hip detected by the kinect from left to right to a control bus
-	{Out.kr(~kinectAmplitudeBus.index, Kinect.kr(0, 0.5))}.play;
+	// Write the y position of the right wrist detected by the kinect to a control bus to control the amplitude
+	{Out.kr(~kinectAmplitudeBus.index, Kinect.kr(0, 0.5, "RWrist", "Y"))}.play;
 
-	// Now write that same info to a frequency bus to control the lowpass filter
-	{Out.kr(~kinectFrequencyBus.index, Kinect.kr(20, 10000))}.play;
+	// Now write the x position of the left wrist info to a frequency bus to control the lowpass filter
+	{Out.kr(~kinectFrequencyBus.index, Kinect.kr(20, 10000, "LWrist", "X"))}.play;
 
 	// Scope the first control bus to see what the output looks like
 	s.scope(1, 0, rate: 'control');

@@ -19,6 +19,18 @@ struct KinectData {
 
 KinectData gKinectData;
 
+enum JointName {
+    Nose, Neck, RShoulder, RElbow, RWrist,
+    LShoulder, LElbow, LWrist, MidHip, RHip,
+    RKnee, RAnkle, LHip, LKnee, LAnkle, REye,
+    LEye, REar, LEar, LBigToe, LSmallToe, LHeel,
+    RBigToe, RSmallToe, RHeel
+};
+
+enum JointCoordinate {
+    X, Y
+};
+
 bool KinectCmd_setPipeline2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
@@ -229,17 +241,24 @@ Kinect::Kinect() {
 void Kinect::next(int nSamples) {
     // Output buffer
     float* outbuf = out(0);
+
+    // Arguments
     float minval = in0(0);
     float maxval = in0(1);
+    JointName jointName = (JointName)in0(2);
+    JointCoordinate jointCoordinate = (JointCoordinate)in0(3);
+
+    // Initialization
     float controlValue = 0.0f;
     const auto& poseKeypoints = gKinectData.wUserOutput->poseKeypoints;
+
+    // Handling
     if (poseKeypoints.getSize(0) > 0)
     {
-        const auto baseIndex = poseKeypoints.getSize(2)*(8);
-        const auto x = poseKeypoints[baseIndex];
-        const auto y = poseKeypoints[baseIndex + 1];
+        const auto baseIndex = poseKeypoints.getSize(2)*(jointName);
+        const auto coordinate = poseKeypoints[baseIndex + jointCoordinate];
         const auto score = poseKeypoints[baseIndex + 2];
-        controlValue = x;
+        controlValue = coordinate;
     }
     *outbuf = zapgremlins((maxval - minval) * controlValue + minval);
 }

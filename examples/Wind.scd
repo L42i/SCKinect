@@ -1,6 +1,21 @@
+s.options.numOutputBusChannels = 6;
 s.waitForBoot({
+	// Setup settings for a Kinect UGen
+	Kinect.findAvailable;
+	Kinect.setPipeline(4);
+	Kinect.openDevice("065915234247");
+	s.sync;
+	Kinect.start;
+	Kinect.configureTracking(
+		3, 1, "/home/evanmurray/openpose/models", // Point this to your own models folder.
+		1, 0, 1, 0.25,
+		0, "-1x-1", "-1x256",
+		1, "BODY_25", 0.5,
+		0.5, 0, 0.05, -1, 0.0
+	);
+	Kinect.startTracking;
+
 	// Define a SynthDef for a wind sound and send it to the server
-	|out = 0, amplitude = 1, cutoff_frequency = 20000|
 
 	SynthDef(\wind_sound, {
 		|out = 0, amplitude = 1, cutoff_frequency = 20000|
@@ -11,6 +26,10 @@ s.waitForBoot({
 
 		Out.ar(out, x);
 		Out.ar(out+1, y);
+		Out.ar(out+2, x);
+		Out.ar(out+3, y);
+		Out.ar(out+4, x);
+		Out.ar(out+5, y);
 	}).send(s);
 
 	// Define some control buses for the Kinect
@@ -38,3 +57,6 @@ s.waitForBoot({
 
 	s.meter;
 })
+Kinect.stopTracking;
+Kinect.stop;
+Kinect.closeDevice;

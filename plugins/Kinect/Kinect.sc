@@ -49,7 +49,7 @@ Kinect : UGen {
 	gpuStartIndex=0,
 	numAverages=1,
 	averageGap=0.25,
-	renderPose=0,
+	renderPose= -1,
 	outputSize="-1x-1",
 	netInputSize="-1x368",
 	poseMode=1,
@@ -78,6 +78,12 @@ Kinect : UGen {
 	}
 	*stopTracking {
 		Server.default.sendMsg(\cmd, \stopTracking);
+	}
+	*showDisplay {
+		Server.default.sendMsg(\cmd, \showDisplay);
+	}
+	*hideDisplay {
+		Server.default.sendMsg(\cmd, \hideDisplay);
 	}
 	checkInputs {
 		/* TODO */

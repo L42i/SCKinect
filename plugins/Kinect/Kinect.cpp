@@ -167,7 +167,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
         const int gpuStartIndex = args->geti(0);
         const int numAverages = args->geti(1);
         const float averageGap = args->getf(0.25);
-        const int renderPose = args->geti(0);
+        const int renderPose = args->geti(-1);
         const auto outputSize = op::flagsToPoint(op::String(args->gets()), "-1x-1");
         const auto netInputSize = op::flagsToPoint(op::String(args->gets()), "-1x368");
         const auto poseMode = op::flagsToPoseMode(args->geti(1));
@@ -233,6 +233,18 @@ void KinectCmd_stopTracking(World* inWorld, void* inUserData, struct sc_msg_iter
     kinectData->opWrapperT.stop();
 }
 
+void KinectCmd_showDisplay(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->wUserOutput->isDisplayEnabled = true;
+}
+
+void KinectCmd_hideDisplay(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
+{
+    KinectData* kinectData = (KinectData*)inUserData;
+    kinectData->wUserOutput->isDisplayEnabled = false;
+}
+
 Kinect::Kinect() {
     mCalcFunc = make_calc_function<Kinect, &Kinect::next>();
     next(1);
@@ -279,4 +291,6 @@ PluginLoad(KinectUGens) {
     DefinePlugInCmd("configureTracking", Kinect::KinectCmd_configureTracking, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("startTracking", Kinect::KinectCmd_startTracking, (void*)&Kinect::gKinectData);
     DefinePlugInCmd("stopTracking", Kinect::KinectCmd_stopTracking, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("showDisplay", Kinect::KinectCmd_showDisplay, (void*)&Kinect::gKinectData);
+    DefinePlugInCmd("hideDisplay", Kinect::KinectCmd_hideDisplay, (void*)&Kinect::gKinectData);
 }

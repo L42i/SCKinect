@@ -7,9 +7,9 @@ s.waitForBoot({
 	s.sync;
 	Kinect.start;
 	Kinect.configureTracking(
-		3, 1, "/home/evanmurray/openpose/models", // Point this to your own models folder.
-		1, 0, 1, 0.25,
-		0, "-1x-1", "-1x256",
+		3, -1, "/home/evanmurray/openpose/models", // Point this to your own models folder.
+		-1, 0, 1, 0.25,
+		-1, "-1x-1", "-1x256",
 		1, "BODY_25", 0.5,
 		0.5, 0, 0.05, -1, 0.0
 	);

@@ -231,7 +231,17 @@ void Kinect::next(int nSamples) {
     float* outbuf = out(0);
     float minval = in0(0);
     float maxval = in0(1);
-    *outbuf = zapgremlins((maxval - minval) * gKinectData.wUserOutput->controlValue + minval);
+    float controlValue = 0.0f;
+    const auto& poseKeypoints = gKinectData.wUserOutput->poseKeypoints;
+    if (poseKeypoints.getSize(0) > 0)
+    {
+        const auto baseIndex = poseKeypoints.getSize(2)*(8);
+        const auto x = poseKeypoints[baseIndex];
+        const auto y = poseKeypoints[baseIndex + 1];
+        const auto score = poseKeypoints[baseIndex + 2];
+        controlValue = x;
+    }
+    *outbuf = zapgremlins((maxval - minval) * controlValue + minval);
 }
 
 } // namespace Kinect

@@ -59,4 +59,4 @@ s.waitForBoot({
 })
 Kinect.stopTracking;
 Kinect.stop;
-Kinect.closeDevice;
+Kinect.closeDevice("065915234247");

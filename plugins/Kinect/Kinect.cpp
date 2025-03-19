@@ -16,8 +16,8 @@ struct KinectData {
     std::shared_ptr<WUserOutput> wUserOutput;
     libfreenect2::Freenect2 mFreenect2;
     libfreenect2::PacketPipeline* mPipeline = new libfreenect2::CpuPacketPipeline();
-    libfreenect2::Freenect2Device* mDevice;
-    std::string selectedSerial;
+    std::unordered_map<std::string, libfreenect2::Freenect2Device*> mOpenDevices;
+    std::string mSelectedSerial;
     PacketPipeline selectedPipeline = CPU;
 };
 
@@ -94,7 +94,8 @@ void KinectCmd_findAvailable(World* world, void* inUserData, struct sc_msg_iter*
 bool KinectCmd_openDevice2(World* world, void* inUserData)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->mDevice = kinectData->mFreenect2.openDevice(kinectData->selectedSerial, kinectData->mPipeline);
+    std::string serialNumber = kinectData->mSelectedSerial;
+    kinectData->mOpenDevices[serialNumber] = kinectData->mFreenect2.openDevice(serialNumber, kinectData->mPipeline);
     return true;
 }
 
@@ -107,7 +108,7 @@ void KinectCmd_openDeviceCleanup(World* world, void* inUserData) {}
 void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->selectedSerial = args->gets();
+    kinectData->mSelectedSerial = args->gets();
 
     int msgSize = args->getbsize();
     char* msgData = 0;
@@ -123,19 +124,21 @@ void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* 
 void KinectCmd_closeDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->mDevice->close();
+    kinectData->mSelectedSerial = args->gets();
+    kinectData->mOpenDevices.at(kinectData->mSelectedSerial)->close();
+    kinectData->mOpenDevices.erase(kinectData->mSelectedSerial);
 }
 
 void KinectCmd_start(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->mDevice->start();
+    kinectData->mOpenDevices.at(kinectData->mSelectedSerial)->start();
 }
 
 void KinectCmd_stop(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->mDevice->stop();
+    kinectData->mOpenDevices.at(kinectData->mSelectedSerial)->stop();
 }
 
 void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
@@ -227,7 +230,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
 void KinectCmd_startTracking(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 {
     KinectData* kinectData = (KinectData*)inUserData;
-    kinectData->wUserInput->setDevice(kinectData->mDevice);
+    kinectData->wUserInput->setDevice(kinectData->mOpenDevices.at(kinectData->mSelectedSerial));
     kinectData->opWrapperT.start(); // Start processing OpenPose in the background
 }
 

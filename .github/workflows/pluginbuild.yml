@@ -22,6 +22,7 @@ jobs:
 
     env:
       SC_PATH: ${{ github.workspace }}/supercollider
+      OPENPOSE_PATH: ${{ github.workspace }}/openpose
       BUILD_PATH: ${{ github.workspace }}/build
       INSTALL_PATH: ${{ github.workspace }}/build/Install
       ARCHIVE_NAME: Kinect-${{ matrix.name }}.zip
@@ -29,6 +30,12 @@ jobs:
     - name: Checkout Kinect
       uses: actions/checkout@v3
 
+    - name: Checkout OpenPose
+    - uses: actions/checkout@v3
+      with:
+        repository: AlecDusheck/openpose
+        path: ${{ env.OPENPOSE_PATH }}
+        ref: master
     - name: Checkout SuperCollider
       uses: actions/checkout@v3
       with:

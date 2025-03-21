@@ -32,7 +32,7 @@ jobs:
     - name: Install OpenPose Dependencies
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
-      run: sudo bash ./scripts/ubuntu/install_deps.sh
+      run: sudo apt-get install libopencv-dev && sudo bash ./scripts/ubuntu/install_deps.sh
     - name: Configure CMake
       shell: bash
       working-directory: ${{ env.BUILD_PATH }}

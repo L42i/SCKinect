@@ -8,6 +8,7 @@ jobs:
     env:
       SC_PATH: ${{ github.workspace }}/supercollider
       OPENPOSE_PATH: ${{ github.workspace }}/openpose
+      LIBFREENECT_PATH: ${{ github.workspace }}/libfreenect2
       BUILD_PATH: ${{ github.workspace }}/build
       INSTALL_PATH: ${{ github.workspace }}/build/Install
       ARCHIVE_NAME: Kinect-${{ matrix.name }}.zip
@@ -19,6 +20,12 @@ jobs:
       with:
         repository: AlecDusheck/openpose
         path: ${{ env.OPENPOSE_PATH }}
+        ref: master
+    - name: Checkout Libfreenect2
+      uses: actions/checkout@v3
+      with:
+        respository: OpenKinect/libfreenect2
+        path: ${{ env.LIBFREENECT_PATH }}
         ref: master
     - name: Checkout SuperCollider
       uses: actions/checkout@v3

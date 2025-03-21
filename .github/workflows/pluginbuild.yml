@@ -24,7 +24,7 @@ jobs:
     - name: Checkout Libfreenect2
       uses: actions/checkout@v3
       with:
-        respository: OpenKinect/libfreenect2
+        repository: OpenKinect/libfreenect2
         path: ${{ env.LIBFREENECT_PATH }}
         ref: master
     - name: Checkout SuperCollider

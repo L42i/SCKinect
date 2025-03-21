@@ -29,3 +29,7 @@ jobs:
     - name: Create Build Environment
       shell: bash
       run: cmake -E make_directory $BUILD_PATH
+    - name: Install OpenPose Dependencies
+      shell: bash
+      working-directory: ${{ env.OPENPOSE_PATH }}
+      run: sudo bash ./scripts/ubuntu/install_deps.sh

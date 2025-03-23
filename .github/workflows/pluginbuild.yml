@@ -44,6 +44,16 @@ jobs:
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}
       run: sudo apt-get install libusb-1.0-0-dev libturbojpeg0-dev libglfw3-dev
+    - name: Build and Install Libfreenect2
+      shell: bash
+      working-directory: ${{ env.LIBFREENECT_PATH }}
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_EXAMPLES=OFF -DBUILD_OPENNI2_DRIVER=OFF -DENABLE_OPENCL=OFF
+        make -j$(nproc)
+        sudo make install
+        sudo ldconfig
     - name: Configure CMake
       shell: bash
       working-directory: ${{ env.BUILD_PATH }}

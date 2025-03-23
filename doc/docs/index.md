@@ -1,0 +1,63 @@
+# SCKinect: Motion Tracking for Sound Generation
+
+SCKinect is a SuperCollider plugin that bridges physical movement with sound generation. It allows you to use a Kinect sensor to track human body movements and map them to sound parameters in SuperCollider.
+
+!!! important "CUDA Requirement"
+    **Note**: The current implementation requires CUDA for effective real-time performance. A CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin effectively.
+
+## What is SCKinect?
+
+SCKinect integrates multiple technologies to create an interactive system where physical movements can control sound:
+
+- **Kinect Sensor**: A camera device that can track body movements and depth
+- **SuperCollider**: A programming language for real-time audio synthesis
+- **OpenPose**: Computer vision software for detecting human body poses 
+- **libfreenect2**: A library for communicating with the Kinect device
+
+The plugin enables you to map specific body joint positions (like hands, knees, or head) to sound parameters, creating an intuitive and embodied way to generate and control sound.
+
+## Key Features
+
+- Track up to 25 body joints in real-time
+- Map any joint's X/Y position to sound parameters
+- Choose from different processing pipelines (CUDA/CUDAKDE recommended for performance)
+- Multiple configuration options for tracking quality and performance
+- Simple SuperCollider interface for easy integration with your sound design
+
+## Quick Example
+
+```supercollider
+// Find and open a Kinect device
+Kinect.findAvailable;
+Kinect.setPipeline("CUDAKDE");  // CUDA is required for effective performance
+Kinect.openDevice("YOUR_DEVICE_SERIAL");
+Kinect.start;
+
+// Configure and start body tracking
+Kinect.configureTracking(
+  3, 1, "/path/to/openpose/models",  // Point to your models folder
+  1, 0, 1, 0.25,
+  0, "-1x-1", "-1x256",
+  1, "BODY_25", 0.5, 
+  0.5, 0, 0.05, -1, 0.0
+);
+Kinect.startTracking;
+
+// Use right hand's Y position to control sound amplitude
+{
+  SinOsc.ar(
+    440, 
+    0, 
+    Kinect.kr(0, 1, "RWrist", "Y")  // Maps Y position to amplitude
+  )
+}.play;
+
+// Later, when done:
+Kinect.stopTracking;
+Kinect.stop;
+Kinect.closeDevice("YOUR_DEVICE_SERIAL");
+```
+
+## Getting Started
+
+See the [Installation](installation.md) and [Getting Started](getting-started.md) guides to begin using SCKinect in your projects. 

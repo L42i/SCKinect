@@ -2,6 +2,10 @@
 
 Author: Evan Murray
 
+- Full documentation: [https://l42i.github.io/SCKinect](https://l42i.github.io/SCKinect)
+- Old installation instructions (helpful for debugging): [https://emurray2.github.io/spatial-auditory-feedback/kinect/](https://emurray2.github.io/spatial-auditory-feedback/kinect/)
+- **Note**: Ubuntu 20.04 and CUDA 11.7 Toolkit (with NVIDIA GPU) currently recommended for building OpenPose, but CPU support + Windows + macOS coming soon :) ! Can experiment with other stuff, but it hasn't specifically been tested with this project so it might not work :/ . See [OpenPose Installation](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md) for more details on what specific setup works best (including hardware and software).
+
 ## What is This Project?
 
 SCKinect is a bridge between physical movement and sound generation. It allows you to:

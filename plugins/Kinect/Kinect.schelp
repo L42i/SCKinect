@@ -1,26 +1,192 @@
 class:: Kinect
-summary:: Interact with a Kinect sensor
-related:: TODO
-categories:: UGens>TODO
+summary:: Interact with a Kinect sensor for real-time body tracking
+related:: Classes/UGens
+categories:: UGens>Input>Hardware
 
 description::
 
-Interact with a Kinect sensor
+The Kinect UGen provides real-time access to body tracking data from a Kinect sensor. It uses OpenPose for body pose estimation and makes joint positions available as control signals for audio synthesis.
 
+!!! warning "CUDA Requirement"
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
 
 classmethods::
 
-method::ar, kr
+method::kr
+create:: Control
+returns:: A control rate UGen that outputs the position of a specific joint
 
-argument::TODO
+argument::minval
+The minimum value in the output range (default: 0)
 
-argument::TODO
+argument::maxval
+The maximum value in the output range (default: 1)
 
+argument::joint_name
+A String specifying which joint to track. Available joints are:
+- "Nose" - Top of the nose
+- "Neck" - Base of the neck
+- "RShoulder" - Right shoulder
+- "RElbow" - Right elbow
+- "RWrist" - Right wrist
+- "LShoulder" - Left shoulder
+- "LElbow" - Left elbow
+- "LWrist" - Left wrist
+- "MidHip" - Middle of the hips
+- "RHip" - Right hip
+- "RKnee" - Right knee
+- "RAnkle" - Right ankle
+- "LHip" - Left hip
+- "LKnee" - Left knee
+- "LAnkle" - Left ankle
+- "REye" - Right eye
+- "LEye" - Left eye
+- "REar" - Right ear
+- "LEar" - Left ear
+- "LBigToe" - Left big toe
+- "LSmallToe" - Left small toe
+- "LHeel" - Left heel
+- "RBigToe" - Right big toe
+- "RSmallToe" - Right small toe
+- "RHeel" - Right heel
+
+argument::joint_coordinate
+A String specifying which coordinate to track: "X" (horizontal) or "Y" (vertical)
+
+method::findAvailable
+Scans for connected Kinect devices and prints their serial numbers to the post window.
+
+method::setPipeline
+Sets the processing pipeline used for Kinect data.
+
+argument::pipeline
+A String specifying which pipeline to use. Options are:
+- "Dump" - Minimal processing (for testing)
+- "CPU" - CPU-based processing (slower, still in development)
+- "OpenGL" - OpenGL-accelerated processing
+- "CUDA" - CUDA GPU-accelerated processing
+- "CUDAKDE" - Enhanced CUDA processing with KDE filtering (recommended)
+
+method::openDevice
+Opens a connection to a specific Kinect device.
+
+argument::serial
+A String containing the serial number of the device to open
+
+method::closeDevice
+Closes the connection to a specific Kinect device.
+
+argument::serial
+A String containing the serial number of the device to close
+
+method::start
+Starts data acquisition from the Kinect device.
+
+method::stop
+Stops data acquisition from the Kinect device.
+
+method::configureTracking
+Configures the OpenPose body tracking system.
+
+argument::loggingLevel
+An Integer specifying the verbosity level (0-3)
+
+argument::maxPeople
+An Integer specifying the maximum number of people to track (-1 for no limit)
+
+argument::modelFolder
+A String containing the path to OpenPose model files
+
+argument::numGpu
+An Integer specifying the number of GPUs to use (-1 for auto-detect)
+
+argument::gpuStartIndex
+An Integer specifying the index of the first GPU to use
+
+argument::numAverages
+An Integer specifying the number of frames to average for smoother tracking
+
+argument::averageGap
+A Float specifying the time gap between averaged frames (seconds)
+
+argument::renderPose
+An Integer specifying whether to render pose overlay (-1 for auto)
+
+argument::outputSize
+A String specifying the output frame size in "WxH" format (-1 for native)
+
+argument::netInputSize
+A String specifying the network input size in "WxH" format
+
+argument::poseMode
+An Integer specifying the pose detection mode
+
+argument::poseModel
+A String specifying the model to use (e.g., "BODY_25")
+
+argument::alphaPose
+A Float specifying the alpha (transparency) of pose overlay
+
+argument::alphaHeatmap
+A Float specifying the alpha of confidence heatmap overlay
+
+argument::partToShow
+An Integer specifying which body part to focus on (0 for all)
+
+argument::renderThreshold
+A Float specifying the minimum confidence for a joint to be rendered
+
+argument::fpsMax
+A Float specifying the maximum frames per second (-1 for no limit)
+
+argument::upSamplingRatio
+A Float specifying the sampling ratio for confidence map
+
+method::startTracking
+Starts the body tracking process.
+
+method::stopTracking
+Stops the body tracking process.
+
+method::showDisplay
+Shows the camera view with pose overlay.
+
+method::hideDisplay
+Hides the camera view with pose overlay.
 
 examples::
 
 code::
 
-{ Kinect.ar(/* TODO */) }.play
+// Basic setup
+Kinect.findAvailable;
+Kinect.setPipeline("CUDAKDE");
+Kinect.openDevice("YOUR_DEVICE_SERIAL");
+Kinect.start;
+Kinect.configureTracking(
+    3, -1, "/path/to/openpose/models",
+    -1, 0, 1, 0.25,
+    -1, "-1x-1", "-1x256",
+    1, "BODY_25", 0.5,
+    0.5, 0, 0.05, -1, 0.0
+);
+Kinect.startTracking;
+
+// Create a synth that uses Kinect data
+SynthDef(\kinect_controlled_synth, {
+    var freq = Kinect.kr(200, 800, "RWrist", "Y");
+    var amp = Kinect.kr(0, 1, "LWrist", "X");
+    var sound = SinOsc.ar(freq) * amp;
+    Out.ar(0, sound ! 2);
+}).add;
+
+// Create an instance of the synth
+x = Synth(\kinect_controlled_synth);
+
+// When done
+x.free;
+Kinect.stopTracking;
+Kinect.stop;
+Kinect.closeDevice("YOUR_DEVICE_SERIAL");
 
 ::

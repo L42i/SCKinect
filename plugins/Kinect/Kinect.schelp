@@ -1,20 +1,18 @@
 class:: Kinect
 summary:: Interact with a Kinect sensor for real-time body tracking
-related:: Classes/UGens
+related:: Classes/HID
 categories:: UGens>Input>Hardware
 
 description::
 
 The Kinect UGen provides real-time access to body tracking data from a Kinect sensor. It uses OpenPose for body pose estimation and makes joint positions available as control signals for audio synthesis.
 
-!!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
+The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
 
 classmethods::
 
 method::kr
-create:: Control
-returns:: A control rate UGen that outputs the position of a specific joint
+Create a control rate UGen that outputs the position of a specific joint.
 
 argument::minval
 The minimum value in the output range (default: 0)
@@ -159,6 +157,7 @@ examples::
 code::
 
 // Basic setup
+s.boot;
 Kinect.findAvailable;
 Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("YOUR_DEVICE_SERIAL");

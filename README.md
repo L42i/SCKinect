@@ -2,7 +2,7 @@
 
 Author: Evan Murray
 
-- Full documentation: [https://l42i.github.io/SCKinect](https://l42i.github.io/SCKinect)
+- Full documentation (with installation instructions): [https://l42i.github.io/SCKinect](https://l42i.github.io/SCKinect)
 - Old installation instructions (helpful for debugging): [https://emurray2.github.io/spatial-auditory-feedback/kinect/](https://emurray2.github.io/spatial-auditory-feedback/kinect/)
 - **Note**: Ubuntu 20.04 and CUDA 11.7 Toolkit (with NVIDIA GPU) currently recommended for building OpenPose, but CPU support + Windows + macOS coming soon :) ! Can experiment with other stuff, but it hasn't specifically been tested with this project so it might not work :/ . See [OpenPose Installation](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/0_index.md) for more details on what specific setup works best (including hardware and software).
 
@@ -19,10 +19,10 @@ In simpler terms: Move your body, make music!
 
 This project consists of several interconnected technologies:
 
-1. **Kinect Sensor** - A camera device originally designed for Xbox that can track movements and depth.
-2. **Libfreenect2** - A tool that grabs raw data from the Kinect sensor and makes it available to your computer. It handles the direct communication with the hardware.
-3. **OpenPose** - Computer vision software that can detect human body poses from camera images.
-4. **SuperCollider** - A platform for audio synthesis and algorithmic composition.
+1. [**Kinect v2 Sensor**](https://en.wikipedia.org/wiki/Kinect#Kinect_for_Xbox_One_(2013)) - A camera device originally designed for Xbox that can track movements and depth.
+2. [**Libfreenect2**](https://github.com/OpenKinect/libfreenect2) - A tool that grabs raw data from the Kinect sensor and makes it available to your computer. It handles the direct communication with the hardware.
+3. [**OpenPose**](https://github.com/CMU-Perceptual-Computing-Lab/openpose) - Computer vision software that can detect human body poses from camera images.
+4. [**SuperCollider**](https://github.com/supercollider/supercollider) - A platform for audio synthesis and algorithmic composition.
 5. **This Plugin** - The software in this repository that connects these technologies together.
 
 ## Repository Structure
@@ -39,57 +39,13 @@ Here's what each folder and file in this project contains:
 
 - `/cmake_modules/` - Technical files needed to build the software.
 
-## Getting Started (For Beginners)
-
-### What You'll Need
-
-1. A Kinect sensor (version 2 or compatible device)
-2. A computer with enough processing power to run motion tracking software
-3. The software dependencies listed in the "Requirements" section below
-
-### Basic Workflow
-
-Once set up, the typical workflow is:
-
-1. Connect your Kinect to your computer
-2. Start SuperCollider
-3. Load the SCKinect plugin
-4. Write code (or use existing examples) to map body movements to sound parameters
-5. Move your body to create and control sounds!
-
-## Requirements
-
-- CMake >= 3.5 (a tool for building software)
-- [SuperCollider source code](https://github.com/supercollider/supercollider) (the audio programming platform)
-- [libfreenect2](https://github.com/OpenKinect/libfreenect2) (software that helps communicate with the Kinect)
-- [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) (body tracking software)
-
-## Building the Software
-
-Clone the project:
-
-    git clone https://github.com/L42i/SCKinect.git
-    cd SCKinect
-    mkdir build
-    cd build
-
-Then, use CMake to configure and build it:
-
-    cmake .. -DCMAKE_BUILD_TYPE=Release
-    cmake --build . --config Release
-    cmake --build . --config Release --target install
-
-You may want to manually specify the install location in the first step to point it at your
-SuperCollider extensions directory: add the option `-DCMAKE_INSTALL_PREFIX=/path/to/extensions`.
-
-It's expected that the SuperCollider repo is cloned at `../supercollider` relative to this repo. If
-it's not: add the option `-DSC_PATH=/path/to/sc/source`.
-
 ## Using the Plugin (Basic Example)
 
 Here's a simple example of what code for this plugin looks like:
 
 ```supercollider
+// Boot the server (needs to be running for the whole UGen to work)
+s.boot;
 // Find and set up your Kinect
 Kinect.findAvailable;  // Searches for connected Kinect devices
 Kinect.setPipeline("CUDAKDE");  // Sets processing method (for faster tracking)

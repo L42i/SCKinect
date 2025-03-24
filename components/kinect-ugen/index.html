@@ -875,9 +875,9 @@
 <h2 id="overview">Overview</h2>
 <p>The Kinect UGen connects to the following components:</p>
 <ol>
-<li><strong>libfreenect2</strong> - For raw device communication</li>
-<li><strong>OpenPose</strong> - For body pose estimation (via CUDA)</li>
-<li><strong>SuperCollider</strong> - For audio control signals</li>
+<li><a href="https://github.com/OpenKinect/libfreenect2"><strong>libfreenect2</strong></a> - For raw device communication</li>
+<li><a href="https://github.com/CMU-Perceptual-Computing-Lab"><strong>OpenPose</strong></a> - For body pose estimation (via CUDA)</li>
+<li><a href="https://github.com/supercollider/supercollider/wiki/scsynth-development"><strong>scsynth</strong></a> - A.K.A. SuperCollider's server - For audio control signals</li>
 </ol>
 <p>It processes data in real-time, tracking up to 25 different body joints and making their positions available as control signals.</p>
 <h2 id="technical-implementation">Technical Implementation</h2>
@@ -971,7 +971,7 @@
 <p class="admonition-title">Performance Considerations</p>
 <ul>
 <li>The <code>netInputSize</code> parameter significantly affects performance. Smaller sizes (like "-1x128") are faster but less accurate.</li>
-<li>The CUDA and CUDAKDE pipelines require a NVIDIA GPU but provide much better performance than the CPU pipeline.</li>
+<li>The CUDA and CUDAKDE pipelines require a NVIDIA GPU but provide slightly better performance than the CPU pipeline.</li>
 <li>Multi-person tracking (<code>maxPeople</code> &gt; 1) requires more GPU resources.</li>
 </ul>
 </div>

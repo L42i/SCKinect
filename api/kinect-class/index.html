@@ -1010,7 +1010,7 @@
 <h3 id="setpipeline">setPipeline</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">*</span><span class="nx">setPipeline</span> <span class="p">{</span> <span class="o">|</span><span class="nx">pipeline</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span><span class="o">|</span> <span class="p">}</span>
 </code></pre></div>
-<p>Sets the processing pipeline used for Kinect data.</p>
+<p>Sets the processing pipeline used for Kinect data. Note this is different than what OpenPose uses. If you try using the CPU, it will be very slow ~ &lt; 1 frame per second.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
 <li><strong>pipeline</strong> (String): Name of the pipeline to use. Options are:</li>
@@ -1097,7 +1097,7 @@
 <li><strong>numGpu</strong> (Integer): Number of GPUs to use (-1 for auto-detect)</li>
 <li><strong>gpuStartIndex</strong> (Integer): Index of the first GPU to use</li>
 <li><strong>numAverages</strong> (Integer): Number of frames to average for smoother tracking</li>
-<li><strong>averageGap</strong> (Float): Time gap between averaged frames (seconds)</li>
+<li><strong>averageGap</strong> (Float): Gap between the netInputSize and outputSize which helps transition between the two</li>
 <li><strong>renderPose</strong> (Integer): Whether to render pose overlay (-1 for auto)</li>
 <li><strong>outputSize</strong> (String): Output frame size in "WxH" format (-1 for native)</li>
 <li><strong>netInputSize</strong> (String): Network input size in "WxH" format</li>
@@ -1261,7 +1261,7 @@
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
 <a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="c1">// Find and connect to Kinect</span>
 <a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is required for real-time performance</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.</span>
 <a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
 <a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
 <a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>

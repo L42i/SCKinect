@@ -882,16 +882,16 @@
 <li><strong>CUDA-capable NVIDIA GPU</strong> (required for effective performance)</li>
 <li>CMake (version 3.5 or higher)</li>
 <li>C++ compiler with C++17 support (gcc, clang, or MSVC)</li>
-<li>SuperCollider (with source code)</li>
-<li>libfreenect2</li>
-<li>OpenPose with CUDA support</li>
+<li><a href="https://github.com/supercollider/supercollider">SuperCollider</a> (with source code)</li>
+<li><a href="https://github.com/OpenKinect/libfreenect2">libfreenect2</a></li>
+<li><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose">OpenPose</a> built with CUDA support (CPU solution other than OpenPose coming soon!)</li>
 </ul>
 <div class="admonition warning">
 <p class="admonition-title">Hardware Requirements</p>
 <p>The current implementation requires CUDA for effective real-time body tracking. The CPU-only implementation is in progress but not yet fully functional for real-time applications. For best results, you need:</p>
 <ul>
 <li>NVIDIA GPU with CUDA capability 3.0 or higher</li>
-<li>At least 2GB of GPU memory (4GB+ recommended)</li>
+<li>At least 8GB of GPU memory (8GB+ recommended because cuDNN uses a lot)</li>
 <li>Recent NVIDIA drivers</li>
 </ul>
 </div>
@@ -906,8 +906,8 @@
 <h2 id="step-2-install-cuda">Step 2: Install CUDA</h2>
 <p>SCKinect requires CUDA for effective performance:</p>
 <ol>
-<li>Download and install the CUDA Toolkit from <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA's website</a></li>
-<li>Make sure to install the driver that comes with the toolkit</li>
+<li>Download and install the CUDA Toolkit from <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA's website</a>. You actually don't want to download the latest and should aim for 11.6 or 11.7 (for compatibility reasons).</li>
+<li>Make sure to install the drivers. Try to install the latest one if you can. Although the CUDA toolkit will be an older version than the drivers, you can skip the driver install when installing the toolkit since you've already installed the newer drivers. Do this combination for the best compatibility. Higher CUDA versions will consume too much memory or have compilation issues with OpenPose on Linux, and older GPU drivers won't work on a newer GPU :/.</li>
 <li>Verify the installation by running:</li>
 </ol>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>nvcc<span class="w"> </span>--version
@@ -923,7 +923,7 @@
 </code></pre></div>
 <p>For detailed installation instructions and troubleshooting, see the <a href="https://github.com/OpenKinect/libfreenect2#installation">libfreenect2 installation guide</a>.</p>
 <h2 id="step-4-install-openpose-with-cuda-support">Step 4: Install OpenPose with CUDA Support</h2>
-<p><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose">OpenPose</a> is required for body tracking. Ensure you build it with CUDA support:</p>
+<p><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose">OpenPose</a> is required for body tracking. Ensure you build it with CUDA support. Nothing else works at the moment, but future plans are in progress to support even more pose tracking methods besides OpenPose. For now, OpenPose works best with CUDA though:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>openpose
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
@@ -957,14 +957,19 @@
 <li>Connect your Kinect sensor to your computer</li>
 <li>Start SuperCollider and run:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Always need to run the server before operating on UGen!</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">boot</span><span class="p">;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1">// Now server should be booted and we can run this command</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
 </code></pre></div>
 <p>This should list your connected Kinect device with its serial number.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <ol>
 <li><strong>Kinect not detected</strong></li>
-<li>Make sure your Kinect is properly connected</li>
+<li>Did you boot the server?</li>
+<li>Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)</li>
 <li>
 <p>Check if libfreenect2 can detect the device using the libfreenect2 examples</p>
 </li>

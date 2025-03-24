@@ -900,7 +900,7 @@
 <p>This example demonstrates how to use SCKinect to control a wind-like sound using hand movements. The right hand controls the volume (moving up/down) while the left hand controls the tone (moving left/right).</p>
 <div class="admonition warning">
 <p class="admonition-title">CUDA Requirement</p>
-<p>This example requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to run this example as intended.</p>
+<p>This example requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU (at the moment) to run this example as intended. CPU support without OpenPose is on the roadmap of future releases for this plugin.</p>
 </div>
 <h2 id="overview">Overview</h2>
 <p>The example creates a simulated wind sound using filtered noise generators. Body tracking data from the Kinect is mapped to control parameters:</p>
@@ -914,7 +914,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">waitForBoot</span><span class="p">({</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="c1">// Setup settings for a Kinect UGen</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is required for real-time performance</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;065915234247&quot;</span><span class="p">);</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nx">s</span><span class="p">.</span><span class="nx">sync</span><span class="p">;</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
@@ -984,14 +984,14 @@
 <h3 id="2-kinect-setup">2. Kinect Setup</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Setup settings for a Kinect UGen</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is required for real-time performance</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.</span>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;065915234247&quot;</span><span class="p">);</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nx">s</span><span class="p">.</span><span class="nx">sync</span><span class="p">;</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
 </code></pre></div>
 <p>This section:
 1. Searches for available Kinect devices
-2. Sets the processing pipeline to CUDAKDE (GPU-accelerated, required for real-time tracking)
+2. Sets the processing pipeline to CUDAKDE (GPU-accelerated, recommended for real-time tracking)
 3. Opens a specific Kinect device (you'll need to replace the serial number with your own)
 4. Synchronizes with the server
 5. Starts the Kinect data acquisition</p>
@@ -1087,9 +1087,7 @@
 <p class="admonition-title">Performance Considerations</p>
 <p>If you experience lag or stuttering in the tracking:
 - Try reducing the <code>netInputSize</code> parameter in <code>configureTracking()</code> (e.g., "-1x128")
-- Ensure you're using the "CUDAKDE" pipeline
-- Make sure other GPU-intensive applications are closed
-- Consider upgrading your GPU if problems persist</p>
+- Try reducing the number of people being tracked (i.e. set maxPeople = 1 in the configuration).</p>
 </div>
 <h2 id="extending-the-example">Extending the Example</h2>
 <p>You can extend this example in several ways:</p>

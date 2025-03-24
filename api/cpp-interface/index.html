@@ -1031,7 +1031,7 @@
 <li>Maps of connected devices</li>
 <li>Pipeline configuration</li>
 </ul>
-<p>While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance.</p>
+<p>While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance. However, this won't really affect the OpenPose pipeline since OpenPose is built with CUDA by default. If you try building and running it with CPU support, you will notice very low frame rates because of how much data needs to be processed through OpenPose. Currently working on a solution to pose track for CPU-only users or even with OpenCL (integrated or separate vendors besides NVIDIA -- AMD for example).</p>
 <h3 id="wuserinput-class">WUserInput Class</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WUserInput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">op</span><span class="o">::</span><span class="n">WorkerProducer</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">op</span><span class="o">::</span><span class="n">Datum</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">public</span><span class="o">:</span>
@@ -1184,7 +1184,7 @@
 <p>For optimal performance, the following hardware is recommended:</p>
 <ul>
 <li>NVIDIA GPU with CUDA capability 3.0 or higher</li>
-<li>At least 2GB of GPU memory (4GB+ recommended)</li>
+<li>At least 8GB of GPU memory (8GB+ recommended since cuDNN uses a lot of memory)</li>
 <li>Recent NVIDIA drivers</li>
 <li>USB 3.0 port for the Kinect sensor</li>
 </ul>

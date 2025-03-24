@@ -7,7 +7,7 @@ Installing SCKinect requires setting up several dependencies before building the
 Before installing SCKinect, make sure you have the following:
 
 - A Kinect v2 sensor device
-- **CUDA-capable NVIDIA GPU** (required for effective performance)
+- **CUDA-capable NVIDIA GPU** (required for effective performance with OpenPose)
 - CMake (version 3.5 or higher)
 - C++ compiler with C++17 support (gcc, clang, or MSVC)
 - [SuperCollider](https://github.com/supercollider/supercollider) (with source code)
@@ -139,9 +139,7 @@ This should list your connected Kinect device with its serial number.
    - Make sure the path to OpenPose models is correctly specified when calling `Kinect.configureTracking()`
 
 4. **Performance issues**
-   - Ensure you are using the "CUDAKDE" or "CUDA" pipeline for best performance
-   - The "CPU" pipeline is still in development and may not work effectively
-   - Check your GPU meets the minimum requirements
+   - Ensure you are using the right netResolution and only tracking as many people as you need to
 
 ### Getting Help
 

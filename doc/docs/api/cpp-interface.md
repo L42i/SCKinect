@@ -3,7 +3,7 @@
 The SCKinect plugin is implemented in C++ and provides a bridge between the Kinect sensor, OpenPose, and SuperCollider. This page documents the C++ components and how they interact with each other.
 
 !!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. The C++ code assumes CUDA availability for optimal OpenPose operation.
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
 
 ## Key Classes and Structures
 
@@ -50,8 +50,6 @@ This structure maintains the state of the Kinect connection and OpenPose process
 - Libfreenect2 instances for Kinect communication
 - Maps of connected devices
 - Pipeline configuration
-
-While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance. However, this won't really affect the OpenPose pipeline since OpenPose is built with CUDA by default. If you try building and running it with CPU support, you will notice very low frame rates because of how much data needs to be processed through OpenPose. Currently working on a solution to pose track for CPU-only users or even with OpenCL (integrated or separate vendors besides NVIDIA -- AMD for example).
 
 ### WUserInput Class
 
@@ -101,10 +99,10 @@ enum PacketPipeline {
 This enumeration defines the different processing pipelines available for the Kinect sensor:
 
 - **Dump**: Minimal processing (for testing)
-- **CPU**: CPU-based processing (slower, still in development)
+- **CPU**: CPU-based processing
 - **OpenGL**: OpenGL-accelerated processing
-- **CUDA**: CUDA GPU-accelerated processing  
-- **CUDAKDE**: Enhanced CUDA processing with Kernel Density Estimation filtering (recommended)
+- **CUDA**: CUDA GPU-accelerated processing
+- **CUDAKDE**: Enhanced CUDA processing with Kernel Density Estimation filtering
 
 !!! note
     While all these pipelines are defined, the current implementation works best with CUDA and CUDAKDE options. The CPU pipeline is still in development and may not provide adequate performance for real-time applications.
@@ -242,10 +240,10 @@ The plugin uses a thread-safe design to handle multiple concurrent operations:
 
 ### Performance Considerations
 
-- The `CUDAKDE` pipeline provides the best performance but requires CUDA-capable GPU
+- The `CUDAKDE` pipeline provides the best depth but requires CUDA-capable GPU
 - Frame rate is affected by the `netInputSize` parameter in `configureTracking`
 - Smaller image sizes result in faster processing but potentially less accurate tracking
-- The CPU implementation is still in development and not recommended for real-time use
+- The CPU implementation is still in development (i.e. you really need to have a CUDA enabled GPU to use OpenPose at the moment :/). But CPU version besides OpenPose is on the way :) !
 
 ### Hardware Requirements
 

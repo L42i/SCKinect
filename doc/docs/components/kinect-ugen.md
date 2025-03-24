@@ -3,14 +3,14 @@
 The `Kinect` UGen is the core of SCKinect, providing real-time access to body tracking data from the Kinect sensor. This component runs as a native SuperCollider UGen (Unit Generator), allowing direct integration with the audio synthesis engine.
 
 !!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
 
 ## Overview
 
 The Kinect UGen connects to the following components:
 
 1. [**libfreenect2**](https://github.com/OpenKinect/libfreenect2) - For raw device communication
-2. [**OpenPose**](https://github.com/CMU-Perceptual-Computing-Lab) - For body pose estimation (via CUDA)
+2. [**OpenPose**](https://github.com/CMU-Perceptual-Computing-Lab/openpose) - For body pose estimation (via CUDA)
 3. [**scsynth**](https://github.com/supercollider/supercollider/wiki/scsynth-development) - A.K.A. SuperCollider's server - For audio control signals
 
 It processes data in real-time, tracking up to 25 different body joints and making their positions available as control signals.
@@ -103,7 +103,7 @@ Key parameters include:
 - `modelFolder`: Path to OpenPose models
 - `numGpu`/`gpuStartIndex`: GPU settings for OpenPose (crucial for performance)
 - `poseModel`: Model to use for tracking (default: "BODY_25")
-- `renderThreshold`: Minimum confidence for detecting joints
+- `renderThreshold`: Minimum confidence for rendering joints
 
 !!! note "Performance Considerations"
     - The `netInputSize` parameter significantly affects performance. Smaller sizes (like "-1x128") are faster but less accurate.

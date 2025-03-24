@@ -7,7 +7,7 @@ description::
 
 The Kinect UGen provides real-time access to body tracking data from a Kinect sensor. It uses OpenPose for body pose estimation and makes joint positions available as control signals for audio synthesis.
 
-The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
+The current implementation requires CUDA for effective real-time performance with OpenPose. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
 
 classmethods::
 
@@ -55,7 +55,7 @@ method::findAvailable
 Scans for connected Kinect devices and prints their serial numbers to the post window.
 
 method::setPipeline
-Sets the processing pipeline used for Kinect data.
+Sets the processing pipeline used for Kinect data in libfreenect2 (not OpenPose).
 
 argument::pipeline
 A String specifying which pipeline to use. Options are:
@@ -63,7 +63,7 @@ A String specifying which pipeline to use. Options are:
 - "CPU" - CPU-based processing
 - "OpenGL" - OpenGL-accelerated processing
 - "CUDA" - CUDA GPU-accelerated processing
-- "CUDAKDE" - Enhanced CUDA processing with KDE filtering (recommended)
+- "CUDAKDE" - Enhanced CUDA processing with KDE filtering
 
 method::openDevice
 Opens a connection to a specific Kinect device.
@@ -105,10 +105,10 @@ argument::numAverages
 An Integer specifying the number of frames to average for smoother tracking
 
 argument::averageGap
-A Float specifying the time gap between averaged frames (seconds)
+A Float specifying a gap between the netInputSize and outputSize which helps transition between the two
 
 argument::renderPose
-An Integer specifying whether to render pose overlay (-1 for auto)
+An Integer specifying whether to render pose overlay (-1 for auto render on CPU or GPU, 0 for don't render at all, 1 for CPU, 2 for GPU)
 
 argument::outputSize
 A String specifying the output frame size in "WxH" format (-1 for native)

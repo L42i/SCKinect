@@ -2,8 +2,8 @@
 
 SCKinect is a SuperCollider plugin that bridges physical movement with sound generation. It allows you to use a Kinect sensor to track human body movements and map them to sound parameters in SuperCollider.
 
-!!! important "CUDA Requirement"
-    **Note**: The current implementation requires CUDA for effective real-time performance. A CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin effectively.
+!!! warning "CUDA Requirement"
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
 
 ## What is SCKinect?
 

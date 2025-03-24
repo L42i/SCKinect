@@ -819,12 +819,12 @@
 </div>
 <h2 id="what-is-sckinect">What is SCKinect?</h2>
 <p>SCKinect integrates multiple technologies to create an interactive system where physical movements can control sound:</p>
-<ul>
-<li><strong>Kinect Sensor</strong>: A camera device that can track body movements and depth</li>
-<li><strong>SuperCollider</strong>: A programming language for real-time audio synthesis</li>
-<li><strong>OpenPose</strong>: Computer vision software for detecting human body poses </li>
-<li><strong>libfreenect2</strong>: A library for communicating with the Kinect device</li>
-</ul>
+<ol>
+<li><a href="https://en.wikipedia.org/wiki/Kinect#Kinect_for_Xbox_One_(2013)"><strong>Kinect v2 Sensor</strong></a> - A camera device originally designed for Xbox that can track movements and depth.</li>
+<li><a href="https://github.com/OpenKinect/libfreenect2"><strong>Libfreenect2</strong></a> - A tool that grabs raw data from the Kinect sensor and makes it available to your computer. It handles the direct communication with the hardware.</li>
+<li><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose"><strong>OpenPose</strong></a> - Computer vision software that can detect human body poses from camera images.</li>
+<li><a href="https://github.com/supercollider/supercollider"><strong>SuperCollider</strong></a> - A platform for audio synthesis and algorithmic composition.</li>
+</ol>
 <p>The plugin enables you to map specific body joint positions (like hands, knees, or head) to sound parameters, creating an intuitive and embodied way to generate and control sound.</p>
 <h2 id="key-features">Key Features</h2>
 <ul>
@@ -835,35 +835,37 @@
 <li>Simple SuperCollider interface for easy integration with your sound design</li>
 </ul>
 <h2 id="quick-example">Quick Example</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Find and open a Kinect device</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA is required for effective performance</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Configure and start body tracking</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">configureTracking</span><span class="p">(</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;/path/to/openpose/models&quot;</span><span class="p">,</span>  <span class="c1">// Point to your models folder</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;-1x-1&quot;</span><span class="p">,</span> <span class="s2">&quot;-1x256&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;BODY_25&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> 
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">);</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">startTracking</span><span class="p">;</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="c1">// Use right hand&#39;s Y position to control sound amplitude</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="p">{</span>
-<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>  <span class="nx">SinOsc</span><span class="p">.</span><span class="nx">ar</span><span class="p">(</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="mi">440</span><span class="p">,</span> 
-<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="mi">0</span><span class="p">,</span> 
-<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;RWrist&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>  <span class="c1">// Maps Y position to amplitude</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>  <span class="p">)</span>
-<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="p">}.</span><span class="nx">play</span><span class="p">;</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
-<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1">// Later, when done:</span>
-<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stopTracking</span><span class="p">;</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stop</span><span class="p">;</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">closeDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Boot the server (needs to be running for the whole UGen to work)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">boot</span><span class="p">;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Find and open a Kinect device</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA is required for effective performance</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1">// Configure and start body tracking</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">configureTracking</span><span class="p">(</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;/path/to/openpose/models&quot;</span><span class="p">,</span>  <span class="c1">// Point to your models folder</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;-1x-1&quot;</span><span class="p">,</span> <span class="s2">&quot;-1x256&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;BODY_25&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> 
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  <span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.0</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">);</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">startTracking</span><span class="p">;</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="c1">// Use right hand&#39;s Y position to control sound amplitude</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">{</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>  <span class="nx">SinOsc</span><span class="p">.</span><span class="nx">ar</span><span class="p">(</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="mi">440</span><span class="p">,</span> 
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="mi">0</span><span class="p">,</span> 
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;RWrist&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>  <span class="c1">// Maps Y position to amplitude</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>  <span class="p">)</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">}.</span><span class="nx">play</span><span class="p">;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="c1">// Later, when done:</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stopTracking</span><span class="p">;</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stop</span><span class="p">;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">closeDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="getting-started">Getting Started</h2>
 <p>See the <a href="installation/">Installation</a> and <a href="getting-started/">Getting Started</a> guides to begin using SCKinect in your projects. </p>

@@ -966,7 +966,7 @@
 <p>This page documents all methods and properties of the <code>Kinect</code> class in SuperCollider. This class provides the interface between SuperCollider and the Kinect sensor hardware.</p>
 <div class="admonition warning">
 <p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin effectively.</p>
+<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
 </div>
 <h2 id="class-variables">Class Variables</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">classvar</span> <span class="o">&lt;</span><span class="nx">openDevices</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">deviceCount</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">packetPipelines</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">jointNames</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">jointCoordinates</span><span class="p">;</span>
@@ -1010,26 +1010,19 @@
 <h3 id="setpipeline">setPipeline</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">*</span><span class="nx">setPipeline</span> <span class="p">{</span> <span class="o">|</span><span class="nx">pipeline</span> <span class="o">=</span> <span class="s2">&quot;CPU&quot;</span><span class="o">|</span> <span class="p">}</span>
 </code></pre></div>
-<p>Sets the processing pipeline used for Kinect data. Note this is different than what OpenPose uses. If you try using the CPU, it will be very slow ~ &lt; 1 frame per second.</p>
+<p>Sets the processing pipeline used for Kinect data. Note this is different than what OpenPose uses.</p>
 <p><strong>Parameters:</strong></p>
 <ul>
-<li><strong>pipeline</strong> (String): Name of the pipeline to use. Options are:</li>
+<li><strong>pipeline</strong> (String): Name of the pipeline to use for libfreenect2. Options are:</li>
 <li>"Dump": Minimal processing (for testing)</li>
-<li>"CPU": CPU-based processing (slower, still in development)</li>
+<li>"CPU": CPU-based processing</li>
 <li>"OpenGL": OpenGL-accelerated processing</li>
 <li>"CUDA": CUDA GPU-accelerated processing</li>
 <li>"CUDAKDE": Enhanced CUDA processing with KDE filtering (recommended)</li>
 </ul>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>While the "CPU" pipeline is available as an option, it is still in development and not recommended for real-time applications. For best performance, use "CUDAKDE" or "CUDA", which require an NVIDIA GPU with CUDA support.</p>
-</div>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Use CUDA processing (recommended)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Use CUDAKDE pipeline (KDE for Kernel Density Estimation - a fancy filter which makes the depth data look nice)</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1">// Fallback to CPU processing (not recommended for real-time use)</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CPU&quot;</span><span class="p">);</span>
 </code></pre></div>
 <h3 id="opendevice">openDevice</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="o">*</span><span class="nx">openDevice</span> <span class="p">{</span> <span class="o">|</span><span class="nx">serial</span><span class="o">|</span> <span class="p">}</span>
@@ -1098,7 +1091,7 @@
 <li><strong>gpuStartIndex</strong> (Integer): Index of the first GPU to use</li>
 <li><strong>numAverages</strong> (Integer): Number of frames to average for smoother tracking</li>
 <li><strong>averageGap</strong> (Float): Gap between the netInputSize and outputSize which helps transition between the two</li>
-<li><strong>renderPose</strong> (Integer): Whether to render pose overlay (-1 for auto)</li>
+<li><strong>renderPose</strong> (Integer): Whether to render pose overlay (-1 for auto render on CPU or GPU, 0 for don't render at all, 1 for CPU, 2 for GPU)</li>
 <li><strong>outputSize</strong> (String): Output frame size in "WxH" format (-1 for native)</li>
 <li><strong>netInputSize</strong> (String): Network input size in "WxH" format</li>
 <li><strong>poseMode</strong> (Integer): Pose detection mode</li>

@@ -990,7 +990,7 @@
 <p>The SCKinect plugin is implemented in C++ and provides a bridge between the Kinect sensor, OpenPose, and SuperCollider. This page documents the C++ components and how they interact with each other.</p>
 <div class="admonition warning">
 <p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. The C++ code assumes CUDA availability for optimal OpenPose operation.</p>
+<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
 </div>
 <h2 id="key-classes-and-structures">Key Classes and Structures</h2>
 <h3 id="kinect-ugen-class">Kinect UGen Class</h3>
@@ -1031,7 +1031,6 @@
 <li>Maps of connected devices</li>
 <li>Pipeline configuration</li>
 </ul>
-<p>While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance. However, this won't really affect the OpenPose pipeline since OpenPose is built with CUDA by default. If you try building and running it with CPU support, you will notice very low frame rates because of how much data needs to be processed through OpenPose. Currently working on a solution to pose track for CPU-only users or even with OpenCL (integrated or separate vendors besides NVIDIA -- AMD for example).</p>
 <h3 id="wuserinput-class">WUserInput Class</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WUserInput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">op</span><span class="o">::</span><span class="n">WorkerProducer</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">op</span><span class="o">::</span><span class="n">Datum</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">public</span><span class="o">:</span>
@@ -1068,10 +1067,10 @@
 <p>This enumeration defines the different processing pipelines available for the Kinect sensor:</p>
 <ul>
 <li><strong>Dump</strong>: Minimal processing (for testing)</li>
-<li><strong>CPU</strong>: CPU-based processing (slower, still in development)</li>
+<li><strong>CPU</strong>: CPU-based processing</li>
 <li><strong>OpenGL</strong>: OpenGL-accelerated processing</li>
-<li><strong>CUDA</strong>: CUDA GPU-accelerated processing  </li>
-<li><strong>CUDAKDE</strong>: Enhanced CUDA processing with Kernel Density Estimation filtering (recommended)</li>
+<li><strong>CUDA</strong>: CUDA GPU-accelerated processing</li>
+<li><strong>CUDAKDE</strong>: Enhanced CUDA processing with Kernel Density Estimation filtering</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1175,10 +1174,10 @@
 </ul>
 <h3 id="performance-considerations">Performance Considerations</h3>
 <ul>
-<li>The <code>CUDAKDE</code> pipeline provides the best performance but requires CUDA-capable GPU</li>
+<li>The <code>CUDAKDE</code> pipeline provides the best depth but requires CUDA-capable GPU</li>
 <li>Frame rate is affected by the <code>netInputSize</code> parameter in <code>configureTracking</code></li>
 <li>Smaller image sizes result in faster processing but potentially less accurate tracking</li>
-<li>The CPU implementation is still in development and not recommended for real-time use</li>
+<li>The CPU implementation is still in development (i.e. you really need to have a CUDA enabled GPU to use OpenPose at the moment :/). But CPU version besides OpenPose is on the way :) !</li>
 </ul>
 <h3 id="hardware-requirements">Hardware Requirements</h3>
 <p>For optimal performance, the following hardware is recommended:</p>

@@ -879,7 +879,7 @@
 <p>Before installing SCKinect, make sure you have the following:</p>
 <ul>
 <li>A Kinect v2 sensor device</li>
-<li><strong>CUDA-capable NVIDIA GPU</strong> (required for effective performance)</li>
+<li><strong>CUDA-capable NVIDIA GPU</strong> (required for effective performance with OpenPose)</li>
 <li>CMake (version 3.5 or higher)</li>
 <li>C++ compiler with C++17 support (gcc, clang, or MSVC)</li>
 <li><a href="https://github.com/supercollider/supercollider">SuperCollider</a> (with source code)</li>
@@ -990,9 +990,7 @@
 <li>
 <p><strong>Performance issues</strong></p>
 </li>
-<li>Ensure you are using the "CUDAKDE" or "CUDA" pipeline for best performance</li>
-<li>The "CPU" pipeline is still in development and may not work effectively</li>
-<li>Check your GPU meets the minimum requirements</li>
+<li>Ensure you are using the right netResolution and only tracking as many people as you need to</li>
 </ol>
 <h3 id="getting-help">Getting Help</h3>
 <p>If you encounter issues not covered here, check:

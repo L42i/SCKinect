@@ -870,13 +870,13 @@
 <p>The <code>Kinect</code> UGen is the core of SCKinect, providing real-time access to body tracking data from the Kinect sensor. This component runs as a native SuperCollider UGen (Unit Generator), allowing direct integration with the audio synthesis engine.</p>
 <div class="admonition warning">
 <p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.</p>
+<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
 </div>
 <h2 id="overview">Overview</h2>
 <p>The Kinect UGen connects to the following components:</p>
 <ol>
 <li><a href="https://github.com/OpenKinect/libfreenect2"><strong>libfreenect2</strong></a> - For raw device communication</li>
-<li><a href="https://github.com/CMU-Perceptual-Computing-Lab"><strong>OpenPose</strong></a> - For body pose estimation (via CUDA)</li>
+<li><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose"><strong>OpenPose</strong></a> - For body pose estimation (via CUDA)</li>
 <li><a href="https://github.com/supercollider/supercollider/wiki/scsynth-development"><strong>scsynth</strong></a> - A.K.A. SuperCollider's server - For audio control signals</li>
 </ol>
 <p>It processes data in real-time, tracking up to 25 different body joints and making their positions available as control signals.</p>
@@ -965,7 +965,7 @@
 <li><code>modelFolder</code>: Path to OpenPose models</li>
 <li><code>numGpu</code>/<code>gpuStartIndex</code>: GPU settings for OpenPose (crucial for performance)</li>
 <li><code>poseModel</code>: Model to use for tracking (default: "BODY_25")</li>
-<li><code>renderThreshold</code>: Minimum confidence for detecting joints</li>
+<li><code>renderThreshold</code>: Minimum confidence for rendering joints</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Performance Considerations</p>

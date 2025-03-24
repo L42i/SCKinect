@@ -3,7 +3,7 @@
 This guide will walk you through the basic steps of setting up and using SCKinect to connect body movement with sound generation.
 
 !!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide.
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
 
 ## Basic Workflow
 
@@ -36,7 +36,7 @@ Once you have the serial number, you can connect to the device:
 
 ```supercollider
 // Choose a processing pipeline (CUDA is recommended)
-Kinect.setPipeline("CUDAKDE");  // "CUDA" is also an option but "CUDAKDE" generally performs better
+Kinect.setPipeline("CUDAKDE");  // "CUDA" is also an option but "CUDAKDE" looks nice
 
 // Open the device using its serial number
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
@@ -49,7 +49,7 @@ Kinect.start;
     Replace `"YOUR_DEVICE_SERIAL"` with the actual serial number of your Kinect device.
     
 !!! warning
-    While "CPU" is listed as a pipeline option, it is still in development and may not provide adequate performance for real-time tracking. Always use "CUDAKDE" or "CUDA" for best results.
+    While "CPU" is listed as a pipeline option, this pipeline is for libfreenect2 and has nothing to do with OpenPose. You can use "CPU" as the pipeline, but OpenPose will continue to use whatever pipeline you built it for. Currently, as stated previously CUDA is the best option. However, other pose tracking pipelines which work efficiently on the CPU are planned for this plugin.
 
 ## Step 3: Configure Body Tracking
 

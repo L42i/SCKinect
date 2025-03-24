@@ -3,7 +3,7 @@
 This page documents all methods and properties of the `Kinect` class in SuperCollider. This class provides the interface between SuperCollider and the Kinect sensor hardware.
 
 !!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin effectively.
+    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
 
 ## Class Variables
 
@@ -69,28 +69,22 @@ Kinect.findAvailable;
 *setPipeline { |pipeline = "CPU"| }
 ```
 
-Sets the processing pipeline used for Kinect data.
+Sets the processing pipeline used for Kinect data. Note this is different than what OpenPose uses.
 
 **Parameters:**
 
-- **pipeline** (String): Name of the pipeline to use. Options are:
+- **pipeline** (String): Name of the pipeline to use for libfreenect2. Options are:
   - "Dump": Minimal processing (for testing)
-  - "CPU": CPU-based processing (slower, still in development)
+  - "CPU": CPU-based processing
   - "OpenGL": OpenGL-accelerated processing
   - "CUDA": CUDA GPU-accelerated processing
   - "CUDAKDE": Enhanced CUDA processing with KDE filtering (recommended)
 
-!!! important
-    While the "CPU" pipeline is available as an option, it is still in development and not recommended for real-time applications. For best performance, use "CUDAKDE" or "CUDA", which require an NVIDIA GPU with CUDA support.
-
 **Example:**
 
 ```supercollider
-// Use CUDA processing (recommended)
+// Use CUDAKDE pipeline (KDE for Kernel Density Estimation - a fancy filter which makes the depth data look nice)
 Kinect.setPipeline("CUDAKDE");
-
-// Fallback to CPU processing (not recommended for real-time use)
-Kinect.setPipeline("CPU");
 ```
 
 ### openDevice
@@ -192,8 +186,8 @@ Configures the OpenPose body tracking system.
 - **numGpu** (Integer): Number of GPUs to use (-1 for auto-detect)
 - **gpuStartIndex** (Integer): Index of the first GPU to use
 - **numAverages** (Integer): Number of frames to average for smoother tracking
-- **averageGap** (Float): Time gap between averaged frames (seconds)
-- **renderPose** (Integer): Whether to render pose overlay (-1 for auto)
+- **averageGap** (Float): Gap between the netInputSize and outputSize which helps transition between the two
+- **renderPose** (Integer): Whether to render pose overlay (-1 for auto render on CPU or GPU, 0 for don't render at all, 1 for CPU, 2 for GPU)
 - **outputSize** (String): Output frame size in "WxH" format (-1 for native)
 - **netInputSize** (String): Network input size in "WxH" format
 - **poseMode** (Integer): Pose detection mode
@@ -306,7 +300,7 @@ s.boot;
 
 // Find and connect to Kinect
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is required for real-time performance
+Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
 Kinect.start;
 

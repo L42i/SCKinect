@@ -1,20 +1,18 @@
 class:: Kinect
 summary:: Interact with a Kinect sensor for real-time body tracking
-related:: Classes/UGens
+related:: Classes/HID
 categories:: UGens>Input>Hardware
 
 description::
 
 The Kinect UGen provides real-time access to body tracking data from a Kinect sensor. It uses OpenPose for body pose estimation and makes joint positions available as control signals for audio synthesis.
 
-!!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
+The current implementation requires CUDA for effective real-time performance with OpenPose. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this UGen effectively.
 
 classmethods::
 
 method::kr
-create:: Control
-returns:: A control rate UGen that outputs the position of a specific joint
+Create a control rate UGen that outputs the position of a specific joint.
 
 argument::minval
 The minimum value in the output range (default: 0)
@@ -57,15 +55,15 @@ method::findAvailable
 Scans for connected Kinect devices and prints their serial numbers to the post window.
 
 method::setPipeline
-Sets the processing pipeline used for Kinect data.
+Sets the processing pipeline used for Kinect data in libfreenect2 (not OpenPose).
 
 argument::pipeline
 A String specifying which pipeline to use. Options are:
 - "Dump" - Minimal processing (for testing)
-- "CPU" - CPU-based processing (slower, still in development)
+- "CPU" - CPU-based processing
 - "OpenGL" - OpenGL-accelerated processing
 - "CUDA" - CUDA GPU-accelerated processing
-- "CUDAKDE" - Enhanced CUDA processing with KDE filtering (recommended)
+- "CUDAKDE" - Enhanced CUDA processing with KDE filtering
 
 method::openDevice
 Opens a connection to a specific Kinect device.
@@ -107,10 +105,10 @@ argument::numAverages
 An Integer specifying the number of frames to average for smoother tracking
 
 argument::averageGap
-A Float specifying the time gap between averaged frames (seconds)
+A Float specifying a gap between the netInputSize and outputSize which helps transition between the two
 
 argument::renderPose
-An Integer specifying whether to render pose overlay (-1 for auto)
+An Integer specifying whether to render pose overlay (-1 for auto render on CPU or GPU, 0 for don't render at all, 1 for CPU, 2 for GPU)
 
 argument::outputSize
 A String specifying the output frame size in "WxH" format (-1 for native)
@@ -159,6 +157,10 @@ examples::
 code::
 
 // Basic setup
+
+// Need to boot the server first since this is a UGen and not a primitive
+s.boot;
+
 Kinect.findAvailable;
 Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("YOUR_DEVICE_SERIAL");

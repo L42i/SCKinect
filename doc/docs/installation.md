@@ -7,18 +7,18 @@ Installing SCKinect requires setting up several dependencies before building the
 Before installing SCKinect, make sure you have the following:
 
 - A Kinect v2 sensor device
-- **CUDA-capable NVIDIA GPU** (required for effective performance)
+- **CUDA-capable NVIDIA GPU** (required for effective performance with OpenPose)
 - CMake (version 3.5 or higher)
 - C++ compiler with C++17 support (gcc, clang, or MSVC)
-- SuperCollider (with source code)
-- libfreenect2
-- OpenPose with CUDA support
+- [SuperCollider](https://github.com/supercollider/supercollider) (with source code)
+- [libfreenect2](https://github.com/OpenKinect/libfreenect2)
+- [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) built with CUDA support (CPU solution other than OpenPose coming soon!)
 
 !!! warning "Hardware Requirements"
     The current implementation requires CUDA for effective real-time body tracking. The CPU-only implementation is in progress but not yet fully functional for real-time applications. For best results, you need:
     
     - NVIDIA GPU with CUDA capability 3.0 or higher
-    - At least 2GB of GPU memory (4GB+ recommended)
+    - At least 8GB of GPU memory (8GB+ recommended because cuDNN uses a lot)
     - Recent NVIDIA drivers
 
 ## Step 1: Install SuperCollider
@@ -36,8 +36,8 @@ git clone https://github.com/supercollider/supercollider.git
 
 SCKinect requires CUDA for effective performance:
 
-1. Download and install the CUDA Toolkit from [NVIDIA's website](https://developer.nvidia.com/cuda-downloads)
-2. Make sure to install the driver that comes with the toolkit
+1. Download and install the CUDA Toolkit from [NVIDIA's website](https://developer.nvidia.com/cuda-downloads). You actually don't want to download the latest and should aim for 11.6 or 11.7 (for compatibility reasons).
+2. Make sure to install the drivers. Try to install the latest one if you can. Although the CUDA toolkit will be an older version than the drivers, you can skip the driver install when installing the toolkit since you've already installed the newer drivers. Do this combination for the best compatibility. Higher CUDA versions will consume too much memory or have compilation issues with OpenPose on Linux, and older GPU drivers won't work on a newer GPU :/.
 3. Verify the installation by running:
 
 ```bash
@@ -61,7 +61,7 @@ For detailed installation instructions and troubleshooting, see the [libfreenect
 
 ## Step 4: Install OpenPose with CUDA Support
 
-[OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) is required for body tracking. Ensure you build it with CUDA support:
+[OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) is required for body tracking. Ensure you build it with CUDA support. Nothing else works at the moment, but future plans are in progress to support even more pose tracking methods besides OpenPose. For now, OpenPose works best with CUDA though:
 
 ```bash
 git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
@@ -112,6 +112,10 @@ cmake --build . --config Release --target install
 2. Start SuperCollider and run:
 
 ```supercollider
+// Always need to run the server before operating on UGen!
+s.boot;
+
+// Now server should be booted and we can run this command
 Kinect.findAvailable;
 ```
 
@@ -122,7 +126,8 @@ This should list your connected Kinect device with its serial number.
 ### Common Issues
 
 1. **Kinect not detected**
-   - Make sure your Kinect is properly connected
+   - Did you boot the server?
+   - Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)
    - Check if libfreenect2 can detect the device using the libfreenect2 examples
 
 2. **Build errors**
@@ -134,9 +139,7 @@ This should list your connected Kinect device with its serial number.
    - Make sure the path to OpenPose models is correctly specified when calling `Kinect.configureTracking()`
 
 4. **Performance issues**
-   - Ensure you are using the "CUDAKDE" or "CUDA" pipeline for best performance
-   - The "CPU" pipeline is still in development and may not work effectively
-   - Check your GPU meets the minimum requirements
+   - Ensure you are using the right netResolution and only tracking as many people as you need to
 
 ### Getting Help
 

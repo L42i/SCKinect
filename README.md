@@ -48,7 +48,7 @@ Here's a simple example of what code for this plugin looks like:
 s.boot;
 // Find and set up your Kinect
 Kinect.findAvailable;  // Searches for connected Kinect devices
-Kinect.setPipeline("CUDAKDE");  // Sets processing method (for faster tracking)
+Kinect.setPipeline("CUDAKDE");  // Sets processing method (for libfreenect2)
 Kinect.openDevice("065915234247");  // Opens a specific Kinect (your ID will differ)
 Kinect.start;  // Starts the Kinect
 

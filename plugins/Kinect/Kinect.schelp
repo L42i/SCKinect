@@ -60,7 +60,7 @@ Sets the processing pipeline used for Kinect data.
 argument::pipeline
 A String specifying which pipeline to use. Options are:
 - "Dump" - Minimal processing (for testing)
-- "CPU" - CPU-based processing (slower, still in development)
+- "CPU" - CPU-based processing
 - "OpenGL" - OpenGL-accelerated processing
 - "CUDA" - CUDA GPU-accelerated processing
 - "CUDAKDE" - Enhanced CUDA processing with KDE filtering (recommended)
@@ -157,7 +157,10 @@ examples::
 code::
 
 // Basic setup
+
+// Need to boot the server first since this is a UGen and not a primitive
 s.boot;
+
 Kinect.findAvailable;
 Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("YOUR_DEVICE_SERIAL");

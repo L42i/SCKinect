@@ -69,7 +69,7 @@ Kinect.findAvailable;
 *setPipeline { |pipeline = "CPU"| }
 ```
 
-Sets the processing pipeline used for Kinect data.
+Sets the processing pipeline used for Kinect data. Note this is different than what OpenPose uses. If you try using the CPU, it will be very slow ~ < 1 frame per second.
 
 **Parameters:**
 
@@ -192,7 +192,7 @@ Configures the OpenPose body tracking system.
 - **numGpu** (Integer): Number of GPUs to use (-1 for auto-detect)
 - **gpuStartIndex** (Integer): Index of the first GPU to use
 - **numAverages** (Integer): Number of frames to average for smoother tracking
-- **averageGap** (Float): Time gap between averaged frames (seconds)
+- **averageGap** (Float): Gap between the netInputSize and outputSize which helps transition between the two
 - **renderPose** (Integer): Whether to render pose overlay (-1 for auto)
 - **outputSize** (String): Output frame size in "WxH" format (-1 for native)
 - **netInputSize** (String): Network input size in "WxH" format
@@ -306,7 +306,7 @@ s.boot;
 
 // Find and connect to Kinect
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is required for real-time performance
+Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
 Kinect.start;
 

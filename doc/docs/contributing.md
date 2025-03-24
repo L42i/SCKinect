@@ -43,7 +43,6 @@ When contributing code, please follow these guidelines:
 
 ### C++ Code
 
-- Use 4 spaces for indentation (no tabs)
 - Follow the existing naming conventions:
   - Class names: `CamelCase`
   - Methods and functions: `camelCase`
@@ -53,8 +52,6 @@ When contributing code, please follow these guidelines:
 - Keep lines to a reasonable length (ideally under 100 characters)
 
 ### SuperCollider Code
-
-- Use 4 spaces for indentation (no tabs)
 - Follow the existing naming conventions:
   - Class methods: Begin with `*` (e.g., `*methodName`)
   - Instance methods: No prefix (e.g., `methodName`)
@@ -101,6 +98,6 @@ By contributing to SCKinect, you agree that your contributions will be licensed 
 If you need help with contributing:
 
 - Open an issue on GitHub with a "question" label
-- Reach out to the maintainers directly
+- Reach out to the maintainers directly (i.e. Evan Murray <evan@auraaudio.io>)
 
 Thank you for your contributions to SCKinect! 

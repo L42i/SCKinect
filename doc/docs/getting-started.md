@@ -36,7 +36,7 @@ Once you have the serial number, you can connect to the device:
 
 ```supercollider
 // Choose a processing pipeline (CUDA is recommended)
-Kinect.setPipeline("CUDAKDE");  // "CUDA" is also an option but "CUDAKDE" generally performs better
+Kinect.setPipeline("CUDAKDE");  // "CUDA" is also an option but "CUDAKDE" looks nice
 
 // Open the device using its serial number
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
@@ -49,7 +49,7 @@ Kinect.start;
     Replace `"YOUR_DEVICE_SERIAL"` with the actual serial number of your Kinect device.
     
 !!! warning
-    While "CPU" is listed as a pipeline option, it is still in development and may not provide adequate performance for real-time tracking. Always use "CUDAKDE" or "CUDA" for best results.
+    While "CPU" is listed as a pipeline option, it is still in development and may not provide adequate performance for real-time tracking. Always use "CUDAKDE", "CUDA", or "OpenGL" for best results (if you have the hardware to do so).
 
 ## Step 3: Configure Body Tracking
 

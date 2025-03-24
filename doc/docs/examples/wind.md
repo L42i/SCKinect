@@ -3,7 +3,7 @@
 This example demonstrates how to use SCKinect to control a wind-like sound using hand movements. The right hand controls the volume (moving up/down) while the left hand controls the tone (moving left/right).
 
 !!! warning "CUDA Requirement"
-    This example requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to run this example as intended.
+    This example requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU (at the moment) to run this example as intended. CPU support without OpenPose is on the roadmap of future releases for this plugin.
 
 ## Overview
 
@@ -21,7 +21,7 @@ s.options.numOutputBusChannels = 6;
 s.waitForBoot({
 	// Setup settings for a Kinect UGen
 	Kinect.findAvailable;
-	Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is required for real-time performance
+	Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
 	Kinect.openDevice("065915234247");
 	s.sync;
 	Kinect.start;
@@ -100,7 +100,7 @@ This configures the SuperCollider server to use 6 output channels (for surround 
 ```supercollider
 // Setup settings for a Kinect UGen
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is required for real-time performance
+Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
 Kinect.openDevice("065915234247");
 s.sync;
 Kinect.start;
@@ -108,7 +108,7 @@ Kinect.start;
 
 This section:
 1. Searches for available Kinect devices
-2. Sets the processing pipeline to CUDAKDE (GPU-accelerated, required for real-time tracking)
+2. Sets the processing pipeline to CUDAKDE (GPU-accelerated, recommended for real-time tracking)
 3. Opens a specific Kinect device (you'll need to replace the serial number with your own)
 4. Synchronizes with the server
 5. Starts the Kinect data acquisition
@@ -224,9 +224,7 @@ To run this example:
 !!! warning "Performance Considerations"
     If you experience lag or stuttering in the tracking:
     - Try reducing the `netInputSize` parameter in `configureTracking()` (e.g., "-1x128")
-    - Ensure you're using the "CUDAKDE" pipeline
-    - Make sure other GPU-intensive applications are closed
-    - Consider upgrading your GPU if problems persist
+    - Try reducing the number of people being tracked (i.e. set maxPeople = 1 in the configuration).
 
 ## Extending the Example
 

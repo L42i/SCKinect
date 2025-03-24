@@ -9,9 +9,9 @@ The `Kinect` UGen is the core of SCKinect, providing real-time access to body tr
 
 The Kinect UGen connects to the following components:
 
-1. **libfreenect2** - For raw device communication
-2. **OpenPose** - For body pose estimation (via CUDA)
-3. **SuperCollider** - For audio control signals
+1. [**libfreenect2**](https://github.com/OpenKinect/libfreenect2) - For raw device communication
+2. [**OpenPose**](https://github.com/CMU-Perceptual-Computing-Lab) - For body pose estimation (via CUDA)
+3. [**scsynth**](https://github.com/supercollider/supercollider/wiki/scsynth-development) - A.K.A. SuperCollider's server - For audio control signals
 
 It processes data in real-time, tracking up to 25 different body joints and making their positions available as control signals.
 
@@ -107,7 +107,7 @@ Key parameters include:
 
 !!! note "Performance Considerations"
     - The `netInputSize` parameter significantly affects performance. Smaller sizes (like "-1x128") are faster but less accurate.
-    - The CUDA and CUDAKDE pipelines require a NVIDIA GPU but provide much better performance than the CPU pipeline.
+    - The CUDA and CUDAKDE pipelines require a NVIDIA GPU but provide slightly better performance than the CPU pipeline.
     - Multi-person tracking (`maxPeople` > 1) requires more GPU resources.
 
 See the [Getting Started](../getting-started.md) guide for more examples of how to use these parameters. 

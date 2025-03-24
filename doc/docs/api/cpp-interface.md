@@ -51,7 +51,7 @@ This structure maintains the state of the Kinect connection and OpenPose process
 - Maps of connected devices
 - Pipeline configuration
 
-While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance.
+While the default pipeline is CPU, this is overridden in practice to use CUDA for effective performance. However, this won't really affect the OpenPose pipeline since OpenPose is built with CUDA by default. If you try building and running it with CPU support, you will notice very low frame rates because of how much data needs to be processed through OpenPose. Currently working on a solution to pose track for CPU-only users or even with OpenCL (integrated or separate vendors besides NVIDIA -- AMD for example).
 
 ### WUserInput Class
 
@@ -252,7 +252,7 @@ The plugin uses a thread-safe design to handle multiple concurrent operations:
 For optimal performance, the following hardware is recommended:
 
 - NVIDIA GPU with CUDA capability 3.0 or higher
-- At least 2GB of GPU memory (4GB+ recommended)
+- At least 8GB of GPU memory (8GB+ recommended since cuDNN uses a lot of memory)
 - Recent NVIDIA drivers
 - USB 3.0 port for the Kinect sensor
 

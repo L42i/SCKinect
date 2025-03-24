@@ -31,7 +31,7 @@ The plugin enables you to map specific body joint positions (like hands, knees, 
 s.boot;
 // Find and open a Kinect device
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA is required for effective performance
+Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
 Kinect.start;
 

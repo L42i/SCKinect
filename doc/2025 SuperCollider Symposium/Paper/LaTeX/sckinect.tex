@@ -8,6 +8,7 @@
 
 \def\papertitle{SCKinect}
 \def\firstauthor{Evan Murray}
+\def\secondauthor{Henrik von Coler}
 
 % pdf-tex settings: detect automatically if run by latex or pdflatex
 \newif\ifpdf
@@ -23,7 +24,7 @@
 \ifpdf % compiling with pdflatex
   \usepackage[pdftex,
     pdftitle={\papertitle},
-    pdfauthor={\firstauthor},
+    pdfauthor={\firstauthor, \secondauthor},
     bookmarksnumbered, % use section numbers with bookmarks
     pdfstartview=XYZ % start with zoom=100% instead of full screen; 
                      % especially useful if working with a big screen :-)
@@ -63,9 +64,12 @@
 
 \title{\papertitle}
 
-\oneauthor
-{\firstauthor} {Aura Audio LLC \\
+\twoauthors
+{0.5in}
+{\firstauthor} {Georgia Institute of Technology \\
     {\tt \href{mailto:evan@auraaudio.io}{evan@auraaudio.io}}}
+{\secondauthor} {Georgia Institute of Technology \\
+    {\tt \href{mailto:hvc@gatech.edu}{hvc@gatech.edu}}}
 
 \usepackage{cleveref}
 \begin{document}
@@ -192,8 +196,8 @@ The first bus could be used to control the amplitude and the second bus could be
     var b = $\sim$kinectFrequencyBus.index;\\
     var e = "RWrist";\\
     var f = "LWrist";\\
-    var c = Kinect.kr(0, 0.5, e, "Y"));\\
-    var d = Kinect.kr(20, 10000, f, "X"));\\
+    var c = Kinect.kr(0, 0.5, e, "Y");\\
+    var d = Kinect.kr(20, 10000, f, "X");\\
     \{Out.kr(a, c)\}.play;\\
 	\{Out.kr(b, d)\}.play;\\
 }

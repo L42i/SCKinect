@@ -877,23 +877,19 @@
 <ol>
 <li>Download and install the CUDA Toolkit from <a href="https://developer.nvidia.com/cuda-downloads">NVIDIA's website</a>. You actually don't want to download the latest and should aim for 11.6 or 11.7 (for compatibility reasons).</li>
 <li>Make sure to install the drivers. Try to install the latest one if you can. Although the CUDA toolkit will be an older version than the drivers, you can skip the driver install when installing the toolkit since you've already installed the newer drivers. Do this combination for the best compatibility. Higher CUDA versions will consume too much memory or have compilation issues with OpenPose on Linux, and older GPU drivers won't work on a newer GPU :/.</li>
-<li>Next, you should install cuDNN which is a neural net extension to CUDA: https://developer.nvidia.com/cudnn. The install process is pretty similar to that of the CUDA install. Follow the instructions on the Nvidia website.</li>
-<li>Clone the CUDA samples and make note of where the samples folder is located. Make sure to also checkout the version tag which matches the version of your CUDA install. If they don't match, try to pick the closest version below (i.e. 11.6 if you have CUDA 11.7)</li>
-</ol>
+<li>Next, you should install <a href="https://developer.nvidia.com/cudnn">cuDNN</a> which is a neural net extension to CUDA. The install process is pretty similar to that of the CUDA install. Follow the instructions on the Nvidia website.</li>
+<li>Clone the CUDA samples and make note of where the samples folder is located. Make sure to also checkout the version tag which matches the version of your CUDA install. If they don't match, try to pick the closest version below (i.e. 11.6 if you have CUDA 11.7)
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVIDIA/cuda-samples.git
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>cuda-samples
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>git<span class="w"> </span>checkout<span class="w"> </span>tags/v11.6
-</code></pre></div>
-<ol>
-<li>Copy this folder to your CUDA toolkit folder</li>
-</ol>
+</code></pre></div></li>
+<li>Copy this folder to your CUDA toolkit folder
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>cp<span class="w"> </span>-r<span class="w"> </span>cuda-samples<span class="w"> </span>/usr/local/cuda-11.7
-</code></pre></div>
-<ol>
-<li>Verify the installation by running:</li>
-</ol>
+</code></pre></div></li>
+<li>Verify the installation by running:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>nvcc<span class="w"> </span>--version
-</code></pre></div>
+</code></pre></div></li>
+</ol>
 <h2 id="step-3-install-libfreenect2">Step 3: Install libfreenect2</h2>
 <p><a href="https://github.com/OpenKinect/libfreenect2">libfreenect2</a> is the library that enables communication with the Kinect device.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OpenKinect/libfreenect2.git
@@ -955,14 +951,14 @@
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <ol>
-<li><strong>Kinect not detected</strong></li>
+<li><strong>Kinect not detected:</strong></li>
 <li>Did you boot the server?</li>
 <li>Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)</li>
 <li>
 <p>Check if libfreenect2 can detect the device using the libfreenect2 examples</p>
 </li>
 <li>
-<p><strong>Build errors</strong></p>
+<p><strong>Build errors:</strong></p>
 </li>
 <li>Ensure all dependencies are properly installed</li>
 <li>Check that your compiler supports C++17</li>
@@ -970,15 +966,11 @@
 <p>Verify path to SuperCollider source is correct</p>
 </li>
 <li>
-<p><strong>OpenPose errors</strong></p>
+<p><strong>OpenPose errors:</strong> Make sure the path to OpenPose models is correctly specified when calling <code>Kinect.configureTracking()</code></p>
 </li>
 <li>
-<p>Make sure the path to OpenPose models is correctly specified when calling <code>Kinect.configureTracking()</code></p>
+<p><strong>Performance issues:</strong> Ensure you are using the right netResolution and only tracking as many people as you need to</p>
 </li>
-<li>
-<p><strong>Performance issues</strong></p>
-</li>
-<li>Ensure you are using the right netResolution and only tracking as many people as you need to</li>
 </ol>
 <h3 id="getting-help">Getting Help</h3>
 <p>If you encounter issues not covered here, check:

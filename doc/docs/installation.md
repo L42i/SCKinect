@@ -118,20 +118,9 @@ This should list your connected Kinect device with its serial number in the post
 
 ## Troubleshooting
 
-### Common Issues
-
-1. **Kinect not detected:**
-   1. Did you boot the server?
-   2. Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)
-   3. Check if libfreenect2 can detect the device using the libfreenect2 examples
-
-2. **Build errors:**
-   1. Ensure all dependencies are properly installed
-   2. Check that your compiler supports C++17
-   3. Verify path to SuperCollider source is correct
-
+1. **Kinect not detected:** Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)
+2. **Build errors:** Check the repos above for troubleshooting instructions
 3. **OpenPose errors:** Make sure the path to OpenPose models is correctly specified when calling `Kinect.configureTracking()`
-
 4. **Performance issues:** Ensure you are using the right netResolution and only tracking as many people as you need to
 
 ### Getting Help

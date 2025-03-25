@@ -16,7 +16,7 @@
         <link rel="prev" href="../installation/">
       
       
-        <link rel="next" href="../components/kinect-ugen/">
+        <link rel="next" href="../api/kinect-class/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -246,7 +246,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../components/kinect-ugen/" class="md-tabs__link">
+        <a href="../components/kinect-ugen.md" class="md-tabs__link">
           
   
   Core Components
@@ -282,7 +282,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../examples/wind/" class="md-tabs__link">
+        <a href="../examples/wind.md" class="md-tabs__link">
           
   
   Examples
@@ -298,7 +298,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../contributing/" class="md-tabs__link">
+      <a href="../contributing.md" class="md-tabs__link">
         
   
     
@@ -505,30 +505,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step 5: Use Joint Positions in Your Sound">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#understanding-kinectkr-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding Kinect.kr Parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#available-joints" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available Joints
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -605,7 +581,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/kinect-ugen/" class="md-nav__link">
+      <a href="../components/kinect-ugen.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -627,7 +603,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/user-input/" class="md-nav__link">
+      <a href="../components/user-input.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -649,7 +625,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/user-output/" class="md-nav__link">
+      <a href="../components/user-output.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -811,7 +787,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/wind/" class="md-nav__link">
+      <a href="../examples/wind.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -840,7 +816,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../contributing.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -882,11 +858,11 @@
 <h2 id="basic-workflow">Basic Workflow</h2>
 <p>Working with SCKinect follows this general workflow:</p>
 <ol>
+<li><strong>Boot The Server</strong>: Boot the SuperCollider server (scsynth)</li>
 <li><strong>Setup</strong>: Find and connect to the Kinect device</li>
-<li><strong>Configure</strong>: Set tracking parameters</li>
+<li><strong>Configure</strong>: Set tracking parameters for OpenPose</li>
 <li><strong>Track</strong>: Start body tracking</li>
 <li><strong>Map</strong>: Map joint positions to sound parameters</li>
-<li><strong>Generate</strong>: Use the mapped values to generate sound</li>
 <li><strong>Cleanup</strong>: Stop tracking and close the device when done</li>
 </ol>
 <h2 id="step-1-setting-up-the-kinect">Step 1: Setting Up the Kinect</h2>
@@ -912,10 +888,6 @@
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Replace <code>"YOUR_DEVICE_SERIAL"</code> with the actual serial number of your Kinect device.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>While "CPU" is listed as a pipeline option, this pipeline is for libfreenect2 and has nothing to do with OpenPose. You can use "CPU" as the pipeline, but OpenPose will continue to use whatever pipeline you built it for. Currently, as stated previously CUDA is the best option. However, other pose tracking pipelines which work efficiently on the CPU are planned for this plugin.</p>
 </div>
 <h2 id="step-3-configure-body-tracking">Step 3: Configure Body Tracking</h2>
 <p>Before you can start tracking, you need to configure the tracking parameters:</p>
@@ -955,10 +927,6 @@
 <p class="admonition-title">Important</p>
 <p>The <code>modelFolder</code> parameter must point to your OpenPose models directory. This is usually found in the OpenPose installation directory.</p>
 </div>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If you experience performance issues, try reducing the <code>netInputSize</code> parameter to a smaller size like "-1x128" for faster processing, though this may reduce tracking accuracy.</p>
-</div>
 <h2 id="step-4-start-tracking">Step 4: Start Tracking</h2>
 <p>Once configured, you can start tracking:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">startTracking</span><span class="p">;</span>
@@ -991,58 +959,19 @@
 <a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1">// Later, to stop it:</span>
 <a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="nx">x</span><span class="p">.</span><span class="nx">free</span><span class="p">;</span>
 </code></pre></div>
-<h3 id="understanding-kinectkr-parameters">Understanding Kinect.kr Parameters</h3>
-<p>The <code>Kinect.kr</code> UGen has the following parameters:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="nx">minval</span><span class="p">,</span> <span class="nx">maxval</span><span class="p">,</span> <span class="nx">joint_name</span><span class="p">,</span> <span class="nx">joint_coordinate</span><span class="p">)</span>
-</code></pre></div>
-<ul>
-<li><code>minval</code>: The minimum value in the output range</li>
-<li><code>maxval</code>: The maximum value in the output range</li>
-<li><code>joint_name</code>: The name of the joint to track (see list below)</li>
-<li><code>joint_coordinate</code>: Either "X" (horizontal) or "Y" (vertical)</li>
-</ul>
-<h3 id="available-joints">Available Joints</h3>
-<p>SCKinect can track the following joints (using the BODY_25 model):</p>
-<ul>
-<li><code>"Nose"</code> - Top of the nose</li>
-<li><code>"Neck"</code> - Base of the neck</li>
-<li><code>"RShoulder"</code> - Right shoulder</li>
-<li><code>"RElbow"</code> - Right elbow</li>
-<li><code>"RWrist"</code> - Right wrist</li>
-<li><code>"LShoulder"</code> - Left shoulder</li>
-<li><code>"LElbow"</code> - Left elbow</li>
-<li><code>"LWrist"</code> - Left wrist</li>
-<li><code>"MidHip"</code> - Middle of the hips</li>
-<li><code>"RHip"</code> - Right hip</li>
-<li><code>"RKnee"</code> - Right knee</li>
-<li><code>"RAnkle"</code> - Right ankle</li>
-<li><code>"LHip"</code> - Left hip</li>
-<li><code>"LKnee"</code> - Left knee</li>
-<li><code>"LAnkle"</code> - Left ankle</li>
-<li><code>"REye"</code> - Right eye</li>
-<li><code>"LEye"</code> - Left eye</li>
-<li><code>"REar"</code> - Right ear</li>
-<li><code>"LEar"</code> - Left ear</li>
-<li><code>"LBigToe"</code> - Left big toe</li>
-<li><code>"LSmallToe"</code> - Left small toe</li>
-<li><code>"LHeel"</code> - Left heel</li>
-<li><code>"RBigToe"</code> - Right big toe</li>
-<li><code>"RSmallToe"</code> - Right small toe</li>
-<li><code>"RHeel"</code> - Right heel</li>
-</ul>
 <h2 id="step-6-cleanup">Step 6: Cleanup</h2>
 <p>When you're done using the Kinect:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Stop tracking</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stopTracking</span><span class="p">;</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// Stop the device</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stop</span><span class="p">;</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1">// Close the device</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">closeDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Stop tracking</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stopTracking</span><span class="p">;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1">// Stop the device</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">stop</span><span class="p">;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">// Close the device</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">closeDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="next-steps">Next Steps</h2>
-<p>Now that you understand the basics, check out the <a href="../examples/wind/">Wind Example</a> for a more complete implementation. You can also explore the <a href="../api/kinect-class/">API Reference</a> for more detailed information about all available functions. </p>
+<p>Now that you understand the basics, you can also explore the <a href="../api/kinect-class/">API Reference</a> for more detailed information about all available functions. </p>
 
 
 

@@ -246,7 +246,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../components/kinect-ugen/" class="md-tabs__link">
+        <a href="../components/kinect-ugen.md" class="md-tabs__link">
           
   
   Core Components
@@ -282,7 +282,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../examples/wind/" class="md-tabs__link">
+        <a href="../examples/wind.md" class="md-tabs__link">
           
   
   Examples
@@ -298,7 +298,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../contributing/" class="md-tabs__link">
+      <a href="../contributing.md" class="md-tabs__link">
         
   
     
@@ -587,7 +587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/kinect-ugen/" class="md-nav__link">
+      <a href="../components/kinect-ugen.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -609,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/user-input/" class="md-nav__link">
+      <a href="../components/user-input.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -631,7 +631,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../components/user-output/" class="md-nav__link">
+      <a href="../components/user-output.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -793,7 +793,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/wind/" class="md-nav__link">
+      <a href="../examples/wind.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -822,7 +822,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../contributing.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -906,12 +906,13 @@
 <p>Because the link to the OpenPose models isn't working in the original repo, a fork is linked in the clone command below with working downloads for these models. Thanks Alec Dusheck!
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/AlecDusheck/openpose.git
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">cd</span><span class="w"> </span>openpose
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libopencv-dev<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>bash<span class="w"> </span>./scripts/ubuntu/install_deps.sh
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr<span class="w"> </span>-DGPU_MODE<span class="o">=</span>CUDA<span class="w"> </span>-DBUILD_PYTHON<span class="o">=</span>OFF
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>make<span class="w"> </span>-j<span class="sb">`</span>nproc<span class="sb">`</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>sudo<span class="w"> </span>ldconfig
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init<span class="w"> </span>--recursive
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>libopencv-dev<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>bash<span class="w"> </span>./scripts/ubuntu/install_deps.sh
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr<span class="w"> </span>-DGPU_MODE<span class="o">=</span>CUDA<span class="w"> </span>-DBUILD_PYTHON<span class="o">=</span>OFF
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>make<span class="w"> </span>-j<span class="sb">`</span>nproc<span class="sb">`</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>sudo<span class="w"> </span>ldconfig
 </code></pre></div></p>
 <p>For detailed installation instructions and troubleshooting, see the <a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/README.md">OpenPose installation guide</a>.</p>
 <h2 id="step-5-build-and-install-sckinect">Step 5: Build and Install SCKinect</h2>

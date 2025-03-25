@@ -13,7 +13,7 @@
       
       
       
-        <link rel="prev" href="../../components/user-output/">
+        <link rel="prev" href="../../getting-started/">
       
       
         <link rel="next" href="../cpp-interface/">
@@ -244,7 +244,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../components/kinect-ugen/" class="md-tabs__link">
+        <a href="../../components/kinect-ugen.md" class="md-tabs__link">
           
   
   Core Components
@@ -282,7 +282,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../examples/wind/" class="md-tabs__link">
+        <a href="../../examples/wind.md" class="md-tabs__link">
           
   
   Examples
@@ -298,7 +298,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../contributing/" class="md-tabs__link">
+      <a href="../../contributing.md" class="md-tabs__link">
         
   
     
@@ -468,7 +468,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/kinect-ugen/" class="md-nav__link">
+      <a href="../../components/kinect-ugen.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -490,7 +490,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/user-input/" class="md-nav__link">
+      <a href="../../components/user-input.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -512,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/user-output/" class="md-nav__link">
+      <a href="../../components/user-output.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -900,7 +900,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/wind/" class="md-nav__link">
+      <a href="../../examples/wind.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -929,7 +929,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../../contributing.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -964,10 +964,6 @@
 
 <h1 id="kinect-class-api-reference">Kinect Class API Reference</h1>
 <p>This page documents all methods and properties of the <code>Kinect</code> class in SuperCollider. This class provides the interface between SuperCollider and the Kinect sensor hardware.</p>
-<div class="admonition warning">
-<p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
-</div>
 <h2 id="class-variables">Class Variables</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">classvar</span> <span class="o">&lt;</span><span class="nx">openDevices</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">deviceCount</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">packetPipelines</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">jointNames</span><span class="p">,</span> <span class="o">&lt;</span><span class="nx">jointCoordinates</span><span class="p">;</span>
 </code></pre></div>
@@ -993,10 +989,10 @@
 <p><strong>Returns:</strong> A control rate UGen that maps the joint position to the specified range.</p>
 <p><strong>Example:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Map the Y position of the right wrist (0-1 range)</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">var</span> <span class="nx">rightHandHeight</span> <span class="o">=</span> <span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;RWrist&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">);</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="o">~</span><span class="nx">rightHandHeight</span> <span class="o">=</span> <span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;RWrist&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">);</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1">// Use it to control the frequency of a sine oscillator (200-800 Hz)</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nx">SinOsc</span><span class="p">.</span><span class="nx">ar</span><span class="p">(</span><span class="nx">Kinect</span><span class="p">.</span><span class="nx">kr</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="s2">&quot;RWrist&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">));</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="nx">SinOsc</span><span class="p">.</span><span class="nx">ar</span><span class="p">(</span><span class="o">~</span><span class="nx">rightHandHeight</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="device-management-methods">Device Management Methods</h2>
 <h3 id="findavailable">findAvailable</h3>
@@ -1254,7 +1250,7 @@
 <a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>
 <a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="c1">// Find and connect to Kinect</span>
 <a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.</span>
+<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>
 <a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
 <a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
 <a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>

@@ -16,8 +16,6 @@
         <link rel="prev" href="../kinect-class/">
       
       
-        <link rel="next" href="../../examples/wind/">
-      
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
@@ -244,7 +242,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../components/kinect-ugen/" class="md-tabs__link">
+        <a href="../../components/kinect-ugen.md" class="md-tabs__link">
           
   
   Core Components
@@ -282,7 +280,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../examples/wind/" class="md-tabs__link">
+        <a href="../../examples/wind.md" class="md-tabs__link">
           
   
   Examples
@@ -298,7 +296,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../contributing/" class="md-tabs__link">
+      <a href="../../contributing.md" class="md-tabs__link">
         
   
     
@@ -468,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/kinect-ugen/" class="md-nav__link">
+      <a href="../../components/kinect-ugen.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -490,7 +488,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/user-input/" class="md-nav__link">
+      <a href="../../components/user-input.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -512,7 +510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../components/user-output/" class="md-nav__link">
+      <a href="../../components/user-output.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -924,7 +922,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/wind/" class="md-nav__link">
+      <a href="../../examples/wind.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -953,7 +951,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/" class="md-nav__link">
+      <a href="../../contributing.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -988,10 +986,6 @@
 
 <h1 id="c-interface">C++ Interface</h1>
 <p>The SCKinect plugin is implemented in C++ and provides a bridge between the Kinect sensor, OpenPose, and SuperCollider. This page documents the C++ components and how they interact with each other.</p>
-<div class="admonition warning">
-<p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
-</div>
 <h2 id="key-classes-and-structures">Key Classes and Structures</h2>
 <h3 id="kinect-ugen-class">Kinect UGen Class</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">namespace</span><span class="w"> </span><span class="nn">Kinect</span><span class="w"> </span><span class="p">{</span>
@@ -1045,7 +1039,7 @@
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="n">libfreenect2</span><span class="o">::</span><span class="n">FrameMap</span><span class="w"> </span><span class="n">mFrames</span><span class="p">;</span>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="p">};</span>
 </code></pre></div>
-<p>This class is responsible for acquiring frames from the Kinect and feeding them to OpenPose. See <a href="../../components/user-input/">User Input</a> for more details.</p>
+<p>This class is responsible for acquiring frames from the Kinect and feeding them to OpenPose.</p>
 <h3 id="wuseroutput-class">WUserOutput Class</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WUserOutput</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">op</span><span class="o">::</span><span class="n">WorkerConsumer</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">op</span><span class="o">::</span><span class="n">Datum</span><span class="o">&gt;&gt;&gt;&gt;</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="k">public</span><span class="o">:</span>
@@ -1057,7 +1051,7 @@
 <a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">isDisplayEnabled</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
 <a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">};</span>
 </code></pre></div>
-<p>This class processes the output from OpenPose and makes the pose data available to the Kinect UGen. See <a href="../../components/user-output/">User Output</a> for more details.</p>
+<p>This class processes the output from OpenPose and makes the pose data available to the Kinect UGen.</p>
 <h2 id="enumerations">Enumerations</h2>
 <h3 id="packetpipeline-enum">PacketPipeline Enum</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">enum</span><span class="w"> </span><span class="nc">PacketPipeline</span><span class="w"> </span><span class="p">{</span>
@@ -1072,10 +1066,6 @@
 <li><strong>CUDA</strong>: CUDA GPU-accelerated processing</li>
 <li><strong>CUDAKDE</strong>: Enhanced CUDA processing with Kernel Density Estimation filtering</li>
 </ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>While all these pipelines are defined, the current implementation works best with CUDA and CUDAKDE options. The CPU pipeline is still in development and may not provide adequate performance for real-time applications.</p>
-</div>
 <h3 id="jointname-enum">JointName Enum</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">enum</span><span class="w"> </span><span class="nc">JointName</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">Nose</span><span class="p">,</span><span class="w"> </span><span class="n">Neck</span><span class="p">,</span><span class="w"> </span><span class="n">RShoulder</span><span class="p">,</span><span class="w"> </span><span class="n">RElbow</span><span class="p">,</span><span class="w"> </span><span class="n">RWrist</span><span class="p">,</span>
@@ -1095,8 +1085,7 @@
 <h2 id="command-handlers">Command Handlers</h2>
 <p>The C++ interface exposes several command handlers that are called when SuperCollider sends commands to the plugin:</p>
 <h3 id="pipeline-commands">Pipeline Commands</h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">KinectCmd_setPipeline2</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">world</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">)</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_setPipeline</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_setPipeline</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
 </code></pre></div>
 <p>These functions handle the <code>setPipeline</code> command from SuperCollider, configuring the appropriate libfreenect2 pipeline. The implementation creates the appropriate pipeline object based on the selected type:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Pseudocode from implementation</span>
@@ -1112,9 +1101,8 @@
 </code></pre></div>
 <h3 id="device-commands">Device Commands</h3>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_findAvailable</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">world</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kt">bool</span><span class="w"> </span><span class="n">KinectCmd_openDevice2</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">world</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">)</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_openDevice</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
-<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_closeDevice</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_openDevice</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_closeDevice</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
 </code></pre></div>
 <p>These functions handle device discovery and connection, allowing SuperCollider to find and connect to Kinect devices.</p>
 <h3 id="tracking-commands">Tracking Commands</h3>
@@ -1126,24 +1114,19 @@
 <a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_showDisplay</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
 <a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="kt">void</span><span class="w"> </span><span class="n">KinectCmd_hideDisplay</span><span class="p">(</span><span class="n">World</span><span class="o">*</span><span class="w"> </span><span class="n">inWorld</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">inUserData</span><span class="p">,</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">sc_msg_iter</span><span class="o">*</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="kt">void</span><span class="o">*</span><span class="w"> </span><span class="n">replyAddr</span><span class="p">)</span>
 </code></pre></div>
-<p>These functions handle the various tracking commands, configuring and controlling the OpenPose tracking process. The <code>configureTracking</code> command sets up the OpenPose wrapper with GPU configuration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">// Pseudocode from implementation</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">wrapperStructOutput</span><span class="p">.</span><span class="n">gpuNumber</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">numGpu</span><span class="p">;</span>
-<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">wrapperStructOutput</span><span class="p">.</span><span class="n">gpuStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gpuStartIndex</span><span class="p">;</span>
-<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1">// ...other configuration</span>
-</code></pre></div>
+<p>These functions handle the various tracking commands, configuring and controlling the OpenPose tracking process.</p>
 <h2 id="ugen-processing">UGen Processing</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Kinect::next</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">nSamples</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="c1">// Get the input parameters</span>
-<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">minval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">maxval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">joint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">coord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
-<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
-<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="c1">// Access poseKeypoints from WUserOutput</span>
-<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="c1">// Map joint position to output range</span>
-<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="w">    </span><span class="c1">// Write output</span>
-<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">Kinect::next</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">nSamples</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="c1">// Get the input parameters</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">minval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="n">maxval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">joint</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">coord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in0</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="c1">// Access poseKeypoints from WUserOutput</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="c1">// Map joint position to output range</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="c1">// Write output</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="p">}</span>
 </code></pre></div>
 <p>The <code>next</code> method is called at the control rate to process and output the joint position data. It:</p>
 <ol>
@@ -1153,15 +1136,15 @@
 <li>Writes the result to the output buffer</li>
 </ol>
 <h2 id="plugin-registration">Plugin Registration</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">PluginLoad</span><span class="p">(</span><span class="n">KinectUGens</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="c1">// Register the UGen</span>
-<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="n">registerUnit</span><span class="o">&lt;</span><span class="n">Kinect</span><span class="o">::</span><span class="n">Kinect</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Kinect&quot;</span><span class="p">);</span>
-<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
-<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="c1">// Register command handlers</span>
-<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="n">DefinePlugInCmd</span><span class="p">(</span><span class="s">&quot;setPipeline&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_setPipeline</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_setPipeline2</span><span class="p">);</span>
-<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="n">DefinePlugInCmd</span><span class="p">(</span><span class="s">&quot;findAvailable&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_findAvailable</span><span class="p">);</span>
-<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="c1">// ... additional command registrations</span>
-<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">PluginLoad</span><span class="p">(</span><span class="n">KinectUGens</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="c1">// Register the UGen</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="n">registerUnit</span><span class="o">&lt;</span><span class="n">Kinect</span><span class="o">::</span><span class="n">Kinect</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;Kinect&quot;</span><span class="p">);</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="c1">// Register command handlers</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="n">DefinePlugInCmd</span><span class="p">(</span><span class="s">&quot;setPipeline&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_setPipeline</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_setPipeline2</span><span class="p">);</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="n">DefinePlugInCmd</span><span class="p">(</span><span class="s">&quot;findAvailable&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">KinectCmd_findAvailable</span><span class="p">);</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="c1">// ... additional command registrations</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="p">}</span>
 </code></pre></div>
 <p>This section registers the Kinect UGen and all its command handlers with SuperCollider, making them available in the language.</p>
 <h2 id="implementation-notes">Implementation Notes</h2>

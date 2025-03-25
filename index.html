@@ -244,7 +244,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="components/kinect-ugen/" class="md-tabs__link">
+        <a href="components/kinect-ugen.md" class="md-tabs__link">
           
   
   Core Components
@@ -280,7 +280,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="examples/wind/" class="md-tabs__link">
+        <a href="examples/wind.md" class="md-tabs__link">
           
   
   Examples
@@ -296,7 +296,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="contributing/" class="md-tabs__link">
+      <a href="contributing.md" class="md-tabs__link">
         
   
     
@@ -543,7 +543,7 @@
   
   
     <li class="md-nav__item">
-      <a href="components/kinect-ugen/" class="md-nav__link">
+      <a href="components/kinect-ugen.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -565,7 +565,7 @@
   
   
     <li class="md-nav__item">
-      <a href="components/user-input/" class="md-nav__link">
+      <a href="components/user-input.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -587,7 +587,7 @@
   
   
     <li class="md-nav__item">
-      <a href="components/user-output/" class="md-nav__link">
+      <a href="components/user-output.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -749,7 +749,7 @@
   
   
     <li class="md-nav__item">
-      <a href="examples/wind/" class="md-nav__link">
+      <a href="examples/wind.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -778,7 +778,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/" class="md-nav__link">
+      <a href="contributing.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -830,7 +830,7 @@
 <ul>
 <li>Track up to 25 body joints in real-time</li>
 <li>Map any joint's X/Y position to sound parameters</li>
-<li>Choose from different processing pipelines (CUDA/CUDAKDE recommended for performance)</li>
+<li>Choose from different processing pipelines for libfreenect2 (CPU, OpenGL, CUDA, and CUDAKDE)</li>
 <li>Multiple configuration options for tracking quality and performance</li>
 <li>Simple SuperCollider interface for easy integration with your sound design</li>
 </ul>
@@ -839,7 +839,7 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">boot</span><span class="p">;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1">// Find and open a Kinect device</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>  <span class="c1">// CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">setPipeline</span><span class="p">(</span><span class="s2">&quot;CUDAKDE&quot;</span><span class="p">);</span>
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">openDevice</span><span class="p">(</span><span class="s2">&quot;YOUR_DEVICE_SERIAL&quot;</span><span class="p">);</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">start</span><span class="p">;</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>

@@ -196,7 +196,7 @@ Configures the OpenPose body tracking system.
 - **fpsMax** (Float): Maximum frames per second (-1 for no limit)
 - **upSamplingRatio** (Float): Sampling ratio for confidence map
 
-!!! note "Performance Tip"
+!!! tip "Performance Tip"
     For better performance on lower-end GPUs, try setting `netInputSize` to a smaller value like "-1x128" and limit `maxPeople` to 1 if you're only tracking yourself.
 
 **Example:**
@@ -289,34 +289,6 @@ The following joint names are available for tracking with the "BODY_25" pose mod
 | "LKnee"      | Left knee        |              |                 |
 | "LAnkle"     | Left ankle       |              |                 |
 
-## Typical Usage Pattern
+# Next Steps
 
-```supercollider
-// Boot the server
-s.boot;
-
-// Find and connect to Kinect
-Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");
-Kinect.openDevice("YOUR_DEVICE_SERIAL");
-Kinect.start;
-
-// Configure and start tracking
-Kinect.configureTracking(3, 1, "/path/to/openpose/models");
-Kinect.startTracking;
-
-// Create a synth that uses Kinect data
-SynthDef(\kinect_synth, {
-  var freq = Kinect.kr(200, 800, "RWrist", "Y");
-  var amp = Kinect.kr(0, 1, "LWrist", "X");
-  Out.ar(0, SinOsc.ar(freq) * amp ! 2);
-}).add;
-
-x = Synth(\kinect_synth);
-
-// When done
-x.free;
-Kinect.stopTracking;
-Kinect.stop;
-Kinect.closeDevice("YOUR_DEVICE_SERIAL");
-``` 
+Wanna go low level? Check out the [C++ Interface](cpp-interface.md) to better understand how this UGen works thanks to the SuperCollider plugin interface.

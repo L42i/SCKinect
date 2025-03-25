@@ -24,42 +24,6 @@ The plugin enables you to map specific body joint positions (like hands, knees, 
 - Multiple configuration options for tracking quality and performance
 - Simple SuperCollider interface for easy integration with your sound design
 
-## Quick Example
+## Next Steps
 
-```supercollider
-// Boot the server (needs to be running for the whole UGen to work)
-s.boot;
-// Find and open a Kinect device
-Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");
-Kinect.openDevice("YOUR_DEVICE_SERIAL");
-Kinect.start;
-
-// Configure and start body tracking
-Kinect.configureTracking(
-  3, 1, "/path/to/openpose/models",  // Point to your models folder
-  1, 0, 1, 0.25,
-  0, "-1x-1", "-1x256",
-  1, "BODY_25", 0.5, 
-  0.5, 0, 0.05, -1, 0.0
-);
-Kinect.startTracking;
-
-// Use right hand's Y position to control sound amplitude
-{
-  SinOsc.ar(
-    440, 
-    0, 
-    Kinect.kr(0, 1, "RWrist", "Y")  // Maps Y position to amplitude
-  )
-}.play;
-
-// Later, when done:
-Kinect.stopTracking;
-Kinect.stop;
-Kinect.closeDevice("YOUR_DEVICE_SERIAL");
-```
-
-## Getting Started
-
-See the [Installation](installation.md) and [Getting Started](getting-started.md) guides to begin using SCKinect in your projects. 
+See the [Installation](installation.md) page for instructions on installing SCKinect. 

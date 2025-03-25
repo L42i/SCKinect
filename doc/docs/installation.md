@@ -128,3 +128,7 @@ This should list your connected Kinect device with its serial number in the post
 
 If you encounter issues not covered here, check:
 - The [GitHub repository](https://github.com/L42i/SCKinect) for open issues
+
+## Next Steps
+
+Now that you have everything installed, you can explore the [Getting Started](getting-started.md) page for a little SuperCollider example with SCKinect! 

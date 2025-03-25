@@ -2,9 +2,6 @@
 
 This guide will walk you through the basic steps of setting up and using SCKinect to connect body movement with sound generation.
 
-!!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
-
 ## Basic Workflow
 
 Working with SCKinect follows this general workflow:
@@ -63,11 +60,11 @@ Kinect.configureTracking(
   numGpu: 1,             // Number of GPUs to use
   gpuStartIndex: 0,      // Starting GPU index (usually 0)
   
-  // Tracking settings
+  // Resolution average settings
   numAverages: 1,
   averageGap: 0.25,
   
-  // Display settings
+  // Display and network resolution settings
   renderPose: 0,
   outputSize: "-1x-1",
   netInputSize: "-1x256",
@@ -75,9 +72,9 @@ Kinect.configureTracking(
   // Model settings
   poseMode: 1,
   poseModel: "BODY_25",
-  alphaPose: 0.5,
   
-  // Advanced settings
+  // Advanced display settings
+  alphaPose: 0.5,
   alphaHeatmap: 0.5,
   partToShow: 0,
   renderThreshold: 0.05,
@@ -86,7 +83,7 @@ Kinect.configureTracking(
 );
 ```
 
-!!! important
+!!! note
     The `modelFolder` parameter must point to your OpenPose models directory. This is usually found in the OpenPose installation directory.
 
 ## Step 4: Start Tracking

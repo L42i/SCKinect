@@ -1,2 +1,4 @@
 build*
 doc/site*
+*.DS_Store
+.cursor/

@@ -18,7 +18,7 @@ The plugin enables you to map specific body joint positions (like hands, knees, 
 
 ## Key Features
 
-- Track up to 25 body joints in real-time
+- Track up to 24 body joints in real-time
 - Map any joint's X/Y position to sound parameters
 - Choose from different processing pipelines for libfreenect2 (CPU, OpenGL, CUDA, and CUDAKDE)
 - Multiple configuration options for tracking quality and performance

@@ -2,9 +2,6 @@
 
 This page documents all methods and properties of the `Kinect` class in SuperCollider. This class provides the interface between SuperCollider and the Kinect sensor hardware.
 
-!!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
-
 ## Class Variables
 
 ```supercollider
@@ -40,10 +37,10 @@ Creates a control rate UGen that outputs the position of a specific joint.
 
 ```supercollider
 // Map the Y position of the right wrist (0-1 range)
-var rightHandHeight = Kinect.kr(0, 1, "RWrist", "Y");
+~rightHandHeight = Kinect.kr(0, 1, "RWrist", "Y");
 
 // Use it to control the frequency of a sine oscillator (200-800 Hz)
-SinOsc.ar(Kinect.kr(200, 800, "RWrist", "Y"));
+SinOsc.ar(~rightHandHeight);
 ```
 
 ## Device Management Methods
@@ -300,7 +297,7 @@ s.boot;
 
 // Find and connect to Kinect
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
+Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
 Kinect.start;
 

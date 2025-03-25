@@ -2,9 +2,6 @@
 
 The SCKinect plugin is implemented in C++ and provides a bridge between the Kinect sensor, OpenPose, and SuperCollider. This page documents the C++ components and how they interact with each other.
 
-!!! warning "CUDA Requirement"
-    The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.
-
 ## Key Classes and Structures
 
 ### Kinect UGen Class
@@ -68,7 +65,7 @@ private:
 };
 ```
 
-This class is responsible for acquiring frames from the Kinect and feeding them to OpenPose. See [User Input](../components/user-input.md) for more details.
+This class is responsible for acquiring frames from the Kinect and feeding them to OpenPose.
 
 ### WUserOutput Class
 
@@ -84,7 +81,7 @@ public:
 };
 ```
 
-This class processes the output from OpenPose and makes the pose data available to the Kinect UGen. See [User Output](../components/user-output.md) for more details.
+This class processes the output from OpenPose and makes the pose data available to the Kinect UGen.
 
 ## Enumerations
 
@@ -103,9 +100,6 @@ This enumeration defines the different processing pipelines available for the Ki
 - **OpenGL**: OpenGL-accelerated processing
 - **CUDA**: CUDA GPU-accelerated processing
 - **CUDAKDE**: Enhanced CUDA processing with Kernel Density Estimation filtering
-
-!!! note
-    While all these pipelines are defined, the current implementation works best with CUDA and CUDAKDE options. The CPU pipeline is still in development and may not provide adequate performance for real-time applications.
 
 ### JointName Enum
 
@@ -138,7 +132,6 @@ The C++ interface exposes several command handlers that are called when SuperCol
 ### Pipeline Commands
 
 ```cpp
-bool KinectCmd_setPipeline2(World* world, void* inUserData)
 void KinectCmd_setPipeline(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 ```
 
@@ -161,7 +154,6 @@ switch(pipeline) {
 
 ```cpp
 void KinectCmd_findAvailable(World* world, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
-bool KinectCmd_openDevice2(World* world, void* inUserData)
 void KinectCmd_openDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 void KinectCmd_closeDevice(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 ```
@@ -180,14 +172,7 @@ void KinectCmd_showDisplay(World* inWorld, void* inUserData, struct sc_msg_iter*
 void KinectCmd_hideDisplay(World* inWorld, void* inUserData, struct sc_msg_iter* args, void* replyAddr)
 ```
 
-These functions handle the various tracking commands, configuring and controlling the OpenPose tracking process. The `configureTracking` command sets up the OpenPose wrapper with GPU configuration:
-
-```cpp
-// Pseudocode from implementation
-wrapperStructOutput.gpuNumber = numGpu;
-wrapperStructOutput.gpuStart = gpuStartIndex;
-// ...other configuration
-```
+These functions handle the various tracking commands, configuring and controlling the OpenPose tracking process.
 
 ## UGen Processing
 

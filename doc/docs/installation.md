@@ -68,6 +68,7 @@ Because the link to the OpenPose models isn't working in the original repo, a fo
 ```bash
 git clone https://github.com/AlecDusheck/openpose.git
 cd openpose
+git submodule update --init --recursive
 sudo apt-get install libopencv-dev && sudo bash ./scripts/ubuntu/install_deps.sh
 mkdir build && cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DGPU_MODE=CUDA -DBUILD_PYTHON=OFF

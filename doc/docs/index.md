@@ -20,7 +20,7 @@ The plugin enables you to map specific body joint positions (like hands, knees, 
 
 - Track up to 25 body joints in real-time
 - Map any joint's X/Y position to sound parameters
-- Choose from different processing pipelines (CUDA/CUDAKDE recommended for performance)
+- Choose from different processing pipelines for libfreenect2 (CPU, OpenGL, CUDA, and CUDAKDE)
 - Multiple configuration options for tracking quality and performance
 - Simple SuperCollider interface for easy integration with your sound design
 
@@ -31,7 +31,7 @@ The plugin enables you to map specific body joint positions (like hands, knees, 
 s.boot;
 // Find and open a Kinect device
 Kinect.findAvailable;
-Kinect.setPipeline("CUDAKDE");  // CUDA pipeline is recommended but not required here for real-time performance. Remember this is libfreenect2 pipeline and not OpenPose.
+Kinect.setPipeline("CUDAKDE");
 Kinect.openDevice("YOUR_DEVICE_SERIAL");
 Kinect.start;
 

@@ -9,11 +9,11 @@ This guide will walk you through the basic steps of setting up and using SCKinec
 
 Working with SCKinect follows this general workflow:
 
-1. **Setup**: Find and connect to the Kinect device
-2. **Configure**: Set tracking parameters
-3. **Track**: Start body tracking
-4. **Map**: Map joint positions to sound parameters
-5. **Generate**: Use the mapped values to generate sound
+1. **Boot The Server**: Boot the SuperCollider server (scsynth)
+2. **Setup**: Find and connect to the Kinect device
+3. **Configure**: Set tracking parameters for OpenPose
+4. **Track**: Start body tracking
+5. **Map**: Map joint positions to sound parameters
 6. **Cleanup**: Stop tracking and close the device when done
 
 ## Step 1: Setting Up the Kinect
@@ -47,9 +47,6 @@ Kinect.start;
 
 !!! note
     Replace `"YOUR_DEVICE_SERIAL"` with the actual serial number of your Kinect device.
-    
-!!! warning
-    While "CPU" is listed as a pipeline option, this pipeline is for libfreenect2 and has nothing to do with OpenPose. You can use "CPU" as the pipeline, but OpenPose will continue to use whatever pipeline you built it for. Currently, as stated previously CUDA is the best option. However, other pose tracking pipelines which work efficiently on the CPU are planned for this plugin.
 
 ## Step 3: Configure Body Tracking
 
@@ -91,9 +88,6 @@ Kinect.configureTracking(
 
 !!! important
     The `modelFolder` parameter must point to your OpenPose models directory. This is usually found in the OpenPose installation directory.
-    
-!!! tip
-    If you experience performance issues, try reducing the `netInputSize` parameter to a smaller size like "-1x128" for faster processing, though this may reduce tracking accuracy.
 
 ## Step 4: Start Tracking
 
@@ -138,49 +132,6 @@ x = Synth(\kinect_controlled_synth);
 x.free;
 ```
 
-### Understanding Kinect.kr Parameters
-
-The `Kinect.kr` UGen has the following parameters:
-
-```supercollider
-Kinect.kr(minval, maxval, joint_name, joint_coordinate)
-```
-
-- `minval`: The minimum value in the output range
-- `maxval`: The maximum value in the output range
-- `joint_name`: The name of the joint to track (see list below)
-- `joint_coordinate`: Either "X" (horizontal) or "Y" (vertical)
-
-### Available Joints
-
-SCKinect can track the following joints (using the BODY_25 model):
-
-- `"Nose"` - Top of the nose
-- `"Neck"` - Base of the neck
-- `"RShoulder"` - Right shoulder
-- `"RElbow"` - Right elbow
-- `"RWrist"` - Right wrist
-- `"LShoulder"` - Left shoulder
-- `"LElbow"` - Left elbow
-- `"LWrist"` - Left wrist
-- `"MidHip"` - Middle of the hips
-- `"RHip"` - Right hip
-- `"RKnee"` - Right knee
-- `"RAnkle"` - Right ankle
-- `"LHip"` - Left hip
-- `"LKnee"` - Left knee
-- `"LAnkle"` - Left ankle
-- `"REye"` - Right eye
-- `"LEye"` - Left eye
-- `"REar"` - Right ear
-- `"LEar"` - Left ear
-- `"LBigToe"` - Left big toe
-- `"LSmallToe"` - Left small toe
-- `"LHeel"` - Left heel
-- `"RBigToe"` - Right big toe
-- `"RSmallToe"` - Right small toe
-- `"RHeel"` - Right heel
-
 ## Step 6: Cleanup
 
 When you're done using the Kinect:
@@ -198,4 +149,4 @@ Kinect.closeDevice("YOUR_DEVICE_SERIAL");
 
 ## Next Steps
 
-Now that you understand the basics, check out the [Wind Example](examples/wind.md) for a more complete implementation. You can also explore the [API Reference](api/kinect-class.md) for more detailed information about all available functions. 
+Now that you understand the basics, you can also explore the [API Reference](api/kinect-class.md) for more detailed information about all available functions. 

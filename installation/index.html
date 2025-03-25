@@ -433,15 +433,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    <span class="md-ellipsis">
-      Requirements
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#step-1-install-supercollider" class="md-nav__link">
     <span class="md-ellipsis">
       Step 1: Install SuperCollider
@@ -874,29 +865,7 @@
 
 
 <h1 id="installation-guide">Installation Guide</h1>
-<p>Installing SCKinect requires setting up several dependencies before building the plugin. This guide will walk you through each step of the process.</p>
-<h2 id="requirements">Requirements</h2>
-<p>Before installing SCKinect, make sure you have the following:</p>
-<ul>
-<li>A Kinect v2 sensor device</li>
-<li><strong>CUDA-capable NVIDIA GPU</strong> (required for effective performance with OpenPose)</li>
-<li>CMake (version 3.5 or higher)</li>
-<li>C++ compiler with C++17 support (gcc, clang, or MSVC)</li>
-<li><a href="https://github.com/supercollider/supercollider">SuperCollider</a> (with source code)</li>
-<li><a href="https://github.com/OpenKinect/libfreenect2">libfreenect2</a></li>
-<li><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose">OpenPose</a> built with CUDA support (CPU solution other than OpenPose coming soon!)</li>
-</ul>
-<div class="admonition warning">
-<p class="admonition-title">Hardware Requirements</p>
-<p>The current implementation requires CUDA for effective real-time body tracking. The CPU-only implementation is in progress but not yet fully functional for real-time applications. For best results, you need:</p>
-<ul>
-<li>NVIDIA GPU with CUDA capability 3.0 or higher</li>
-<li>At least 8GB of GPU memory (8GB+ recommended because cuDNN uses a lot)</li>
-<li>Recent NVIDIA drivers</li>
-</ul>
-</div>
 <h2 id="step-1-install-supercollider">Step 1: Install SuperCollider</h2>
-<p>If you don't already have SuperCollider installed:</p>
 <ol>
 <li>Download and install from the <a href="https://supercollider.github.io/downloads">SuperCollider website</a></li>
 <li>For building SCKinect, you also need the SuperCollider source code:</li>
@@ -917,25 +886,27 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/OpenKinect/libfreenect2.git
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>libfreenect2
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCUDA_PROPAGATE_HOST_FLAGS<span class="o">=</span>off<span class="w"> </span>-DENABLE_CUDA<span class="o">=</span>ON
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>make
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>make<span class="w"> </span>-j<span class="sb">`</span>nproc<span class="sb">`</span>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>sudo<span class="w"> </span>ldconfig
 </code></pre></div>
 <p>For detailed installation instructions and troubleshooting, see the <a href="https://github.com/OpenKinect/libfreenect2#installation">libfreenect2 installation guide</a>.</p>
 <h2 id="step-4-install-openpose-with-cuda-support">Step 4: Install OpenPose with CUDA Support</h2>
 <p><a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose">OpenPose</a> is required for body tracking. Ensure you build it with CUDA support. Nothing else works at the moment, but future plans are in progress to support even more pose tracking methods besides OpenPose. For now, OpenPose works best with CUDA though:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>openpose
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DGPU_MODE<span class="o">=</span>CUDA<span class="w"> </span>-DBUILD_PYTHON<span class="o">=</span>OFF
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>make<span class="w"> </span>-j<span class="sb">`</span>nproc<span class="sb">`</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
-</code></pre></div>
-<p>For detailed installation instructions and troubleshooting, see the <a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/README.md">OpenPose installation guide</a>.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>Remember the location where you installed OpenPose, as you'll need to reference the models directory when configuring SCKinect.</p>
 </div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">cd</span><span class="w"> </span>openpose
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/usr<span class="w"> </span>-DGPU_MODE<span class="o">=</span>CUDA<span class="w"> </span>-DBUILD_PYTHON<span class="o">=</span>OFF
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>make<span class="w"> </span>-j<span class="sb">`</span>nproc<span class="sb">`</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>sudo<span class="w"> </span>make<span class="w"> </span>install
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>sudo<span class="w"> </span>ldconfig
+</code></pre></div>
+<p>For detailed installation instructions and troubleshooting, see the <a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/README.md">OpenPose installation guide</a>.</p>
 <h2 id="step-5-build-and-install-sckinect">Step 5: Build and Install SCKinect</h2>
 <p>Now you can build the SCKinect plugin:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/L42i/SCKinect.git
@@ -943,27 +914,24 @@
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build
 </code></pre></div>
 <p>Configure the build with CMake:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DSC_PATH<span class="o">=</span>/path/to/supercollider/source
-</code></pre></div>
-<p>Or to install directly to your SuperCollider extensions directory:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DSC_PATH<span class="o">=</span>/path/to/supercollider/source<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/path/to/extensions
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span>-DSC_PATH<span class="o">=</span>/path/to/supercollider/source<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>/path/to/supercollider/extensions
 </code></pre></div>
 <p>Build and install:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Release
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Release<span class="w"> </span>--target<span class="w"> </span>install
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Release
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>cmake<span class="w"> </span>--build<span class="w"> </span>.<span class="w"> </span>--config<span class="w"> </span>Release<span class="w"> </span>--target<span class="w"> </span>install
 </code></pre></div>
 <h2 id="step-6-verify-installation">Step 6: Verify Installation</h2>
 <ol>
 <li>Connect your Kinect sensor to your computer</li>
 <li>Start SuperCollider and run:</li>
 </ol>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Always need to run the server before operating on UGen!</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">boot</span><span class="p">;</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1">// Now server should be booted and we can run this command</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Always need to run the server before operating on UGen!</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nx">s</span><span class="p">.</span><span class="nx">boot</span><span class="p">;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// Now server should be booted and we can run this command</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nx">Kinect</span><span class="p">.</span><span class="nx">findAvailable</span><span class="p">;</span>
 </code></pre></div>
-<p>This should list your connected Kinect device with its serial number.</p>
+<p>This should list your connected Kinect device with its serial number in the post window.</p>
 <h2 id="troubleshooting">Troubleshooting</h2>
 <h3 id="common-issues">Common Issues</h3>
 <ol>
@@ -994,8 +962,7 @@
 </ol>
 <h3 id="getting-help">Getting Help</h3>
 <p>If you encounter issues not covered here, check:
-- The <a href="https://github.com/L42i/SCKinect">GitHub repository</a> for open issues
-- <a href="https://scsynth.org/">SuperCollider forum</a> for community support </p>
+- The <a href="https://github.com/L42i/SCKinect">GitHub repository</a> for open issues</p>
 
 
 

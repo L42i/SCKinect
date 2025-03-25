@@ -1,29 +1,6 @@
 # Installation Guide
 
-Installing SCKinect requires setting up several dependencies before building the plugin. This guide will walk you through each step of the process.
-
-## Requirements
-
-Before installing SCKinect, make sure you have the following:
-
-- A Kinect v2 sensor device
-- **CUDA-capable NVIDIA GPU** (required for effective performance with OpenPose)
-- CMake (version 3.5 or higher)
-- C++ compiler with C++17 support (gcc, clang, or MSVC)
-- [SuperCollider](https://github.com/supercollider/supercollider) (with source code)
-- [libfreenect2](https://github.com/OpenKinect/libfreenect2)
-- [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) built with CUDA support (CPU solution other than OpenPose coming soon!)
-
-!!! warning "Hardware Requirements"
-    The current implementation requires CUDA for effective real-time body tracking. The CPU-only implementation is in progress but not yet fully functional for real-time applications. For best results, you need:
-    
-    - NVIDIA GPU with CUDA capability 3.0 or higher
-    - At least 8GB of GPU memory (8GB+ recommended because cuDNN uses a lot)
-    - Recent NVIDIA drivers
-
 ## Step 1: Install SuperCollider
-
-If you don't already have SuperCollider installed:
 
 1. Download and install from the [SuperCollider website](https://supercollider.github.io/downloads)
 2. For building SCKinect, you also need the SuperCollider source code:
@@ -52,9 +29,10 @@ nvcc --version
 git clone https://github.com/OpenKinect/libfreenect2.git
 cd libfreenect2
 mkdir build && cd build
-cmake .. -DCUDA_PROPAGATE_HOST_FLAGS=off -DENABLE_CUDA=ON
-make
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+make -j`nproc`
 sudo make install
+sudo ldconfig
 ```
 
 For detailed installation instructions and troubleshooting, see the [libfreenect2 installation guide](https://github.com/OpenKinect/libfreenect2#installation).
@@ -63,19 +41,20 @@ For detailed installation instructions and troubleshooting, see the [libfreenect
 
 [OpenPose](https://github.com/CMU-Perceptual-Computing-Lab/openpose) is required for body tracking. Ensure you build it with CUDA support. Nothing else works at the moment, but future plans are in progress to support even more pose tracking methods besides OpenPose. For now, OpenPose works best with CUDA though:
 
+!!! important
+    Remember the location where you installed OpenPose, as you'll need to reference the models directory when configuring SCKinect.
+
 ```bash
 git clone https://github.com/CMU-Perceptual-Computing-Lab/openpose.git
 cd openpose
 mkdir build && cd build
-cmake .. -DGPU_MODE=CUDA -DBUILD_PYTHON=OFF
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DGPU_MODE=CUDA -DBUILD_PYTHON=OFF
 make -j`nproc`
 sudo make install
+sudo ldconfig
 ```
 
 For detailed installation instructions and troubleshooting, see the [OpenPose installation guide](https://github.com/CMU-Perceptual-Computing-Lab/openpose/blob/master/doc/installation/README.md).
-
-!!! important
-    Remember the location where you installed OpenPose, as you'll need to reference the models directory when configuring SCKinect.
 
 ## Step 5: Build and Install SCKinect
 
@@ -90,13 +69,7 @@ mkdir build && cd build
 Configure the build with CMake:
 
 ```bash
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSC_PATH=/path/to/supercollider/source
-```
-
-Or to install directly to your SuperCollider extensions directory:
-
-```bash
-cmake .. -DCMAKE_BUILD_TYPE=Release -DSC_PATH=/path/to/supercollider/source -DCMAKE_INSTALL_PREFIX=/path/to/extensions
+cmake .. -DCMAKE_BUILD_TYPE=Release -DSC_PATH=/path/to/supercollider/source -DCMAKE_INSTALL_PREFIX=/path/to/supercollider/extensions
 ```
 
 Build and install:
@@ -119,7 +92,7 @@ s.boot;
 Kinect.findAvailable;
 ```
 
-This should list your connected Kinect device with its serial number.
+This should list your connected Kinect device with its serial number in the post window.
 
 ## Troubleshooting
 
@@ -145,4 +118,3 @@ This should list your connected Kinect device with its serial number.
 
 If you encounter issues not covered here, check:
 - The [GitHub repository](https://github.com/L42i/SCKinect) for open issues
-- [SuperCollider forum](https://scsynth.org/) for community support 

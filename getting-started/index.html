@@ -593,10 +593,6 @@
 
 <h1 id="getting-started-with-sckinect">Getting Started with SCKinect</h1>
 <p>This guide will walk you through the basic steps of setting up and using SCKinect to connect body movement with sound generation.</p>
-<div class="admonition warning">
-<p class="admonition-title">CUDA Requirement</p>
-<p>The current implementation requires CUDA for effective real-time performance. The CPU-only implementation is in progress but not yet fully functional. You will need a CUDA-capable NVIDIA GPU to use this plugin as described in this guide. This is because in order for the current pose estimation model (OpenPose) to achieve efficient performance, you need to GPU accelerate it unless you have a CPU which can process ridiculous amounts of data like a GPU (some CPU's do have capabilities like that and separate cores for doing this processing i.e. Apple Silicon). But for building OpenPose, it is easiest to build it with CUDA. For this reason, alternative methods other than using OpenPose for CPU users are being explored.</p>
-</div>
 <h2 id="basic-workflow">Basic Workflow</h2>
 <p>Working with SCKinect follows this general workflow:</p>
 <ol>
@@ -643,11 +639,11 @@
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  <span class="nx">numGpu</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>             <span class="c1">// Number of GPUs to use</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  <span class="nx">gpuStartIndex</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1">// Starting GPU index (usually 0)</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  <span class="c1">// Tracking settings</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  <span class="c1">// Resolution average settings</span>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  <span class="nx">numAverages</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
 <a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  <span class="nx">averageGap</span><span class="o">:</span> <span class="mf">0.25</span><span class="p">,</span>
 <a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  <span class="c1">// Display settings</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  <span class="c1">// Display and network resolution settings</span>
 <a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  <span class="nx">renderPose</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  <span class="nx">outputSize</span><span class="o">:</span> <span class="s2">&quot;-1x-1&quot;</span><span class="p">,</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  <span class="nx">netInputSize</span><span class="o">:</span> <span class="s2">&quot;-1x256&quot;</span><span class="p">,</span>
@@ -655,9 +651,9 @@
 <a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  <span class="c1">// Model settings</span>
 <a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  <span class="nx">poseMode</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
 <a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>  <span class="nx">poseModel</span><span class="o">:</span> <span class="s2">&quot;BODY_25&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>  <span class="nx">alphaPose</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span>
-<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
-<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  <span class="c1">// Advanced settings</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>  <span class="c1">// Advanced display settings</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>  <span class="nx">alphaPose</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span>
 <a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>  <span class="nx">alphaHeatmap</span><span class="o">:</span> <span class="mf">0.5</span><span class="p">,</span>
 <a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>  <span class="nx">partToShow</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
 <a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>  <span class="nx">renderThreshold</span><span class="o">:</span> <span class="mf">0.05</span><span class="p">,</span>
@@ -665,8 +661,8 @@
 <a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>  <span class="nx">upSamplingRatio</span><span class="o">:</span> <span class="mf">0.0</span>
 <a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="p">);</span>
 </code></pre></div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The <code>modelFolder</code> parameter must point to your OpenPose models directory. This is usually found in the OpenPose installation directory.</p>
 </div>
 <h2 id="step-4-start-tracking">Step 4: Start Tracking</h2>

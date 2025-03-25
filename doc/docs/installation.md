@@ -15,23 +15,18 @@ SCKinect requires CUDA for effective performance:
 
 1. Download and install the CUDA Toolkit from [NVIDIA's website](https://developer.nvidia.com/cuda-downloads). You actually don't want to download the latest and should aim for 11.6 or 11.7 (for compatibility reasons).
 2. Make sure to install the drivers. Try to install the latest one if you can. Although the CUDA toolkit will be an older version than the drivers, you can skip the driver install when installing the toolkit since you've already installed the newer drivers. Do this combination for the best compatibility. Higher CUDA versions will consume too much memory or have compilation issues with OpenPose on Linux, and older GPU drivers won't work on a newer GPU :/.
-3. Next, you should install cuDNN which is a neural net extension to CUDA: https://developer.nvidia.com/cudnn. The install process is pretty similar to that of the CUDA install. Follow the instructions on the Nvidia website.
+3. Next, you should install [cuDNN](https://developer.nvidia.com/cudnn) which is a neural net extension to CUDA. The install process is pretty similar to that of the CUDA install. Follow the instructions on the Nvidia website.
 4. Clone the CUDA samples and make note of where the samples folder is located. Make sure to also checkout the version tag which matches the version of your CUDA install. If they don't match, try to pick the closest version below (i.e. 11.6 if you have CUDA 11.7)
-
 ```bash
 git clone https://github.com/NVIDIA/cuda-samples.git
 cd cuda-samples
 git checkout tags/v11.6
 ```
-
 5. Copy this folder to your CUDA toolkit folder
-
 ```bash
 sudo cp -r cuda-samples /usr/local/cuda-11.7
 ```
-
 6. Verify the installation by running:
-
 ```bash
 nvcc --version
 ```
@@ -125,21 +120,19 @@ This should list your connected Kinect device with its serial number in the post
 
 ### Common Issues
 
-1. **Kinect not detected**
-   - Did you boot the server?
-   - Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)
-   - Check if libfreenect2 can detect the device using the libfreenect2 examples
+1. **Kinect not detected:**
+   1. Did you boot the server?
+   2. Make sure your Kinect is properly connected (i.e. loose USB, missing drivers, missing udev rules, etc.)
+   3. Check if libfreenect2 can detect the device using the libfreenect2 examples
 
-2. **Build errors**
-   - Ensure all dependencies are properly installed
-   - Check that your compiler supports C++17
-   - Verify path to SuperCollider source is correct
+2. **Build errors:**
+   1. Ensure all dependencies are properly installed
+   2. Check that your compiler supports C++17
+   3. Verify path to SuperCollider source is correct
 
-3. **OpenPose errors**
-   - Make sure the path to OpenPose models is correctly specified when calling `Kinect.configureTracking()`
+3. **OpenPose errors:** Make sure the path to OpenPose models is correctly specified when calling `Kinect.configureTracking()`
 
-4. **Performance issues**
-   - Ensure you are using the right netResolution and only tracking as many people as you need to
+4. **Performance issues:** Ensure you are using the right netResolution and only tracking as many people as you need to
 
 ### Getting Help
 

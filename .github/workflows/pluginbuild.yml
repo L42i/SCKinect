@@ -40,24 +40,27 @@ jobs:
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: sudo apt-get install libopencv-dev && sudo bash ./scripts/ubuntu/install_deps.sh
-    - name: Fix CAFFE SetTotalBytesLimit
-      shell: bash
-      working-directory: ${{ env.OPENPOSE_PATH }}
-      run: |
-        find . -name "io.cpp" -path "*/caffe/utils/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
-        # Backup command in case the path is slightly different
-        find . -name "io.cpp" -path "*/caffe/src/caffe/util/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
     - name: Install Libfreenect2 Dependencies
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}
       run: sudo apt-get install libusb-1.0-0-dev libturbojpeg0-dev libglfw3-dev
-    - name: Build and Install OpenPose
+    - name: Configure OpenPose
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: |
         mkdir -p build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE='Release' -DENABLE_PYTHON=OFF -DENABLE_PYTHON_BINDINGS=OFF -DGPU_MODE=CPU_ONLY -DUSE_CUDA=OFF -DDOWNLOAD_BODY_25_MODEL=OFF -DDOWNLOAD_BODY_COCO_MODEL=OFF -DDOWNLOAD_FACE_MODEL=OFF -DDOWNLOAD_HAND_MODEL=OFF
+    - name: Fix CAFFE SetTotalBytesLimit
+      shell: bash
+      working-directory: ${{ env.OPENPOSE_PATH }}
+      run: |
+        find . -name "io.cpp" -path "*/caffe/src/caffe/util/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(kProtoReadBytesLimit)/g' {} +
+    - name: Build OpenPose
+      shell: bash
+      working-directory: ${{ env.OPENPOSE_PATH }}
+      run: |
+        cd build
         make -j$(nproc)
         sudo make install
     - name: Build and Install Libfreenect2

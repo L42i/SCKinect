@@ -44,7 +44,9 @@ jobs:
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: |
-        find . -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
+        find . -name "io.cpp" -path "*/caffe/utils/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
+        # Backup command in case the path is slightly different
+        find . -name "io.cpp" -path "*/caffe/src/caffe/util/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
     - name: Install Libfreenect2 Dependencies
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}

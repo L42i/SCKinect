@@ -170,6 +170,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
         const float averageGap = args->getf(0.25);
         const int renderPose = args->geti(-1);
         const auto outputSize = op::flagsToPoint(op::String(args->gets()), "-1x-1");
+        const auto keypointScaleMode = op::ScaleMode::ZeroToOne; // Final scale of the Array<float> Datum.poseKeypoints and the written pose data.
         const auto netInputSize = op::flagsToPoint(op::String(args->gets()), "-1x368");
         const auto poseMode = op::flagsToPoseMode(args->geti(1));
         const auto poseModel = op::flagsToPoseModel(op::String(args->gets()));

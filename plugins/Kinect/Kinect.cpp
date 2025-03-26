@@ -7,7 +7,7 @@ static InterfaceTable* ft;
 namespace Kinect {
 
 enum PacketPipeline {
-    Dump, CPU, OpenGL, CUDA, CUDAKDE
+    Dump, CPU, OpenGL
 };
 
 struct KinectData {
@@ -51,12 +51,6 @@ bool KinectCmd_setPipeline2(World* world, void* inUserData)
             break;
         case OpenGL:
             kinectData->mPipeline = new libfreenect2::OpenGLPacketPipeline();
-            break;
-        case CUDA:
-            kinectData->mPipeline = new libfreenect2::CudaPacketPipeline();
-            break;
-        case CUDAKDE:
-            kinectData->mPipeline = new libfreenect2::CudaKdePacketPipeline();
             break;
         default:
             break;

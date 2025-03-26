@@ -4,7 +4,7 @@ Kinect : UGen {
 		openDevices = Dictionary.new;
 		packetPipelines = Dictionary.newFrom([
 			"Dump", 0, "CPU", 1,
-			"OpenGL", 2, "CUDA", 3, "CUDAKDE", 4
+			"OpenGL", 2
 		]);
 		jointNames = Dictionary.newFrom([
 			"Nose", 0, "Neck", 1, "RShoulder", 2,

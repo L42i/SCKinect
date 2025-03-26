@@ -56,7 +56,7 @@ jobs:
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: |
         find . -name "io.cpp" -path "*/caffe/src/caffe/util/*" -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(kProtoReadBytesLimit)/g' {} +
-    - name: Build and InstallOpenPose
+    - name: Build and Install OpenPose
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: |

@@ -50,7 +50,7 @@ jobs:
       run: |
         mkdir -p build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE='Release' -DENABLE_PYTHON=OFF -DENABLE_PYTHON_BINDINGS=OFF -DGPU_MODE=CPU_ONLY -DUSE_CUDA=OFF -DDOWNLOAD_BODY_25_MODEL=ON
+        cmake .. -DCMAKE_BUILD_TYPE='Release' -DENABLE_PYTHON=OFF -DENABLE_PYTHON_BINDINGS=OFF -DGPU_MODE=CPU_ONLY -DUSE_CUDA=OFF -DDOWNLOAD_MODELS=OFF
         make -j$(nproc)
         sudo make install
     - name: Build and Install Libfreenect2

@@ -40,6 +40,11 @@ jobs:
       shell: bash
       working-directory: ${{ env.OPENPOSE_PATH }}
       run: sudo apt-get install libopencv-dev && sudo bash ./scripts/ubuntu/install_deps.sh
+    - name: Fix CAFFE SetTotalBytesLimit
+      shell: bash
+      working-directory: ${{ env.OPENPOSE_PATH }}
+      run: |
+        find . -type f -exec sed -i 's/SetTotalBytesLimit(.*,.*)/SetTotalBytesLimit(268435456)/g' {} +
     - name: Install Libfreenect2 Dependencies
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}

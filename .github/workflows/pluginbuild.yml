@@ -44,6 +44,15 @@ jobs:
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}
       run: sudo apt-get install libusb-1.0-0-dev libturbojpeg0-dev libglfw3-dev
+    - name: Build and Install OpenPose
+      shell: bash
+      working-directory: ${{ env.OPENPOSE_PATH }}
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE='Release' -DENABLE_PYTHON=OFF -DENABLE_PYTHON_BINDINGS=OFF
+        make -j$(nproc)
+        sudo make install
     - name: Build and Install Libfreenect2
       shell: bash
       working-directory: ${{ env.LIBFREENECT_PATH }}

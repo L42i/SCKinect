@@ -161,7 +161,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
         kinectData->opWrapperT.setWorker(op::WorkerType::Output, kinectData->wUserOutput, workerOutputOnNewThread);
 
         // Hardcoded stuff (no flags)
-        const auto keypointScaleMode = op::ScaleMode::ZeroToOne;
+        double netInputSizeDynamicBehavior = -1; // * Zero or negative means that using `-1` in netInputSize will behave as explained in its flag description.
         const int numPeopleMax = args->geti(-1);
         const auto flagsFolder = op::String(args->gets());
         const int numGpu = args->geti(-1);
@@ -193,7 +193,7 @@ void KinectCmd_configureTracking(World* inWorld, void* inUserData, struct sc_msg
 
         // Pose configuration (use WrapperStructPose{} for default and recommended configuration)
         const op::WrapperStructPose wrapperStructPose{
-            poseMode, netInputSize, outputSize, keypointScaleMode, numGpu, gpuStartIndex,
+            poseMode, netInputSize, netInputSizeDynamicBehavior, outputSize, keypointScaleMode, numGpu, gpuStartIndex,
             numAverages, averageGap, op::flagsToRenderMode(renderPose, multipleView),
             poseModel, !disableBlending, alphaPose, alphaHeatMap,
             partToShow, flagsFolder, heatMapTypes, heatMapScaleMode, recordPartCandidates,

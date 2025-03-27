@@ -111,10 +111,12 @@ target_link_libraries(Kinect_supernova ${GFlags_STATIC_LIBRARIES})
 target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
 target_link_libraries(Kinect_scsynth ${GFlags_STATIC_LIBRARIES})
 
-# OpenPose - Find static library explicitly
-find_library(OPENPOSE_STATIC_LIB libopenpose.a PATHS /usr/local/lib REQUIRED)
-target_link_libraries(Kinect_scsynth ${OPENPOSE_STATIC_LIB})
-target_link_libraries(Kinect_supernova ${OPENPOSE_STATIC_LIB})
+# OpenPose
+pkg_check_modules(OpenPose REQUIRED openpose)
+target_include_directories(Kinect_supernova PRIVATE ${OpenPose_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${OpenPose_STATIC_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${OpenPose_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${OpenPose_STATIC_LIBRARIES})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 

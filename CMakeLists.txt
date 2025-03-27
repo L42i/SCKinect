@@ -92,17 +92,17 @@ find_package(PkgConfig REQUIRED)
 
 # OpenCV
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(OpenCV REQUIRED IMPORTED_TARGET STATIC opencv4)
+pkg_check_modules(OpenCV REQUIRED IMPORTED_TARGET_STATIC opencv4)
 target_link_libraries(Kinect_supernova PkgConfig::OpenCV)
 target_link_libraries(Kinect_scsynth PkgConfig::OpenCV)
 
 # Freenect
-pkg_check_modules(Freenect REQUIRED IMPORTED_TARGET STATIC freenect2)
+pkg_check_modules(Freenect REQUIRED IMPORTED_TARGET_STATIC freenect2)
 target_link_libraries(Kinect_supernova PkgConfig::Freenect)
 target_link_libraries(Kinect_scsynth PkgConfig::Freenect)
 
 # GFlags
-pkg_check_modules(GFlags REQUIRED IMPORTED_TARGET STATIC gflags)
+pkg_check_modules(GFlags REQUIRED IMPORTED_TARGET_STATIC gflags)
 target_link_libraries(Kinect_supernova PkgConfig::GFlags)
 target_link_libraries(Kinect_scsynth PkgConfig::GFlags)
 

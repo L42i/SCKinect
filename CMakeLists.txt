@@ -11,6 +11,9 @@ set(project_name "Kinect")
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules ${CMAKE_MODULE_PATH})
 set(CMAKE_CXX_STANDARD 17)
 
+# Enable PIC for all targets
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 ####################################################################################################
 # load modules
 include(SuperColliderServerPlugin RESULT_VARIABLE server_plugin_found)

@@ -91,20 +91,25 @@ sc_add_server_plugin(
 find_package(PkgConfig REQUIRED)
 
 # OpenCV
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(OpenCV REQUIRED IMPORTED_TARGET_STATIC opencv4)
-target_link_libraries(Kinect_supernova PkgConfig::OpenCV)
-target_link_libraries(Kinect_scsynth PkgConfig::OpenCV)
+pkg_check_modules(OpenCV REQUIRED opencv4)
+target_include_directories(Kinect_supernova PRIVATE ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${OpenCV_STATIC_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${OpenCV_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${OpenCV_STATIC_LIBRARIES})
 
 # Freenect
-pkg_check_modules(Freenect REQUIRED IMPORTED_TARGET_STATIC freenect2)
-target_link_libraries(Kinect_supernova PkgConfig::Freenect)
-target_link_libraries(Kinect_scsynth PkgConfig::Freenect)
+pkg_check_modules(Freenect REQUIRED freenect2)
+target_include_directories(Kinect_supernova PRIVATE ${Freenect_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${Freenect_STATIC_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${Freenect_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${Freenect_STATIC_LIBRARIES})
 
 # GFlags
-pkg_check_modules(GFlags REQUIRED IMPORTED_TARGET_STATIC gflags)
-target_link_libraries(Kinect_supernova PkgConfig::GFlags)
-target_link_libraries(Kinect_scsynth PkgConfig::GFlags)
+pkg_check_modules(GFlags REQUIRED gflags)
+target_include_directories(Kinect_supernova PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_supernova ${GFlags_STATIC_LIBRARIES})
+target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
+target_link_libraries(Kinect_scsynth ${GFlags_STATIC_LIBRARIES})
 
 # OpenPose - Find static library explicitly
 find_library(OPENPOSE_STATIC_LIB libopenpose.a PATHS /usr/local/lib REQUIRED)

@@ -89,25 +89,27 @@ sc_add_server_plugin(
 # Third-party libraries
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(OpenCV REQUIRED opencv4)
-target_include_directories(Kinect_supernova PRIVATE ${OpenCV_INCLUDE_DIRS})
-target_link_libraries(Kinect_supernova ${OpenCV_LIBRARIES})
-target_include_directories(Kinect_scsynth PRIVATE ${OpenCV_INCLUDE_DIRS})
-target_link_libraries(Kinect_scsynth ${OpenCV_LIBRARIES})
-pkg_check_modules(Freenect REQUIRED freenect2)
-target_include_directories(Kinect_supernova PRIVATE ${Freenect_INCLUDE_DIRS})
-target_link_libraries(Kinect_supernova ${Freenect_LIBRARIES})
-target_include_directories(Kinect_scsynth PRIVATE ${Freenect_INCLUDE_DIRS})
-target_link_libraries(Kinect_scsynth ${Freenect_LIBRARIES})
-pkg_check_modules(GFlags REQUIRED gflags)
-target_include_directories(Kinect_supernova PRIVATE ${GFlags_INCLUDE_DIRS})
-target_link_libraries(Kinect_supernova ${GFlags_LIBRARIES})
-target_include_directories(Kinect_scsynth PRIVATE ${GFlags_INCLUDE_DIRS})
-target_link_libraries(Kinect_scsynth ${GFlags_LIBRARIES})
 
-# Link OpenPose (should be in /usr/local/lib which is already in paths)
-target_link_libraries(Kinect_scsynth "openpose")
-target_link_libraries(Kinect_supernova "openpose")
+# OpenCV
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(OpenCV REQUIRED IMPORTED_TARGET STATIC opencv4)
+target_link_libraries(Kinect_supernova PkgConfig::OpenCV)
+target_link_libraries(Kinect_scsynth PkgConfig::OpenCV)
+
+# Freenect
+pkg_check_modules(Freenect REQUIRED IMPORTED_TARGET STATIC freenect2)
+target_link_libraries(Kinect_supernova PkgConfig::Freenect)
+target_link_libraries(Kinect_scsynth PkgConfig::Freenect)
+
+# GFlags
+pkg_check_modules(GFlags REQUIRED IMPORTED_TARGET STATIC gflags)
+target_link_libraries(Kinect_supernova PkgConfig::GFlags)
+target_link_libraries(Kinect_scsynth PkgConfig::GFlags)
+
+# OpenPose - Find static library explicitly
+find_library(OPENPOSE_STATIC_LIB libopenpose.a PATHS /usr/local/lib REQUIRED)
+target_link_libraries(Kinect_scsynth ${OPENPOSE_STATIC_LIB})
+target_link_libraries(Kinect_supernova ${OPENPOSE_STATIC_LIB})
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 

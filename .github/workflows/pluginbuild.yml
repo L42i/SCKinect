@@ -11,7 +11,6 @@ jobs:
       LIBFREENECT_PATH: ${{ github.workspace }}/libfreenect2
       BUILD_PATH: ${{ github.workspace }}/build
       INSTALL_PATH: ${{ github.workspace }}/build/Install
-      ARCHIVE_NAME: Kinect-${{ matrix.name }}.zip
     steps:
     - name: Checkout Kinect
       uses: actions/checkout@v3
@@ -76,7 +75,20 @@ jobs:
       shell: bash
       working-directory: ${{ env.BUILD_PATH }}
       run: cmake .. -DCMAKE_BUILD_TYPE='Release' -DSC_PATH="$SC_PATH" -DCMAKE_INSTALL_PREFIX="$INSTALL_PATH"
-    - name: Build Project
+    - name: Build Plugin
       shell: bash
       working-directory: ${{ env.BUILD_PATH }}
-      run: cmake --build . --config Release --parallel $(nproc)
+      env:
+        CMAKE_BUILD_PARALLEL_LEVEL: 4
+      run: cmake --build . --config "Release" --target install
+    - name: Create Archive
+      shell: bash
+      working-directory: ${{ env.BUILD_PATH }}
+      run: |
+        mkdir -p ${{ env.BUILD_PATH }}/archive
+        zip -r ${{ env.BUILD_PATH }}/archive/Kinect-${{ runner.os }}.zip ${{ env.INSTALL_PATH }}
+    - name: Upload Archive
+      uses: actions/upload-artifact@v3
+      with:
+        name: Kinect-${{ runner.os }}.zip
+        path: ${{ env.BUILD_PATH }}/archive/Kinect-${{ runner.os }}.zip

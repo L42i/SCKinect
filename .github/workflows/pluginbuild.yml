@@ -88,7 +88,7 @@ jobs:
         mkdir -p ${{ env.BUILD_PATH }}/archive
         zip -r ${{ env.BUILD_PATH }}/archive/Kinect-${{ runner.os }}.zip ${{ env.INSTALL_PATH }}
     - name: Upload Archive
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: Kinect-${{ runner.os }}.zip
         path: ${{ env.BUILD_PATH }}/archive/Kinect-${{ runner.os }}.zip
